@@ -1,0 +1,166 @@
+{
+    "common": {
+        "status": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+        },
+        "actions": "الإجراءات",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "save": "حفظ",
+        "cancel": "إلغاء",
+        "create": "إنشاء",
+        "view": "عرض",
+        "search": "بحث...",
+        "loading": "جاري التحميل...",
+        "noResults": "لم يتم العثور على نتائج",
+        "confirm": "تأكيد",
+        "back": "رجوع",
+        "next": "التالي",
+        "close": "إغلاق",
+        "reset": "إعادة ضبط",
+        "none": "لا يوجد",
+        "never": "أبداً",
+        "active": "نشط",
+        "expired": "منتهي",
+        "showing_results": "عرض {{from}} إلى {{to}} من أصل {{total}} نتيجة"
+    },
+    "customers": {
+        "title": "العملاء",
+        "add_new": "إضافة عميل",
+        "search_placeholder": "بحث بالاسم أو رقم الهاتف...",
+        "no_results": "لم يتم العثور على عملاء.",
+        "profile_details": "تفاصيل الملف الشخصي",
+        "add_rx": "إضافة وصفة طبية",
+        "rx_expired": "منتهية",
+        "rx_valid": "صالحة",
+        "family": "العائلة",
+        "family_members": "أفراد العائلة",
+        "no_family": "لا توجد روابط عائلية.",
+        "recent_activity": "النشاط الأخير",
+        "prescribed_by": "وصف بواسطة",
+        "no_rx": "لا توجد وصفات طبية.",
+        "create_invoice": "إنشاء فاتورة",
+        "no_invoices": "لا توجد فواتير.",
+        "select_branch": "اختر الفرع",
+        "none": "لا يوجد",
+        "edit_customer": "تعديل العميل",
+        "fields": {
+            "name": "الاسم",
+            "first_name": "الاسم الأول",
+            "last_name": "اسم العائلة",
+            "phone": "رقم الهاتف",
+            "email": "البريد الإلكتروني",
+            "address": "العنوان",
+            "date_of_birth": "تاريخ الميلاد",
+            "branch": "الفرع",
+            "last_visit": "آخر زيارة",
+            "rx_status": "حالة الوصفة",
+            "notes": "ملاحظات",
+            "family_head": "رب العائلة"
+        },
+        "tabs": {
+            "overview": "نظرة عامة",
+            "spectacle_rx": "وصفات النظارات",
+            "contact_lens_rx": "وصفات العدسات",
+            "invoices": "الفواتير"
+        }
+    },
+    "auth": {
+        "login": "تسجيل الدخول",
+        "logout": "تسجيل الخروج",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "rememberMe": "تذكرني",
+        "forgotPassword": "هل نسيت كلمة المرور؟"
+    },
+    "nav": {
+        "dashboard": "لوحة القيادة",
+        "customers": "العملاء",
+        "prescriptions": "الوصفات الطبية",
+        "inventory": "المخزون",
+        "pos": "نقطة البيع",
+        "invoices": "الفواتير",
+        "lab": "المختبر",
+        "reports": "التقارير",
+        "settings": "الإعدادات"
+    },
+    "admin": {
+        "dashboard": {
+            "title": "لوحة تحكم المسؤول العام",
+            "welcome": "مرحباً، المسؤول العام",
+            "total_businesses": "إجمالي الشركات",
+            "active_businesses": "الشركات النشطة",
+            "total_users": "إجمالي المستخدمين"
+        },
+        "businesses": {
+            "index": {
+                "title": "إدارة الشركات",
+                "create_btn": "إضافة شركة جديدة"
+            },
+            "create": {
+                "title": "إنشاء شركة جديدة",
+                "submit_btn": "إنشاء الشركة"
+            },
+            "edit": {
+                "title": "تعديل الشركة",
+                "submit_btn": "تحديث الشركة",
+                "owner_note": "لا يمكن تغيير تفاصيل المالك من هنا لأسباب أمنية."
+            },
+            "sections": {
+                "business_info": "معلومات الشركة",
+                "owner_info": "معلومات المالك الأساسي"
+            },
+            "fields": {
+                "name": "اسم الشركة",
+                "owner": "المالك",
+                "status": "الحالة",
+                "actions": "الإجراءات",
+                "primary_color": "اللون الأساسي للقالب",
+                "default_language": "اللغة الافتراضية",
+                "owner_name": "اسم المالك",
+                "owner_email": "البريد الإلكتروني للمالك",
+                "owner_password": "كلمة مرور المالك",
+                "active_status": "نشط"
+            }
+        }
+    },
+    "business": {
+        "dashboard": {
+            "title": "لوحة تحكم المتجر",
+            "welcome": "نظرة عامة على المتجر",
+            "today_sales": "مبيعات اليوم",
+            "pending_pickups": "بانتظار الاستلام",
+            "total_customers": "إجمالي العملاء",
+            "recent_invoices": "آخر الفواتير"
+        },
+        "branches": {
+            "index": {
+                "title": "إدارة الفروع",
+                "create_btn": "إضافة فرع جديد"
+            },
+            "fields": {
+                "name": "اسم الفرع",
+                "contact": "معلومات الاتصال",
+                "status": "الحالة",
+                "actions": "الإجراءات",
+                "hq": "المركز الرئيسي"
+            }
+        },
+        "staff": {
+            "index": {
+                "title": "إدارة الموظفين",
+                "create_btn": "إضافة موظف جديد"
+            }
+        },
+        "settings": {
+            "title": "إعدادات المتجر"
+        }
+    },
+    "welcome": {
+        "title": "نظام إدارة محل البصريات",
+        "description": "مرحباً بك في نظام الإدارة الجديد. الرموز والترجمة تعمل!",
+        "status": "Tailwind CSS 4 + الرموز الدلالية + الترجمة نشطة.",
+        "test_button": "زر الاختبار"
+    }
+}

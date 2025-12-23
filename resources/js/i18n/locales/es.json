@@ -1,0 +1,41 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "search": "Buscar...",
+    "loading": "Cargando...",
+    "noResults": "No se encontraron resultados",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "close": "Cerrar"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidó su contraseña?"
+  },
+  "nav": {
+    "dashboard": "Tablero",
+    "customers": "Clientes",
+    "prescriptions": "Recetas",
+    "inventory": "Inventario",
+    "pos": "Punto de venta",
+    "invoices": "Facturas",
+    "lab": "Laboratorio",
+    "reports": "Informes",
+    "settings": "Configuración"
+  },
+  "welcome": {
+    "title": "Sistema de Gestión de Óptica",
+    "description": "Bienvenido a su nuevo sistema de gestión. ¡Los tokens y i18n están funcionando!",
+    "status": "Tailwind CSS 4 + Tokens Semánticos + i18n están activos.",
+    "test_button": "Botón de Prueba"
+  }
+}

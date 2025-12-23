@@ -1,0 +1,166 @@
+{
+    "business": {
+        "dashboard": {
+            "title": "Business Dashboard",
+            "welcome": "Dashboard Overview",
+            "today_sales": "Today's Sales",
+            "pending_pickups": "Pending Pickups",
+            "total_customers": "Total Customers",
+            "recent_invoices": "Recent Invoices"
+        },
+        "branches": {
+            "index": {
+                "title": "Branches Management",
+                "create_btn": "Add New Branch"
+            },
+            "fields": {
+                "name": "Branch Name",
+                "contact": "Contact Info",
+                "status": "Status",
+                "actions": "Actions",
+                "hq": "HQ"
+            }
+        },
+        "staff": {
+            "index": {
+                "title": "Staff Management",
+                "create_btn": "Add New Staff"
+            }
+        },
+        "settings": {
+            "title": "Business Settings"
+        }
+    },
+    "common": {
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "create": "Create",
+        "view": "View",
+        "search": "Search...",
+        "loading": "Loading...",
+        "noResults": "No results found",
+        "confirm": "Confirm",
+        "back": "Back",
+        "next": "Next",
+        "close": "Close",
+        "reset": "Reset",
+        "none": "None",
+        "never": "Never",
+        "active": "Active",
+        "expired": "Expired",
+        "showing_results": "Showing {{from}} to {{to}} of {{total}} results"
+    },
+    "customers": {
+        "title": "Customers",
+        "add_new": "Add Customer",
+        "search_placeholder": "Search by name or phone...",
+        "no_results": "No customers found.",
+        "profile_details": "Profile Details",
+        "add_rx": "Add Prescription",
+        "rx_expired": "Expired",
+        "rx_valid": "Valid",
+        "family": "Family",
+        "family_members": "Family Members",
+        "no_family": "No family links found.",
+        "recent_activity": "Recent Activity",
+        "prescribed_by": "Prescribed by",
+        "no_rx": "No prescriptions found.",
+        "create_invoice": "Create Invoice",
+        "no_invoices": "No invoices found.",
+        "select_branch": "Select Branch",
+        "none": "None",
+        "edit_customer": "Edit Customer",
+        "fields": {
+            "name": "Name",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "phone": "Phone",
+            "email": "Email",
+            "address": "Address",
+            "date_of_birth": "Date of Birth",
+            "branch": "Branch",
+            "last_visit": "Last Visit",
+            "rx_status": "Rx Status",
+            "notes": "Notes",
+            "family_head": "Family Head"
+        },
+        "tabs": {
+            "overview": "Overview",
+            "spectacle_rx": "Spectacle Rx",
+            "contact_lens_rx": "Contact Lens Rx",
+            "invoices": "Invoices"
+        }
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "email": "Email Address",
+        "password": "Password",
+        "rememberMe": "Remember Me",
+        "forgotPassword": "Forgot Password?"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "customers": "Customers",
+        "prescriptions": "Prescriptions",
+        "inventory": "Inventory",
+        "pos": "Point of Sale",
+        "invoices": "Invoices",
+        "lab": "Lab",
+        "reports": "Reports",
+        "settings": "Settings"
+    },
+    "admin": {
+        "dashboard": {
+            "title": "Super Admin Dashboard",
+            "welcome": "Welcome, Super Admin",
+            "total_businesses": "Total Businesses",
+            "active_businesses": "Active Businesses",
+            "total_users": "Total Users"
+        },
+        "businesses": {
+            "index": {
+                "title": "Businesses Management",
+                "create_btn": "Add New Business"
+            },
+            "create": {
+                "title": "Create New Business",
+                "submit_btn": "Create Business"
+            },
+            "edit": {
+                "title": "Edit Business",
+                "submit_btn": "Update Business",
+                "owner_note": "Owner details cannot be changed from here for security reasons."
+            },
+            "sections": {
+                "business_info": "Business Information",
+                "owner_info": "Primary Owner Information"
+            },
+            "fields": {
+                "name": "Business Name",
+                "owner": "Owner",
+                "status": "Status",
+                "actions": "Actions",
+                "primary_color": "Primary Theme Color",
+                "default_language": "Default Language",
+                "owner_name": "Owner Name",
+                "owner_email": "Owner Email",
+                "owner_password": "Owner Password",
+                "active_status": "Is Active"
+            }
+        }
+    },
+    "welcome": {
+        "title": "Optical Shop Management System",
+        "description": "Welcome to your new management system. Tokens and i18n are working!",
+        "status": "Tailwind CSS 4 + Semantic Tokens + i18n are active.",
+        "test_button": "Test Button"
+    }
+}

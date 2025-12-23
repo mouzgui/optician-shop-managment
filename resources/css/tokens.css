@@ -1,0 +1,219 @@
+:root {
+    /* ═══════════════════════════════════════════════════
+     PRIMITIVE TOKENS - Raw Color Values
+     These are the only place hex codes should appear
+     ═══════════════════════════════════════════════════ */
+
+    /* Primary Brand - Blue (White-label overridable) */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+
+    /* Neutral (Gray Scale) */
+    --color-neutral-0: #ffffff;
+    --color-neutral-50: #f9fafb;
+    --color-neutral-100: #f3f4f6;
+    --color-neutral-200: #e5e7eb;
+    --color-neutral-300: #d1d5db;
+    --color-neutral-400: #9ca3af;
+    --color-neutral-500: #6b7280;
+    --color-neutral-600: #4b5563;
+    --color-neutral-700: #374151;
+    --color-neutral-800: #1f2937;
+    --color-neutral-900: #111827;
+    --color-neutral-950: #030712;
+
+    /* Status Colors */
+    --color-success-50: #f0fdf4;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+
+    --color-warning-50: #fffbeb;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+
+    --color-error-50: #fef2f2;
+    --color-error-500: #ef4444;
+    --color-error-600: #dc2626;
+    --color-error-700: #b91c1c;
+
+    --color-info-50: #eff6ff;
+    --color-info-500: #3b82f6;
+    --color-info-600: #2563eb;
+    --color-info-700: #1d4ed8;
+}
+
+/* ═══════════════════════════════════════════════════
+   SEMANTIC TOKENS - Light Mode (Default)
+   Components use THESE tokens, not primitives
+   ═══════════════════════════════════════════════════ */
+
+:root,
+[data-theme="light"] {
+    /* Backgrounds */
+    --bg-base: var(--color-neutral-0);
+    --bg-subtle: var(--color-neutral-50);
+    --bg-muted: var(--color-neutral-100);
+    --bg-elevated: var(--color-neutral-0);
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+
+    /* Text */
+    --text-primary: var(--color-neutral-900);
+    --text-secondary: var(--color-neutral-600);
+    --text-muted: var(--color-neutral-400);
+    --text-inverted: var(--color-neutral-0);
+    --text-link: var(--color-primary-600);
+    --text-link-hover: var(--color-primary-700);
+
+    /* Borders */
+    --border-default: var(--color-neutral-200);
+    --border-strong: var(--color-neutral-300);
+    --border-focus: var(--color-primary-500);
+
+    /* Interactive */
+    --interactive-primary: var(--color-primary-600);
+    --interactive-primary-hover: var(--color-primary-700);
+    --interactive-primary-active: var(--color-primary-800);
+    --interactive-secondary: var(--color-neutral-100);
+    --interactive-secondary-hover: var(--color-neutral-200);
+
+    /* Status */
+    --status-success-bg: var(--color-success-50);
+    --status-success-text: var(--color-success-700);
+    --status-success-border: var(--color-success-500);
+
+    --status-warning-bg: var(--color-warning-50);
+    --status-warning-text: var(--color-warning-700);
+    --status-warning-border: var(--color-warning-500);
+
+    --status-error-bg: var(--color-error-50);
+    --status-error-text: var(--color-error-700);
+    --status-error-border: var(--color-error-500);
+
+    --status-info-bg: var(--color-info-50);
+    --status-info-text: var(--color-info-700);
+    --status-info-border: var(--color-info-500);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════
+   SEMANTIC TOKENS - Dark Mode
+   ═══════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+    /* Backgrounds */
+    --bg-base: var(--color-neutral-950);
+    --bg-subtle: var(--color-neutral-900);
+    --bg-muted: var(--color-neutral-800);
+    --bg-elevated: var(--color-neutral-900);
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+
+    /* Text */
+    --text-primary: var(--color-neutral-50);
+    --text-secondary: var(--color-neutral-300);
+    --text-muted: var(--color-neutral-500);
+    --text-inverted: var(--color-neutral-900);
+    --text-link: var(--color-primary-400);
+    --text-link-hover: var(--color-primary-300);
+
+    /* Borders */
+    --border-default: var(--color-neutral-700);
+    --border-strong: var(--color-neutral-600);
+    --border-focus: var(--color-primary-400);
+
+    /* Interactive */
+    --interactive-primary: var(--color-primary-500);
+    --interactive-primary-hover: var(--color-primary-400);
+    --interactive-primary-active: var(--color-primary-300);
+    --interactive-secondary: var(--color-neutral-800);
+    --interactive-secondary-hover: var(--color-neutral-700);
+
+    /* Status (adjusted for dark backgrounds) */
+    --status-success-bg: rgba(34, 197, 94, 0.15);
+    --status-success-text: var(--color-success-500);
+    --status-success-border: var(--color-success-600);
+
+    --status-warning-bg: rgba(245, 158, 11, 0.15);
+    --status-warning-text: var(--color-warning-500);
+    --status-warning-border: var(--color-warning-600);
+
+    --status-error-bg: rgba(239, 68, 68, 0.15);
+    --status-error-text: var(--color-error-500);
+    --status-error-border: var(--color-error-600);
+
+    --status-info-bg: rgba(59, 130, 246, 0.15);
+    --status-info-text: var(--color-info-500);
+    --status-info-border: var(--color-info-600);
+}
+
+/* ═══════════════════════════════════════════════════
+   COMPONENT TOKENS
+   Specific tokens for UI components
+   ═══════════════════════════════════════════════════ */
+
+:root {
+    /* Buttons */
+    --btn-primary-bg: var(--interactive-primary);
+    --btn-primary-text: var(--text-inverted);
+    --btn-primary-hover: var(--interactive-primary-hover);
+
+    --btn-secondary-bg: var(--interactive-secondary);
+    --btn-secondary-text: var(--text-primary);
+    --btn-secondary-hover: var(--interactive-secondary-hover);
+
+    --btn-danger-bg: var(--color-error-600);
+    --btn-danger-text: var(--color-neutral-0);
+    --btn-danger-hover: var(--color-error-700);
+
+    /* Form Inputs */
+    --input-bg: var(--bg-base);
+    --input-border: var(--border-default);
+    --input-border-focus: var(--border-focus);
+    --input-text: var(--text-primary);
+    --input-placeholder: var(--text-muted);
+    --input-disabled-bg: var(--bg-muted);
+
+    /* Cards */
+    --card-bg: var(--bg-elevated);
+    --card-border: var(--border-default);
+    --card-shadow: var(--shadow-md);
+
+    /* Tables */
+    --table-header-bg: var(--bg-subtle);
+    --table-row-hover: var(--bg-muted);
+    --table-border: var(--border-default);
+
+    /* Navigation */
+    --nav-bg: var(--bg-base);
+    --nav-item-hover: var(--bg-muted);
+    --nav-item-active: var(--color-primary-50);
+    --nav-item-active-text: var(--color-primary-700);
+
+    /* Modal */
+    --modal-bg: var(--bg-elevated);
+    --modal-overlay: var(--bg-overlay);
+    --modal-shadow: var(--shadow-xl);
+}
+
+[data-theme="dark"] {
+    --nav-item-active: var(--color-primary-950);
+    --nav-item-active-text: var(--color-primary-300);
+}

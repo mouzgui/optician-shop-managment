@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./rtl.css";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.ts';
+@source '../**/*.tsx';
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    /* Map Semantic Tokens to Tailwind */
+    --color-bg-base: var(--bg-base);
+    --color-bg-subtle: var(--bg-subtle);
+    --color-bg-muted: var(--bg-muted);
+    --color-bg-elevated: var(--bg-elevated);
+
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-text-muted: var(--text-muted);
+    --color-text-inverted: var(--text-inverted);
+
+    --color-border-default: var(--border-default);
+    --color-border-strong: var(--border-strong);
+    --color-border-focus: var(--border-focus);
+
+    --color-interactive-primary: var(--interactive-primary);
+    --color-interactive-primary-hover: var(--interactive-primary-hover);
+    --color-interactive-primary-active: var(--interactive-primary-active);
+    --color-interactive-secondary: var(--interactive-secondary);
+    --color-interactive-secondary-hover: var(--interactive-secondary-hover);
+
+    /* Map Status Tokens */
+    --color-status-success-bg: var(--status-success-bg);
+    --color-status-success-text: var(--status-success-text);
+    --color-status-success-border: var(--status-success-border);
+
+    --color-status-warning-bg: var(--status-warning-bg);
+    --color-status-warning-text: var(--status-warning-text);
+    --color-status-warning-border: var(--status-warning-border);
+
+    --color-status-error-bg: var(--status-error-bg);
+    --color-status-error-text: var(--status-error-text);
+    --color-status-error-border: var(--status-error-border);
+
+    --color-status-info-bg: var(--status-info-bg);
+    --color-status-info-text: var(--status-info-text);
+    --color-status-info-border: var(--status-info-border);
+
+    /* Map Component Tokens */
+    --color-btn-primary: var(--btn-primary-bg);
+    --color-btn-primary-hover: var(--btn-primary-hover);
+    --color-btn-secondary: var(--btn-secondary-bg);
+    --color-btn-secondary-hover: var(--btn-secondary-hover);
+    --color-btn-danger: var(--btn-danger-bg);
+    --color-btn-danger-hover: var(--btn-danger-hover);
+
+    --color-input-bg: var(--input-bg);
+    --color-input-border: var(--input-border);
+    --color-input-border-focus: var(--input-border-focus);
+
+    --color-card-bg: var(--card-bg);
+    --color-card-border: var(--card-border);
+
+    --color-nav-bg: var(--nav-bg);
+    --color-nav-item-hover: var(--nav-item-hover);
+    --color-nav-item-active: var(--nav-item-active);
+    --color-nav-item-active-text: var(--nav-item-active-text);
+}
