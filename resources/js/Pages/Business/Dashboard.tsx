@@ -2,6 +2,7 @@ import React from "react";
 import { Head } from "@inertiajs/react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
+import { Card } from "@/Components/UI/Card";
 
 interface DashboardProps {
     stats: {
@@ -25,40 +26,43 @@ export default function Dashboard({ stats, recentInvoices }: DashboardProps) {
                 </h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="p-6 bg-bg-primary rounded-xl border border-border-subtle shadow-sm">
-                        <h3 className="text-sm font-medium text-text-secondary">
-                            {t("business.dashboard.today_sales")}
-                        </h3>
-                        <p className="mt-2 text-3xl font-bold text-text-primary">
-                            {stats.todaySales}
-                        </p>
-                    </div>
+                    <Card className="p-0">
+                        <div className="p-6">
+                            <h3 className="text-sm font-medium text-text-secondary">
+                                {t("business.dashboard.today_sales")}
+                            </h3>
+                            <p className="mt-2 text-3xl font-bold text-text-primary">
+                                {stats.todaySales}
+                            </p>
+                        </div>
+                    </Card>
 
-                    <div className="p-6 bg-bg-primary rounded-xl border border-border-subtle shadow-sm">
-                        <h3 className="text-sm font-medium text-text-secondary">
-                            {t("business.dashboard.pending_pickups")}
-                        </h3>
-                        <p className="mt-2 text-3xl font-bold text-text-primary">
-                            {stats.pendingPickups}
-                        </p>
-                    </div>
+                    <Card className="p-0">
+                        <div className="p-6">
+                            <h3 className="text-sm font-medium text-text-secondary">
+                                {t("business.dashboard.pending_pickups")}
+                            </h3>
+                            <p className="mt-2 text-3xl font-bold text-text-primary">
+                                {stats.pendingPickups}
+                            </p>
+                        </div>
+                    </Card>
 
-                    <div className="p-6 bg-bg-primary rounded-xl border border-border-subtle shadow-sm">
-                        <h3 className="text-sm font-medium text-text-secondary">
-                            {t("business.dashboard.total_customers")}
-                        </h3>
-                        <p className="mt-2 text-3xl font-bold text-text-primary">
-                            {stats.customersCount}
-                        </p>
-                    </div>
+                    <Card className="p-0">
+                        <div className="p-6">
+                            <h3 className="text-sm font-medium text-text-secondary">
+                                {t("business.dashboard.total_customers")}
+                            </h3>
+                            <p className="mt-2 text-3xl font-bold text-text-primary">
+                                {stats.customersCount}
+                            </p>
+                        </div>
+                    </Card>
                 </div>
 
-                <div className="bg-bg-primary rounded-xl border border-border-subtle shadow-sm p-6">
-                    <h2 className="text-lg font-semibold text-text-primary mb-4">
-                        {t("business.dashboard.recent_invoices")}
-                    </h2>
+                <Card title={t("business.dashboard.recent_invoices")}>
                     {recentInvoices.length === 0 ? (
-                        <p className="text-text-secondary text-sm italic">
+                        <p className="text-text-secondary text-sm italic py-4">
                             {t("common.noResults")}
                         </p>
                     ) : (
@@ -66,7 +70,7 @@ export default function Dashboard({ stats, recentInvoices }: DashboardProps) {
                             {/* Table would go here */}
                         </div>
                     )}
-                </div>
+                </Card>
             </div>
         </AuthenticatedLayout>
     );

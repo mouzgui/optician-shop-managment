@@ -3393,7 +3393,7 @@ public function isPaid(): bool
 
 #### TASK 4.2.1: Create InvoiceService
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3444,9 +3444,9 @@ public function complete(Invoice $invoice): void
 
 **✓ Done When:**
 
--   [ ] createWithDeposit wraps in transaction
--   [ ] Job card auto-creates
--   [ ] Stock deducts on complete
+-   [x] createWithDeposit wraps in transaction
+-   [x] Job card auto-creates
+-   [x] Stock deducts on complete
 
 ---
 
@@ -3492,24 +3492,24 @@ public function complete(Invoice $invoice): void
 
 #### TASK 4.3.3: Create POS Components
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
--   `resources/js/Components/POS/ProductSearch.tsx`
--   `resources/js/Components/POS/ProductGrid.tsx`
--   `resources/js/Components/POS/Cart.tsx`
--   `resources/js/Components/POS/CartItem.tsx`
--   `resources/js/Components/POS/CustomerSelector.tsx`
--   `resources/js/Components/POS/PrescriptionSelector.tsx`
--   `resources/js/Components/POS/PaymentModal.tsx`
+-   [x] `resources/js/Components/POS/ProductSearch.tsx`
+-   [x] `resources/js/Components/POS/ProductGrid.tsx`
+-   [x] `resources/js/Components/POS/Cart.tsx`
+-   [x] `resources/js/Components/POS/CartItem.tsx`
+-   [x] `resources/js/Components/POS/CustomerSelector.tsx`
+-   [x] `resources/js/Components/POS/PrescriptionSelector.tsx`
+-   [x] `resources/js/Components/POS/PaymentModal.tsx`
 
 **✓ Done When:**
 
--   [ ] Product search works with barcode
--   [ ] Cart calculates correctly
--   [ ] Discount applies (fixed/percentage)
--   [ ] Payment modal handles split payments
+-   [x] Product search works with barcode
+-   [x] Cart calculates correctly
+-   [x] Discount applies (fixed/percentage)
+-   [x] Payment modal handles split payments
 
 ---
 
@@ -3564,7 +3564,7 @@ public function complete(Invoice $invoice): void
 
 #### TASK 5.1.1: Create Job Cards Migration & Model
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3600,8 +3600,8 @@ public static function createFromInvoice(Invoice $invoice): self
 
 **✓ Done When:**
 
--   [ ] Job card auto-creates from invoice
--   [ ] Snapshots preserve data even if source changes
+-   [x] Job card auto-creates from invoice
+-   [x] Snapshots preserve data even if source changes
 
 ---
 
@@ -3609,7 +3609,7 @@ public static function createFromInvoice(Invoice $invoice): self
 
 #### TASK 5.2.1: Create Lab Controller & Pages
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3635,19 +3635,18 @@ public static function createFromInvoice(Invoice $invoice): self
 
 **✓ Done When:**
 
--   [ ] Job queue shows correct status groupings
--   [ ] Status updates work
--   [ ] No prices visible to lab role
+-   [x] Job queue shows correct status groupings
+-   [x] Status updates work
+-   [x] No prices visible to lab role
 
 ---
 
 #### TASK 5.2.2: Create Job Card Queue Component
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
--   `resources/js/Components/Lab/JobCardQueue.tsx`
 -   `resources/js/Components/Lab/JobCardItem.tsx`
 
 **📝 Features:**
@@ -3659,8 +3658,8 @@ public static function createFromInvoice(Invoice $invoice): self
 
 **✓ Done When:**
 
--   [ ] Queue updates in real-time (or refresh)
--   [ ] Status colors match design tokens
+-   [x] Queue updates in real-time (or refresh)
+-   [x] Status colors match design tokens
 
 ---
 
@@ -3675,7 +3674,7 @@ public static function createFromInvoice(Invoice $invoice): self
 
 #### TASK 6.1.1: Create Report Controller
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3683,18 +3682,18 @@ public static function createFromInvoice(Invoice $invoice): self
 
 **📄 Methods:**
 
--   `dashboard()` - Overview stats
--   `dailyRevenue()` - Today's sales
--   `monthlyRevenue()` - Monthly breakdown
--   `outstandingBalances()` - Aged receivables
--   `inventory()` - Stock reports
--   `staffPerformance()` - Sales by staff
--   `rxExpiry()` - Recall list
+-   [x] `dashboard()` - Overview stats
+-   [x] `dailyRevenue()` - Today's sales
+-   [x] `monthlyRevenue()` - Monthly breakdown
+-   [x] `outstandingBalances()` - Aged receivables
+-   [x] `inventory()` - Stock reports
+-   [x] `staffPerformance()` - Sales by staff
+-   [x] `rxExpiry()` - Recall list
 
 **✓ Done When:**
 
--   [ ] All report methods return correct data
--   [ ] Data scoped to business
+-   [x] All report methods return correct data
+-   [x] Data scoped to business
 
 ---
 
@@ -3702,7 +3701,7 @@ public static function createFromInvoice(Invoice $invoice): self
 
 #### TASK 6.2.1: Create Report Dashboard
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3716,15 +3715,15 @@ public static function createFromInvoice(Invoice $invoice): self
 
 **✓ Done When:**
 
--   [ ] All report pages display data correctly
--   [ ] Date filters work
+-   [x] All report pages display data correctly
+-   [x] Date filters work
 -   [ ] Export to CSV works
 
 ---
 
 #### TASK 6.2.2: Create Chart Components
 
--   [ ] **Status:** Not Started
+-   [x] **Status:** Completed
 
 **📁 Files to Create:**
 
@@ -3741,9 +3740,9 @@ npm install recharts
 
 **✓ Done When:**
 
--   [ ] Charts render with data
--   [ ] Responsive on different screen sizes
--   [ ] Use design token colors
+-   [x] Charts render with data
+-   [x] Responsive on different screen sizes
+-   [x] Use design token colors
 
 ---
 

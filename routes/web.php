@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Business;
 use App\Http\Controllers\Sales;
 use App\Http\Controllers\Clinical;
+use App\Http\Controllers\Lab;
+use App\Http\Controllers\Reports;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -77,10 +79,30 @@ Route::middleware(['auth', 'business'])
             Route::prefix('sales')->name('sales.')->group(function () {
                 Route::get('pos', [Sales\POSController::class, 'index'])->name('pos.index');
                 Route::get('pos/search-products', [Sales\POSController::class, 'searchProducts'])->name('pos.search-products');
+                Route::get('pos/customer/{customer}/prescriptions', [Sales\POSController::class, 'getCustomerPrescriptions'])->name('pos.customer-prescriptions');
                 Route::post('pos/checkout', [Sales\POSController::class, 'store'])->name('pos.checkout');
 
                 // Invoices (Resource for management)
                 Route::resource('invoices', Sales\InvoiceController::class);
+            });
+
+            // Lab Management
+            Route::prefix('lab')->name('lab.')->group(function () {
+                Route::get('job-cards', [Lab\JobCardController::class, 'index'])->name('job-cards.index');
+                Route::get('job-cards/{job_card}', [Lab\JobCardController::class, 'show'])->name('job-cards.show');
+                Route::get('job-cards/{job_card}/print', [Lab\JobCardController::class, 'print'])->name('job-cards.print');
+                Route::patch('job-cards/{job_card}/status', [Lab\JobCardController::class, 'updateStatus'])->name('job-cards.update-status');
+            });
+
+            // Reports
+            Route::prefix('reports')->name('reports.')->group(function () {
+                Route::get('/', [Reports\ReportController::class, 'dashboard'])->name('index');
+                Route::get('/daily-revenue', [Reports\ReportController::class, 'dailyRevenue'])->name('daily-revenue');
+                Route::get('/monthly-revenue', [Reports\ReportController::class, 'monthlyRevenue'])->name('monthly-revenue');
+                Route::get('/outstanding-balances', [Reports\ReportController::class, 'outstandingBalances'])->name('outstanding-balances');
+                Route::get('/inventory', [Reports\ReportController::class, 'inventory'])->name('inventory');
+                Route::get('/staff-performance', [Reports\ReportController::class, 'staffPerformance'])->name('staff-performance');
+                Route::get('/rx-expiry', [Reports\ReportController::class, 'rxExpiry'])->name('rx-expiry');
             });
         });
     });

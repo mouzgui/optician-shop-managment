@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Frame;
 use App\Models\ContactLens;
+use App\Models\JobCard;
 use App\Enums\InvoiceStatus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,9 @@ class InvoiceService
                     'received_at' => now(),
                 ]);
             }
+
+            // Create Job Card if necessary
+            JobCard::createFromInvoice($invoice);
 
             return $invoice->fresh();
         });

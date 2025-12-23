@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
+import { Skeleton } from "./Skeleton";
 
 interface Column<T> {
     header: string;
@@ -40,14 +41,15 @@ export function DataTable<T>({
                     </thead>
                     <tbody className="divide-y divide-border-subtle">
                         {isLoading ? (
-                            <tr>
-                                <td colSpan={columns.length} className="px-6 py-10 text-center text-text-muted">
-                                    <div className="flex items-center justify-center space-x-2">
-                                        <div className="w-4 h-4 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
-                                        <span>Loading...</span>
-                                    </div>
-                                </td>
-                            </tr>
+                            Array.from({ length: 5 }).map((_, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {columns.map((_, colIndex) => (
+                                        <td key={colIndex} className="px-6 py-4">
+                                            <Skeleton className="h-4 w-3/4" />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))
                         ) : data.length === 0 ? (
                             <tr>
                                 <td colSpan={columns.length} className="px-6 py-10 text-center text-text-muted">

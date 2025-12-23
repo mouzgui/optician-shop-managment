@@ -1,6 +1,8 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import { LanguageSwitcher } from "@/Components/UI/LanguageSwitcher";
 import { ThemeToggle } from "@/Components/UI/ThemeToggle";
+import { usePage } from "@inertiajs/react";
+import { Toaster, toast } from "react-hot-toast";
 
 interface GuestLayoutProps {
     title?: string;
@@ -12,8 +14,39 @@ export function GuestLayout({
     title,
     logo,
 }: PropsWithChildren<GuestLayoutProps>) {
+    const { branding, flash } = usePage<any>().props;
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
+
+    useEffect(() => {
+        if (branding?.primary_color) {
+            document.documentElement.style.setProperty(
+                "--color-primary-600",
+                branding.primary_color
+            );
+        }
+
+        if (branding?.favicon_url) {
+            let favicon = document.querySelector('link[rel="icon"]');
+            if (!favicon) {
+                favicon = document.createElement("link");
+                favicon.setAttribute("rel", "icon");
+                document.head.appendChild(favicon);
+            }
+            favicon.setAttribute("href", branding.favicon_url);
+        }
+    }, [branding]);
+
     return (
         <div className="min-h-screen flex flex-col bg-bg-subtle">
+            <Toaster position="top-right" />
             {/* Header with theme/language toggles */}
             <div className="absolute top-4 right-4 flex items-center gap-3">
                 <ThemeToggle />
@@ -25,7 +58,13 @@ export function GuestLayout({
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="text-center mb-8">
-                        {logo ? (
+                        {branding?.logo_url ? (
+                            <img
+                                src={branding.logo_url}
+                                alt="Logo"
+                                className="h-16 mx-auto"
+                            />
+                        ) : logo ? (
                             <img
                                 src={logo}
                                 alt="Logo"
@@ -52,7 +91,9 @@ export function GuestLayout({
 
             {/* Footer */}
             <div className="text-center py-4 text-text-muted text-sm">
-                © {new Date().getFullYear()} Optical Shop Manager
+                {branding?.footer_text
+                    ? branding.footer_text
+                    : `© ${new Date().getFullYear()} Optical Shop Manager`}
             </div>
         </div>
     );

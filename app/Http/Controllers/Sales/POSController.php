@@ -26,9 +26,14 @@ class POSController extends Controller
      */
     public function index()
     {
+        $user = Auth::user()->load('business.branches');
+        
         return Inertia::render('Sales/POS/Index', [
-            'branches' => Auth::user()->business->branches()->where('is_active', true)->get(['id', 'name']),
-            'customers' => Customer::where('business_id', Auth::user()->business_id)
+            'branches' => $user->business->branches->where('is_active', true)->map(fn($b) => [
+                'id' => $b->id,
+                'name' => $b->name,
+            ]),
+            'customers' => Customer::where('business_id', $user->business_id)
                 ->orderBy('first_name')
                 ->limit(20)
                 ->get(),
@@ -59,6 +64,7 @@ class POSController extends Controller
                       ->orWhere('barcode', 'like', "%{$query}%");
                 })
                 ->where('is_active', true)
+                ->select(['id', 'brand', 'model', 'sku', 'color_name', 'selling_price', 'quantity'])
                 ->limit(10)
                 ->get()
                 ->map(fn($f) => [
@@ -77,6 +83,7 @@ class POSController extends Controller
             $lenses = Lens::where('business_id', Auth::user()->business_id)
                 ->where('name', 'like', "%{$query}%")
                 ->where('is_active', true)
+                ->select(['id', 'name', 'selling_price', 'type', 'index'])
                 ->limit(10)
                 ->get()
                 ->map(fn($l) => [
@@ -97,6 +104,7 @@ class POSController extends Controller
                     $q->where('brand', 'like', "%{$query}%")
                       ->orWhere('product_line', 'like', "%{$query}%");
                 })
+                ->select(['id', 'brand', 'product_line', 'selling_price_per_box', 'boxes_in_stock', 'power', 'base_curve'])
                 ->limit(10)
                 ->get()
                 ->map(fn($c) => [
@@ -111,6 +119,38 @@ class POSController extends Controller
         }
 
         return response()->json($results);
+    }
+
+    /**
+     * Get prescriptions for a specific customer.
+     */
+    public function getCustomerPrescriptions(Customer $customer)
+    {
+        $this->authorize('view', $customer);
+
+        $spectacleRx = $customer->spectaclePrescriptions()
+            ->latest()
+            ->get()
+            ->map(fn($rx) => [
+                'id' => $rx->id,
+                'type' => 'spectacle',
+                'date' => $rx->created_at->format('Y-m-d'),
+                'doctor' => $rx->prescribed_by_name ?? 'Internal',
+                'notes' => $rx->notes,
+            ]);
+
+        $contactLensRx = $customer->contactLensPrescriptions()
+            ->latest()
+            ->get()
+            ->map(fn($rx) => [
+                'id' => $rx->id,
+                'type' => 'contact_lens',
+                'date' => $rx->created_at->format('Y-m-d'),
+                'doctor' => $rx->prescribed_by_name ?? 'Internal',
+                'notes' => $rx->notes,
+            ]);
+
+        return response()->json(array_merge($spectacleRx->toArray(), $contactLensRx->toArray()));
     }
 
     /**

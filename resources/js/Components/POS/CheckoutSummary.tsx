@@ -1,0 +1,123 @@
+import React from "react";
+import { Tag, Banknote, CreditCard } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { usePage } from "@inertiajs/react";
+
+interface CheckoutSummaryProps {
+    subtotal: number;
+    totalDiscount: number;
+    total: number;
+    paymentMethod: string;
+    setPaymentMethod: (method: string) => void;
+    depositAmount: number;
+    setDepositAmount: (amount: number) => void;
+    onCheckout: () => void;
+    disabled: boolean;
+}
+
+const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
+    subtotal,
+    totalDiscount,
+    total,
+    paymentMethod,
+    setPaymentMethod,
+    depositAmount,
+    setDepositAmount,
+    onCheckout,
+    disabled,
+}) => {
+    const { t, i18n } = useTranslation();
+    const { business } = usePage().props as any;
+
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat(
+            i18n.language === "ar" ? "ar-SA" : "en-US",
+            {
+                style: "currency",
+                currency: business?.currency_code || "USD",
+            }
+        ).format(amount);
+    };
+
+    return (
+        <div className="p-4 bg-bg-base border-t border-border-default space-y-4">
+            <div className="space-y-2">
+                <div className="flex justify-between text-sm text-text-muted">
+                    <span>{t("POS.summary.subtotal")}</span>
+                    <span>{formatCurrency(subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-sm text-error">
+                    <div className="flex items-center gap-1">
+                        <Tag className="w-4 h-4" />
+                        <span>{t("POS.summary.discount")}</span>
+                    </div>
+                    <span>-{formatCurrency(totalDiscount)}</span>
+                </div>
+                <div className="flex justify-between text-xl font-black text-text-default pt-2 border-t border-border-subtle">
+                    <span>{t("POS.summary.total")}</span>
+                    <span>{formatCurrency(total)}</span>
+                </div>
+            </div>
+
+            <div className="space-y-3 pt-2">
+                <div className="grid grid-cols-2 gap-2">
+                    <button
+                        onClick={() => setPaymentMethod("cash")}
+                        className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
+                            paymentMethod === "cash"
+                                ? "bg-success-subtle border-success text-success-strong"
+                                : "bg-bg-base border-border-default text-text-muted hover:bg-bg-subtle"
+                        }`}
+                    >
+                        <Banknote className="w-4 h-4" />
+                        {t("POS.summary.payment_cash")}
+                    </button>
+                    <button
+                        onClick={() => setPaymentMethod("card")}
+                        className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
+                            paymentMethod === "card"
+                                ? "bg-primary-subtle border-primary-default text-primary-strong"
+                                : "bg-bg-base border-border-default text-text-muted hover:bg-bg-subtle"
+                        }`}
+                    >
+                        <CreditCard className="w-4 h-4" />
+                        {t("POS.summary.payment_card")}
+                    </button>
+                </div>
+
+                <div>
+                    <label className="block text-xs font-bold text-text-muted uppercase mb-1">
+                        {t("POS.summary.deposit_label")}
+                    </label>
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                            {business?.currency_symbol || "$"}
+                        </span>
+                        <input
+                            type="number"
+                            className="w-full pl-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="0.00"
+                            value={depositAmount}
+                            onChange={(e) =>
+                                setDepositAmount(Number(e.target.value))
+                            }
+                        />
+                    </div>
+                </div>
+
+                <button
+                    onClick={onCheckout}
+                    disabled={disabled}
+                    className="w-full py-4 bg-primary-600 text-white rounded-xl font-bold text-lg hover:bg-primary-700 transition-colors shadow-lg shadow-primary-200 disabled:opacity-50 disabled:shadow-none flex items-center justify-center gap-2"
+                >
+                    {t("POS.summary.checkout_button")}
+                    <span className="px-2 py-0.5 bg-primary-500 rounded text-sm">
+                        {formatCurrency(total)}
+                    </span>
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default CheckoutSummary;

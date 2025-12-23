@@ -95,6 +95,11 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function jobCard(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(JobCard::class);
+    }
+
     public function prescription(): MorphTo
     {
         return $this->morphTo();

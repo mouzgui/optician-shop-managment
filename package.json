@@ -22,8 +22,11 @@
         "@headlessui/react": "^2.2.9",
         "@inertiajs/react": "^2.3.4",
         "i18next": "^25.7.3",
+        "lucide-react": "^0.562.0",
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
-        "react-i18next": "^16.5.0"
+        "react-hot-toast": "^2.6.0",
+        "react-i18next": "^16.5.0",
+        "recharts": "^3.6.0"
     }
 }

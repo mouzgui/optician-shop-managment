@@ -18,16 +18,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 <input
                     ref={ref}
                     className={`
-                        block w-full rounded-lg border border-border-subtle bg-bg-muted text-text-primary 
-                        placeholder-text-muted transition-colors
-                        focus:border-primary-500 focus:ring-1 focus:ring-primary-500
-                        disabled:opacity-50 disabled:bg-bg-subtle
-                        ${error ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""}
+                        block w-full rounded-lg border border-input-border bg-input-bg text-input-text 
+                        placeholder-input-placeholder transition-colors
+                        focus:border-input-border-focus focus:ring-1 focus:ring-input-border-focus
+                        disabled:opacity-50 disabled:bg-bg-muted
+                        ${error ? "border-status-error-border focus:border-status-error-border focus:ring-status-error-border" : ""}
                         ${className}
                     `}
                     {...props}
                 />
-                {error && <p className="text-xs text-red-500">{error}</p>}
+                {error && <p className="text-xs text-status-error-text">{error}</p>}
                 {helperText && !error && <p className="text-xs text-text-muted">{helperText}</p>}
             </div>
         );

@@ -14,10 +14,10 @@ export function Alert({
     className = "",
 }: AlertProps) {
     const variants = {
-        success: "bg-green-50 text-green-800 border-green-200",
-        warning: "bg-yellow-50 text-yellow-800 border-yellow-200",
-        danger: "bg-red-50 text-red-800 border-red-200",
-        info: "bg-blue-50 text-blue-800 border-blue-200",
+        success: "bg-status-success-bg text-status-success-text border-status-success-border",
+        warning: "bg-status-warning-bg text-status-warning-text border-status-warning-border",
+        danger: "bg-status-error-bg text-status-error-text border-status-error-border",
+        info: "bg-status-info-bg text-status-info-text border-status-info-border",
     };
 
     return (

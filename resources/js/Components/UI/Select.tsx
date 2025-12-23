@@ -23,21 +23,21 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 <select
                     ref={ref}
                     className={`
-                        block w-full rounded-lg border border-border-subtle bg-bg-muted text-text-primary 
-                        transition-colors focus:border-primary-500 focus:ring-1 focus:ring-primary-500
-                        disabled:opacity-50 disabled:bg-bg-subtle
-                        ${error ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""}
+                        block w-full rounded-lg border border-input-border bg-input-bg text-input-text 
+                        transition-colors focus:border-input-border-focus focus:ring-1 focus:ring-input-border-focus
+                        disabled:opacity-50 disabled:bg-bg-muted
+                        ${error ? "border-status-error-border focus:border-status-error-border focus:ring-status-error-border" : ""}
                         ${className}
                     `}
                     {...props}
                 >
                     {options.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option key={option.value} value={option.value} className="bg-bg-base">
                             {option.label}
                         </option>
                     ))}
                 </select>
-                {error && <p className="text-xs text-red-500">{error}</p>}
+                {error && <p className="text-xs text-status-error-text">{error}</p>}
             </div>
         );
     }
