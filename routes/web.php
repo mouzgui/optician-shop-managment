@@ -72,5 +72,15 @@ Route::middleware(['auth', 'business'])
                 Route::resource('lenses', Sales\LensController::class);
                 Route::resource('contact-lenses', Sales\ContactLensController::class);
             });
+
+            // POS & Invoicing
+            Route::prefix('sales')->name('sales.')->group(function () {
+                Route::get('pos', [Sales\POSController::class, 'index'])->name('pos.index');
+                Route::get('pos/search-products', [Sales\POSController::class, 'searchProducts'])->name('pos.search-products');
+                Route::post('pos/checkout', [Sales\POSController::class, 'store'])->name('pos.checkout');
+
+                // Invoices (Resource for management)
+                Route::resource('invoices', Sales\InvoiceController::class);
+            });
         });
     });
