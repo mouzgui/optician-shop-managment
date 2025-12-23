@@ -18,6 +18,7 @@ import {
     BeakerIcon,
 } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
+import RxDisplay from "@/Components/Clinical/RxDisplay";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -370,124 +371,26 @@ export default function Show({ customer }: Props) {
                                                     {t("customers.add_rx")}
                                                 </Link>
                                             </div>
+
                                             {customer.spectacle_prescriptions
                                                 .length > 0 ? (
-                                                <div className="space-y-4">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                     {customer.spectacle_prescriptions.map(
                                                         (rx) => (
-                                                            <div
+                                                            <RxDisplay
                                                                 key={rx.id}
-                                                                className="border dark:border-gray-700 rounded-lg p-4"
-                                                            >
-                                                                <div className="flex justify-between items-start mb-4">
-                                                                    <div>
-                                                                        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                                                                            {new Date(
-                                                                                rx.prescribed_at
-                                                                            ).toLocaleDateString()}
-                                                                        </p>
-                                                                        <p className="text-xs text-gray-500">
-                                                                            {t(
-                                                                                "customers.prescribed_by"
-                                                                            )}
-                                                                            :{" "}
-                                                                            {
-                                                                                rx
-                                                                                    .prescribed_by
-                                                                                    .name
-                                                                            }
-                                                                        </p>
-                                                                    </div>
-                                                                    <span
-                                                                        className={classNames(
-                                                                            "px-2 py-1 text-xs font-semibold rounded-full",
-                                                                            new Date(
-                                                                                rx.expires_at
-                                                                            ) <
-                                                                                new Date()
-                                                                                ? "bg-red-100 text-red-800"
-                                                                                : "bg-green-100 text-green-800"
-                                                                        )}
-                                                                    >
-                                                                        {new Date(
-                                                                            rx.expires_at
-                                                                        ) <
-                                                                        new Date()
-                                                                            ? t(
-                                                                                  "common.expired"
-                                                                              )
-                                                                            : t(
-                                                                                  "common.active"
-                                                                              )}
-                                                                    </span>
-                                                                </div>
-                                                                <div className="grid grid-cols-2 gap-4">
-                                                                    <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded">
-                                                                        <p className="text-xs font-bold mb-2">
-                                                                            OD
-                                                                            (Right)
-                                                                        </p>
-                                                                        <div className="grid grid-cols-2 text-xs gap-y-1">
-                                                                            <span>
-                                                                                SPH:{" "}
-                                                                                {
-                                                                                    rx.od_sphere
-                                                                                }
-                                                                            </span>
-                                                                            <span>
-                                                                                CYL:{" "}
-                                                                                {rx.od_cylinder ||
-                                                                                    "0.00"}
-                                                                            </span>
-                                                                            <span>
-                                                                                AXIS:{" "}
-                                                                                {rx.od_axis ||
-                                                                                    "-"}
-                                                                            </span>
-                                                                            <span>
-                                                                                ADD:{" "}
-                                                                                {rx.od_add ||
-                                                                                    "0.00"}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded">
-                                                                        <p className="text-xs font-bold mb-2">
-                                                                            OS
-                                                                            (Left)
-                                                                        </p>
-                                                                        <div className="grid grid-cols-2 text-xs gap-y-1">
-                                                                            <span>
-                                                                                SPH:{" "}
-                                                                                {
-                                                                                    rx.os_sphere
-                                                                                }
-                                                                            </span>
-                                                                            <span>
-                                                                                CYL:{" "}
-                                                                                {rx.os_cylinder ||
-                                                                                    "0.00"}
-                                                                            </span>
-                                                                            <span>
-                                                                                AXIS:{" "}
-                                                                                {rx.os_axis ||
-                                                                                    "-"}
-                                                                            </span>
-                                                                            <span>
-                                                                                ADD:{" "}
-                                                                                {rx.os_add ||
-                                                                                    "0.00"}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                                rx={rx}
+                                                                type="spectacle"
+                                                            />
                                                         )
                                                     )}
                                                 </div>
                                             ) : (
-                                                <div className="text-center py-10 text-gray-500">
-                                                    {t("customers.no_rx")}
+                                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                                    <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                                    <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                        {t("customers.no_rx")}
+                                                    </h3>
                                                 </div>
                                             )}
                                         </Tab.Panel>
@@ -514,23 +417,26 @@ export default function Show({ customer }: Props) {
                                                     {t("customers.add_rx")}
                                                 </Link>
                                             </div>
+
                                             {customer.contact_lens_prescriptions
                                                 .length > 0 ? (
-                                                <div className="space-y-4">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                     {customer.contact_lens_prescriptions.map(
                                                         (rx) => (
-                                                            <div
+                                                            <RxDisplay
                                                                 key={rx.id}
-                                                                className="border dark:border-gray-700 rounded-lg p-4"
-                                                            >
-                                                                {/* Render CL Rx details similar to spectacle rx */}
-                                                            </div>
+                                                                rx={rx}
+                                                                type="contact_lens"
+                                                            />
                                                         )
                                                     )}
                                                 </div>
                                             ) : (
-                                                <div className="text-center py-10 text-gray-500">
-                                                    {t("customers.no_rx")}
+                                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                                    <BeakerIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                                    <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                        {t("customers.no_rx")}
+                                                    </h3>
                                                 </div>
                                             )}
                                         </Tab.Panel>
@@ -543,20 +449,100 @@ export default function Show({ customer }: Props) {
                                                         "customers.tabs.invoices"
                                                     )}
                                                 </h4>
-                                                <button className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700">
+                                                <Link
+                                                    href={route(
+                                                        "business.pos.index",
+                                                        {
+                                                            customer_id:
+                                                                customer.id,
+                                                        }
+                                                    )}
+                                                    className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
+                                                >
                                                     <PlusIcon className="w-4 h-4 mr-1" />
                                                     {t(
                                                         "customers.create_invoice"
                                                     )}
-                                                </button>
+                                                </Link>
                                             </div>
+
                                             {customer.invoices.length > 0 ? (
                                                 <div className="overflow-x-auto">
-                                                    {/* Render Invoice table */}
+                                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                        <thead className="bg-gray-50 dark:bg-gray-900">
+                                                            <tr>
+                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    Invoice #
+                                                                </th>
+                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    Date
+                                                                </th>
+                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    Total
+                                                                </th>
+                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    Status
+                                                                </th>
+                                                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    Actions
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                                            {customer.invoices.map(
+                                                                (invoice) => (
+                                                                    <tr
+                                                                        key={
+                                                                            invoice.id
+                                                                        }
+                                                                    >
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                                            {
+                                                                                invoice.invoice_number
+                                                                            }
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                                            {new Date(
+                                                                                invoice.created_at
+                                                                            ).toLocaleDateString()}
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-mono">
+                                                                            {
+                                                                                invoice.total
+                                                                            }
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                                                {
+                                                                                    invoice.status
+                                                                                }
+                                                                            </span>
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                                            <Link
+                                                                                href={route(
+                                                                                    "business.invoices.show",
+                                                                                    invoice.id
+                                                                                )}
+                                                                                className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400"
+                                                                            >
+                                                                                View
+                                                                            </Link>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             ) : (
-                                                <div className="text-center py-10 text-gray-500">
-                                                    {t("customers.no_invoices")}
+                                                <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                                    <IdentificationIcon className="mx-auto h-12 w-12 text-gray-400" />
+                                                    <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                        {t(
+                                                            "customers.no_invoices"
+                                                        )}
+                                                    </h3>
                                                 </div>
                                             )}
                                         </Tab.Panel>

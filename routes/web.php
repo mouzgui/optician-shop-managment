@@ -52,6 +52,8 @@ Route::middleware(['auth', 'business'])
         // Sales & Clinical (Staff, Optometrist, Owner)
         Route::middleware(['role:business_owner,branch_manager,staff,optometrist'])->group(function () {
             // Customer Management
+            Route::get('customers/search', [Sales\CustomerController::class, 'search'])
+                ->name('customers.search');
             Route::resource('customers', Sales\CustomerController::class);
 
             // Clinical - Spectacle Prescriptions
@@ -61,5 +63,14 @@ Route::middleware(['auth', 'business'])
             // Clinical - Contact Lens Prescriptions
             Route::resource('contact-lens-rx', Clinical\ContactLensRxController::class)
                 ->except(['index', 'edit']);
+
+            // Inventory - Frames
+            Route::prefix('inventory')->name('inventory.')->group(function () {
+                Route::get('frames/barcode/{barcode}', [Sales\FrameController::class, 'lookupBarcode'])
+                    ->name('frames.barcode-lookup');
+                Route::resource('frames', Sales\FrameController::class);
+                Route::resource('lenses', Sales\LensController::class);
+                Route::resource('contact-lenses', Sales\ContactLensController::class);
+            });
         });
     });

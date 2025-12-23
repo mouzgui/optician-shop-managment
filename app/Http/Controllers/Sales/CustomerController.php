@@ -32,14 +32,28 @@ class CustomerController extends Controller
     }
 
     /**
+     * Search customers for selection.
+     */
+    public function search(Request $request)
+    {
+        $query = Customer::query();
+
+        if ($request->filled('query')) {
+            $query->search($request->query('query'));
+        }
+
+        return response()->json(
+            $query->limit(10)->get(['id', 'first_name', 'last_name', 'phone'])
+        );
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         return Inertia::render('Sales/Customers/Create', [
             'branches' => Branch::active()->get(['id', 'name']),
-            'potentialFamilyHeads' => Customer::whereNull('family_head_id')
-                ->get(['id', 'first_name', 'last_name', 'phone']),
         ]);
     }
 
@@ -85,9 +99,7 @@ class CustomerController extends Controller
         return Inertia::render('Sales/Customers/Edit', [
             'customer' => $customer,
             'branches' => Branch::active()->get(['id', 'name']),
-            'potentialFamilyHeads' => Customer::whereNull('family_head_id')
-                ->where('id', '!=', $customer->id)
-                ->get(['id', 'first_name', 'last_name', 'phone']),
+            'familyHead' => $customer->familyHead ? $customer->familyHead->only(['id', 'first_name', 'last_name', 'phone']) : null,
         ]);
     }
 

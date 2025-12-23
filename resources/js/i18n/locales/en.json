@@ -42,11 +42,17 @@
         "save": "Save",
         "cancel": "Cancel",
         "create": "Create",
+        "select": "Select...",
+        "remove": "Remove",
+        "loading": "Loading...",
         "view": "View",
+        "print": "Print",
         "search": "Search...",
+        "searching": "Searching",
         "loading": "Loading...",
         "noResults": "No results found",
         "confirm": "Confirm",
+        "confirm_delete": "Are you sure you want to delete this item?",
         "back": "Back",
         "next": "Next",
         "close": "Close",
@@ -55,6 +61,12 @@
         "never": "Never",
         "active": "Active",
         "expired": "Expired",
+        "gender": {
+            "male": "Male",
+            "female": "Female",
+            "unisex": "Unisex",
+            "kids": "Kids"
+        },
         "showing_results": "Showing {{from}} to {{to}} of {{total}} results"
     },
     "customers": {
@@ -62,6 +74,7 @@
         "add_new": "Add Customer",
         "search_placeholder": "Search by name or phone...",
         "no_results": "No customers found.",
+        "no_results_found": "No results found.",
         "profile_details": "Profile Details",
         "add_rx": "Add Prescription",
         "rx_expired": "Expired",
@@ -75,6 +88,11 @@
         "create_invoice": "Create Invoice",
         "no_invoices": "No invoices found.",
         "select_branch": "Select Branch",
+        "search_family_head": "Search for family head...",
+        "search_placeholder": "Search by name or phone...",
+        "no_results_found": "No customers found matching your search.",
+        "add_new": "Add New Customer",
+        "selected_head": "Selected Family Head",
         "none": "None",
         "edit_customer": "Edit Customer",
         "fields": {
@@ -96,6 +114,157 @@
             "spectacle_rx": "Spectacle Rx",
             "contact_lens_rx": "Contact Lens Rx",
             "invoices": "Invoices"
+        }
+    },
+    "clinical": {
+        "rx": {
+            "sphere": "Sphere",
+            "cylinder": "Cylinder",
+            "axis": "Axis",
+            "add": "Add",
+            "od": "OD (Right Eye)",
+            "os": "OS (Left Eye)",
+            "pd_type": "PD Type",
+            "pd_single": "Single PD",
+            "pd_dual": "Dual PD",
+            "pd_far": "PD Far",
+            "pd_near": "PD Near",
+            "additional_details": "Additional Details",
+            "bc": "Base Curve",
+            "dia": "Diameter",
+            "pd": "P.D.",
+            "replacement": "Replacement",
+            "replacement_schedule": {
+                "label": "Replacement Schedule",
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "bi_weekly": "Bi-Weekly",
+                "monthly": "Monthly",
+                "yearly": "Yearly"
+            },
+            "types": {
+                "spherical": "Spherical",
+                "toric": "Toric",
+                "multifocal": "Multifocal",
+                "color": "Color"
+            },
+            "brand": "Brand",
+            "product": "Product",
+            "expires": "Expires",
+            "prescribed_by": "Prescribed by",
+            "expired": "Expired",
+            "expiring_soon": "Expiring Soon",
+            "copy_od_to_os": "Copy OD to OS",
+            "new_cl_rx": "New Contact Lens Prescription",
+            "new_cl_rx_for": "New Contact Lens Prescription for {{name}}",
+            "new_spec_rx": "New Spectacle Prescription",
+            "new_spec_rx_for": "New Spectacle Prescription for {{name}}"
+        }
+    },
+    "inventory": {
+        "frames": {
+            "title": "Frames Inventory",
+            "add_new": "Add New Frame",
+            "edit_frame": "Edit Frame",
+            "search_placeholder": "Search by SKU, Brand, Model or Barcode...",
+            "no_results": "No frames found in inventory.",
+            "sections": {
+                "basic_info": "Basic Information",
+                "specs": "Specifications",
+                "pricing_stock": "Pricing & Stock"
+            },
+            "fields": {
+                "sku": "SKU",
+                "barcode": "Barcode",
+                "brand": "Brand",
+                "model": "Model",
+                "brand_model": "Brand / Model",
+                "color_code": "Color Code",
+                "color_name": "Color Name",
+                "size_eye": "Eye Size (mm)",
+                "size_bridge": "Bridge Size (mm)",
+                "size_temple": "Temple Size (mm)",
+                "category": "Category",
+                "material": "Material",
+                "gender": "Gender",
+                "cost_price": "Cost Price",
+                "selling_price": "Selling Price",
+                "quantity": "Quantity",
+                "low_stock_threshold": "Low Stock Alert",
+                "is_active": "Is Active"
+            },
+            "categories": {
+                "optical": "Optical",
+                "sunglasses": "Sunglasses",
+                "sports": "Sports",
+                "kids": "Kids"
+            },
+            "filters": {
+                "low_stock": "Low Stock Only"
+            }
+        },
+        "lenses": {
+            "title": "Lens Catalog",
+            "add_new": "Add New Lens",
+            "edit_lens": "Edit Lens",
+            "search_placeholder": "Search by Brand, Model or Type...",
+            "no_results": "No lenses found in catalog.",
+            "stock": "Stock",
+            "custom_order": "Custom Order",
+            "sections": {
+                "basic_info": "Basic Information",
+                "specs_pricing": "Specs & Pricing"
+            },
+            "fields": {
+                "brand": "Brand",
+                "name": "Lens Name",
+                "brand_name": "Brand / Name",
+                "type": "Type",
+                "material": "Material",
+                "index": "Index",
+                "coatings": "Coatings",
+                "tint": "Tint",
+                "cost_price": "Cost Price",
+                "selling_price": "Selling Price",
+                "lab_supplier": "Lab Supplier",
+                "lead_time_days": "Lead Time (Days)",
+                "is_active": "Is Active"
+            },
+            "types": {
+                "single_vision": "Single Vision",
+                "bifocal": "Bifocal",
+                "progressive": "Progressive",
+                "office": "Office",
+                "sports": "Sports"
+            }
+        },
+        "contact_lenses": {
+            "title": "Contact Lens Inventory",
+            "add_new": "Add New Contact Lens",
+            "edit_cl": "Edit Contact Lens",
+            "search_placeholder": "Search by Brand or Product Line...",
+            "no_results": "No contact lenses found in inventory.",
+            "stock": "Stock",
+            "boxes": "Boxes",
+            "custom_order": "Custom Order",
+            "sections": {
+                "product_info": "Product Information",
+                "rx_pricing": "RX Parameters & Pricing"
+            },
+            "fields": {
+                "brand": "Brand",
+                "product_line": "Product Line",
+                "brand_line": "Brand / Line",
+                "type": "Type",
+                "replacement_schedule": "Replacement Schedule",
+                "box_quantity": "Qty per Box",
+                "boxes_in_stock": "Boxes in Stock",
+                "cost_price_per_box": "Cost / Box",
+                "selling_price_per_box": "Price / Box",
+                "expiry_date": "Expiry Date",
+                "expiry": "Expiry",
+                "is_active": "Is Active"
+            }
         }
     },
     "auth": {
