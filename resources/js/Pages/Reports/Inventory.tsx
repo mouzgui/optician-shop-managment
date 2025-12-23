@@ -5,8 +5,9 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
-import { ChevronLeft, Box, Package } from "lucide-react";
+import { ChevronLeft, Box, Package, FileText, Download } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Frame {
     id: number;
@@ -34,6 +35,32 @@ interface Props {
 export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
     const { t } = useTranslation();
 
+    const handleExportCSV = () => {
+        // Frames CSV
+        const frameHeaders = [
+            t("reports.inventory.fields.frame"),
+            t("inventory.frames.fields.sku"),
+            t("reports.inventory.fields.stock"),
+        ];
+        const frameData = lowStockFrames.map((f) => [
+            `${f.brand} ${f.model}`,
+            f.sku,
+            f.quantity,
+        ]);
+        exportToCSV(frameData, "low-stock-frames", frameHeaders);
+
+        // CL CSV
+        const clHeaders = [
+            t("reports.inventory.fields.contact_lens"),
+            t("reports.inventory.fields.boxes"),
+        ];
+        const clData = lowStockCL.map((cl) => [
+            `${cl.brand} ${cl.product_line}`,
+            cl.boxes_in_stock,
+        ]);
+        exportToCSV(clData, "low-stock-contact-lenses", clHeaders);
+    };
+
     const frameColumns = [
         {
             header: t("reports.inventory.fields.frame"),
@@ -59,7 +86,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
         },
         {
             header: t("common.actions"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: Frame) => (
                 <Link href={route("business.inventory.frames.edit", item.id)}>
                     <Button
@@ -101,7 +128,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
         },
         {
             header: t("common.actions"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: ContactLens) => (
                 <Link
                     href={route(
@@ -132,7 +159,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
                             href={route("business.reports.index")}
                             className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <h1 className="text-2xl font-bold text-text-primary">
@@ -142,6 +169,20 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
                                 {t("reports.inventory.subtitle")}
                             </p>
                         </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => window.print()}
+                        >
+                            <Download className="w-4 h-4 me-2" />
+                            {t("common.export_pdf")}
+                        </Button>
                     </div>
                 </div>
 

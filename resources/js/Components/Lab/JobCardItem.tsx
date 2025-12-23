@@ -52,14 +52,14 @@ export function JobCardItem({ job }: Props) {
 
                 <div className="mt-4 pt-4 border-t border-border-main flex items-center justify-between text-sm">
                     <div className="flex items-center text-text-muted">
-                        <Clock className="w-4 h-4 mr-1.5" />
+                        <Clock className="w-4 h-4 me-1.5" />
                         <span>
                             {formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}
                         </span>
                     </div>
                     <div className="flex items-center text-brand-main font-medium">
                         View Details
-                        <ChevronRight className="w-4 h-4 ml-1" />
+                        <ChevronRight className="w-4 h-4 ms-1" />
                     </div>
                 </div>
             </div>

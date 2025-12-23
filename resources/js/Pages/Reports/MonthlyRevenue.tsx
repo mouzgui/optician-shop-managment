@@ -4,8 +4,10 @@ import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { BarChart } from "@/Components/Charts/BarChart";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
-import { ChevronLeft, Calendar } from "lucide-react";
+import { ChevronLeft, Calendar, FileText, Download } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/Components/UI/Button";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Props {
     data: { month: string; total: number }[];
@@ -36,6 +38,17 @@ export default function MonthlyRevenue({ data, filters }: Props) {
 
     const totalYearly = data.reduce((sum, item) => sum + item.total, 0);
 
+    const handleExportCSV = () => {
+        const headers = [
+            t("reports.revenue.fields.month"),
+            t("reports.revenue.fields.total_revenue"),
+        ];
+
+        const csvData = data.map((item) => [item.month, item.total]);
+
+        exportToCSV(csvData, `monthly-revenue-${filters.year}`, headers);
+    };
+
     const columns = [
         {
             header: t("reports.revenue.fields.month"),
@@ -47,7 +60,7 @@ export default function MonthlyRevenue({ data, filters }: Props) {
         },
         {
             header: t("reports.revenue.fields.total_revenue"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="font-bold text-text-primary">
                     {formatCurrency(item.total)}
@@ -71,7 +84,7 @@ export default function MonthlyRevenue({ data, filters }: Props) {
                             href={route("business.reports.index")}
                             className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <h1 className="text-2xl font-bold text-text-primary">
@@ -98,6 +111,17 @@ export default function MonthlyRevenue({ data, filters }: Props) {
                                 </option>
                             ))}
                         </select>
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => window.print()}
+                        >
+                            <Download className="w-4 h-4 me-2" />
+                            {t("common.export_pdf")}
+                        </Button>
                     </div>
                 </div>
 
@@ -145,7 +169,7 @@ export default function MonthlyRevenue({ data, filters }: Props) {
                     columns={columns}
                     data={data}
                     keyField="month"
-                    emptyMessage={t("common.no_data")}
+                    emptyMessage={t("reports.revenue.no_payments")}
                 />
             </div>
         </AuthenticatedLayout>

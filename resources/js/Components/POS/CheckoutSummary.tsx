@@ -90,12 +90,12 @@ const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
                         {t("POS.summary.deposit_label")}
                     </label>
                     <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                        <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted">
                             {business?.currency_symbol || "$"}
                         </span>
                         <input
                             type="number"
-                            className="w-full pl-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500"
+                            className="w-full ps-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500"
                             placeholder="0.00"
                             value={depositAmount}
                             onChange={(e) =>

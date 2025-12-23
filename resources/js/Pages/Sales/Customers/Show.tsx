@@ -100,23 +100,23 @@ export default function Show({ customer }: Props) {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center gap-4">
                         <Link
                             href={route("business.customers.index")}
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
-                            <ArrowLeftIcon className="w-6 h-6" />
+                            <ArrowLeftIcon className="w-6 h-6 icon-flip" />
                         </Link>
                         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                             {customer.full_name}
                         </h2>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex gap-2">
                         <Link
                             href={route("business.customers.edit", customer.id)}
                             className="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150"
                         >
-                            <PencilSquareIcon className="w-4 h-4 mr-2" />
+                            <PencilSquareIcon className="w-4 h-4 me-2" />
                             {t("common.edit")}
                         </Link>
                     </div>
@@ -134,7 +134,7 @@ export default function Show({ customer }: Props) {
                                 <div className="p-3 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400">
                                     <PhoneIcon className="h-6 w-6" />
                                 </div>
-                                <div className="ml-4">
+                                <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {t("customers.fields.phone")}
                                     </p>
@@ -149,7 +149,7 @@ export default function Show({ customer }: Props) {
                                 <div className="p-3 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400">
                                     <CalendarIcon className="h-6 w-6" />
                                 </div>
-                                <div className="ml-4">
+                                <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {t("customers.fields.last_visit")}
                                     </p>
@@ -174,7 +174,7 @@ export default function Show({ customer }: Props) {
                                 >
                                     <DocumentTextIcon className="h-6 w-6" />
                                 </div>
-                                <div className="ml-4">
+                                <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {t("customers.fields.rx_status")}
                                     </p>
@@ -202,47 +202,32 @@ export default function Show({ customer }: Props) {
                                     {t("customers.profile_details")}
                                 </h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-start">
-                                        <EnvelopeIcon className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase">
-                                                {t("customers.fields.email")}
-                                            </p>
-                                            <p className="text-sm text-gray-900 dark:text-gray-100">
-                                                {customer.email || "-"}
-                                            </p>
+                                    {customer.email && (
+                                        <div className="flex items-start text-sm">
+                                            <EnvelopeIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
+                                            <span>{customer.email}</span>
                                         </div>
+                                    )}
+                                    <div className="flex items-start text-sm">
+                                        <CakeIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
+                                        <span>
+                                            {customer.date_of_birth
+                                                ? new Date(
+                                                      customer.date_of_birth
+                                                  ).toLocaleDateString()
+                                                : t("customers.show.no_dob")}
+                                        </span>
                                     </div>
-                                    <div className="flex items-start">
-                                        <CakeIcon className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase">
-                                                {t(
-                                                    "customers.fields.date_of_birth"
-                                                )}
-                                            </p>
-                                            <p className="text-sm text-gray-900 dark:text-gray-100">
-                                                {customer.date_of_birth
-                                                    ? new Date(
-                                                          customer.date_of_birth
-                                                      ).toLocaleDateString()
-                                                    : "-"}
-                                            </p>
-                                        </div>
+
+                                    <div className="flex items-start text-sm">
+                                        <MapPinIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
+                                        <span>
+                                            {customer.address ||
+                                                t("customers.show.no_address")}
+                                        </span>
                                     </div>
-                                    <div className="flex items-start">
-                                        <MapPinIcon className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
-                                        <div>
-                                            <p className="text-xs text-gray-500 uppercase">
-                                                {t("customers.fields.address")}
-                                            </p>
-                                            <p className="text-sm text-gray-900 dark:text-gray-100">
-                                                {customer.address || "-"}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start">
-                                        <ClipboardDocumentListIcon className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
+                                    <div className="flex items-start text-sm">
+                                        <ClipboardDocumentListIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
                                         <div>
                                             <p className="text-xs text-gray-500 uppercase">
                                                 {t("customers.fields.notes")}
@@ -313,7 +298,7 @@ export default function Show({ customer }: Props) {
                         <div className="lg:col-span-3">
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                 <Tab.Group>
-                                    <Tab.List className="flex p-1 space-x-1 bg-gray-100 dark:bg-gray-700">
+                                    <Tab.List className="flex p-1 gap-1 bg-gray-100 dark:bg-gray-700">
                                         {tabs.map((tab) => (
                                             <Tab
                                                 key={tab.name}
@@ -327,7 +312,7 @@ export default function Show({ customer }: Props) {
                                                     )
                                                 }
                                             >
-                                                <tab.icon className="w-4 h-4 mr-2" />
+                                                <tab.icon className="w-4 h-4 me-2" />
                                                 {tab.name}
                                             </Tab>
                                         ))}
@@ -367,7 +352,7 @@ export default function Show({ customer }: Props) {
                                                     )}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
-                                                    <PlusIcon className="w-4 h-4 mr-1" />
+                                                    <PlusIcon className="w-4 h-4 me-1" />
                                                     {t("customers.add_rx")}
                                                 </Link>
                                             </div>
@@ -413,7 +398,7 @@ export default function Show({ customer }: Props) {
                                                     )}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
-                                                    <PlusIcon className="w-4 h-4 mr-1" />
+                                                    <PlusIcon className="w-4 h-4 me-1" />
                                                     {t("customers.add_rx")}
                                                 </Link>
                                             </div>
@@ -459,7 +444,7 @@ export default function Show({ customer }: Props) {
                                                     )}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
-                                                    <PlusIcon className="w-4 h-4 mr-1" />
+                                                    <PlusIcon className="w-4 h-4 me-1" />
                                                     {t(
                                                         "customers.create_invoice"
                                                     )}
@@ -471,20 +456,30 @@ export default function Show({ customer }: Props) {
                                                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                                         <thead className="bg-gray-50 dark:bg-gray-900">
                                                             <tr>
-                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    Invoice #
+                                                                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    {t(
+                                                                        "common.date"
+                                                                    )}
                                                                 </th>
-                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    Date
+                                                                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    {t(
+                                                                        "invoices.fields.number"
+                                                                    )}
                                                                 </th>
-                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    Total
+                                                                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    {t(
+                                                                        "invoices.fields.status"
+                                                                    )}
                                                                 </th>
-                                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    Status
+                                                                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    {t(
+                                                                        "invoices.fields.total"
+                                                                    )}
                                                                 </th>
-                                                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    Actions
+                                                                <th className="px-6 py-3 text-end text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                                    {t(
+                                                                        "common.actions"
+                                                                    )}
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -496,29 +491,37 @@ export default function Show({ customer }: Props) {
                                                                             invoice.id
                                                                         }
                                                                     >
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                                            {
-                                                                                invoice.invoice_number
-                                                                            }
-                                                                        </td>
                                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                                                             {new Date(
                                                                                 invoice.created_at
                                                                             ).toLocaleDateString()}
                                                                         </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-mono">
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                                                                             {
-                                                                                invoice.total
+                                                                                invoice.invoice_number
                                                                             }
                                                                         </td>
                                                                         <td className="px-6 py-4 whitespace-nowrap">
-                                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                                            <span
+                                                                                className={classNames(
+                                                                                    "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
+                                                                                    invoice.status ===
+                                                                                        "paid"
+                                                                                        ? "bg-green-100 text-green-800"
+                                                                                        : "bg-yellow-100 text-yellow-800"
+                                                                                )}
+                                                                            >
                                                                                 {
                                                                                     invoice.status
                                                                                 }
                                                                             </span>
                                                                         </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                                            {
+                                                                                invoice.total_amount
+                                                                            }
+                                                                        </td>
+                                                                        <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                                                             <Link
                                                                                 href={route(
                                                                                     "business.invoices.show",

@@ -91,7 +91,9 @@
             "unisex": "Unisex",
             "kids": "Kids"
         },
-        "showing_results": "Showing {{from}} to {{to}} of {{total}} results"
+        "showing_results": "Showing {{from}} to {{to}} of {{total}} results",
+        "export_csv": "Export CSV",
+        "export_pdf": "Export PDF"
     },
     "customers": {
         "title": "Customers",
@@ -436,6 +438,7 @@
         },
         "revenue": {
             "daily_title": "Daily Revenue Report",
+            "collections_for": "Collections for {{date}}",
             "monthly_title": "Monthly Revenue Report",
             "monthly_subtitle": "Sales performance for {{year}}",
             "subtitle": "View and manage daily payments",
@@ -452,7 +455,7 @@
                 "customer": "Customer",
                 "invoice": "Invoice",
                 "method": "Method",
-                "received_by": "Received By",
+                "staff": "Staff",
                 "amount": "Amount"
             }
         },
@@ -477,7 +480,10 @@
                 "patient": "Patient",
                 "expiry_date": "Expiry Date",
                 "doctor": "Doctor",
-                "contact_info": "Contact Info"
+                "contact_info": "Contact Info",
+                "phone": "Phone",
+                "email": "Email",
+                "type": "Type"
             },
             "recall_patient": "Recall Patient",
             "spectacle_alert": "Spectacle Prescriptions",

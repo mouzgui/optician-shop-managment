@@ -60,11 +60,13 @@ export default function Index({ customers, filters }: Props) {
                     <div className="flex-shrink-0 h-10 w-10 bg-interactive-primary/10 rounded-full flex items-center justify-center">
                         <UserIcon className="h-6 w-6 text-interactive-primary" />
                     </div>
-                    <div className="ml-4">
+                    <div className="ms-4">
                         <div className="text-sm font-medium text-text-primary">
                             {item.first_name} {item.last_name}
                         </div>
-                        <div className="text-sm text-text-muted">{item.email}</div>
+                        <div className="text-sm text-text-muted">
+                            {item.email}
+                        </div>
                     </div>
                 </div>
             ),
@@ -73,7 +75,7 @@ export default function Index({ customers, filters }: Props) {
             header: t("customers.fields.phone"),
             accessor: (item: Customer) => (
                 <div className="flex items-center text-sm text-text-primary">
-                    <PhoneIcon className="h-4 w-4 mr-2 text-text-muted" />
+                    <PhoneIcon className="h-4 w-4 me-2 text-text-muted" />
                     {item.phone}
                 </div>
             ),
@@ -90,7 +92,7 @@ export default function Index({ customers, filters }: Props) {
             header: t("customers.fields.last_visit"),
             accessor: (item: Customer) => (
                 <div className="flex items-center text-sm text-text-primary">
-                    <CalendarIcon className="h-4 w-4 mr-2 text-text-muted" />
+                    <CalendarIcon className="h-4 w-4 me-2 text-text-muted" />
                     {item.last_visit_at
                         ? new Date(item.last_visit_at).toLocaleDateString()
                         : t("common.never")}
@@ -100,7 +102,7 @@ export default function Index({ customers, filters }: Props) {
         {
             header: t("common.actions"),
             accessor: (item: Customer) => (
-                <div className="flex justify-end space-x-2">
+                <div className="flex justify-end gap-2">
                     <Link
                         href={route("business.customers.show", item.id)}
                         className="text-interactive-primary hover:text-interactive-hover"
@@ -117,7 +119,7 @@ export default function Index({ customers, filters }: Props) {
                     </Link>
                 </div>
             ),
-            className: "text-right",
+            className: "text-end",
         },
     ];
 
@@ -141,7 +143,7 @@ export default function Index({ customers, filters }: Props) {
 
                 <Card>
                     <div className="mb-6 relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                             <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
                         </div>
                         <input
@@ -149,7 +151,7 @@ export default function Index({ customers, filters }: Props) {
                             defaultValue={filters.search}
                             onChange={(e) => handleSearch(e.target.value)}
                             placeholder={t("customers.search_placeholder")}
-                            className="block w-full pl-10 pr-3 py-2 border border-border-default rounded-md bg-bg-base text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-border-focus focus:border-border-focus sm:text-sm"
+                            className="block w-full ps-10 pe-3 py-2 border border-border-default rounded-md bg-bg-base text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-border-focus focus:border-border-focus sm:text-sm"
                         />
                     </div>
 
@@ -169,7 +171,7 @@ export default function Index({ customers, filters }: Props) {
                                     total: customers.meta.total,
                                 })}
                             </div>
-                            <div className="flex space-x-2">
+                            <div className="flex gap-2">
                                 {customers.links.map((link, index) => (
                                     <Link
                                         key={index}
@@ -179,9 +181,12 @@ export default function Index({ customers, filters }: Props) {
                                                 ? "bg-interactive-primary text-text-inverted"
                                                 : "bg-bg-muted text-text-primary hover:bg-bg-muted/80"
                                         } ${
-                                            !link.url && "opacity-50 cursor-not-allowed"
+                                            !link.url &&
+                                            "opacity-50 cursor-not-allowed"
                                         }`}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
                                     />
                                 ))}
                             </div>

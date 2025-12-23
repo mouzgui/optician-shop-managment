@@ -98,7 +98,7 @@ export default function Settings({ business }: SettingsProps) {
                                     onChange={(e) =>
                                         setData("address", e.target.value)
                                     }
-                                    className="block w-full rounded-lg border border-input-border bg-input-bg text-input-text placeholder-input-placeholder transition-colors focus:border-input-border-focus focus:ring-1 focus:ring-input-border-focus"
+                                    className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                                     rows={3}
                                 />
                                 {errors.address && (
@@ -163,7 +163,7 @@ export default function Settings({ business }: SettingsProps) {
                                                     : null
                                             )
                                         }
-                                        className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-bg-muted file:text-text-primary hover:file:bg-bg-subtle"
+                                        className="block w-full text-sm text-text-secondary file:me-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-bg-muted file:text-text-primary hover:file:bg-bg-subtle"
                                         accept="image/*"
                                     />
                                     {errors.logo && (
@@ -196,7 +196,7 @@ export default function Settings({ business }: SettingsProps) {
                                                     : null
                                             )
                                         }
-                                        className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-bg-muted file:text-text-primary hover:file:bg-bg-subtle"
+                                        className="block w-full text-sm text-text-secondary file:me-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-bg-muted file:text-text-primary hover:file:bg-bg-subtle"
                                         accept="image/png,image/x-icon"
                                     />
                                     {errors.favicon && (
@@ -214,7 +214,7 @@ export default function Settings({ business }: SettingsProps) {
                                             "business.settings.fields.primary_color"
                                         )}
                                     </label>
-                                    <div className="flex items-center space-x-4">
+                                    <div className="flex items-center gap-4">
                                         <input
                                             type="color"
                                             value={data.primary_color}
@@ -224,7 +224,7 @@ export default function Settings({ business }: SettingsProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="h-10 w-20 p-1 rounded border border-input-border bg-input-bg"
+                                            className="h-10 w-20 p-1 rounded border border-border-default bg-bg-base"
                                         />
                                         <Input
                                             value={data.primary_color}
@@ -253,7 +253,7 @@ export default function Settings({ business }: SettingsProps) {
                                                 e.target.value
                                             )
                                         }
-                                        className="block w-full rounded-lg border border-input-border bg-input-bg text-input-text placeholder-input-placeholder transition-colors focus:border-input-border-focus focus:ring-1 focus:ring-input-border-focus"
+                                        className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                                         rows={3}
                                         placeholder={t(
                                             "business.settings.placeholders.footer_text"

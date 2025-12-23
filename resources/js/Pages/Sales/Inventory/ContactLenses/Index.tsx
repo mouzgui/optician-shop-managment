@@ -71,14 +71,17 @@ export default function Index({ contactLenses, filters }: Props) {
                         {item.brand} - {item.product_line}
                     </div>
                     <div className="text-xs text-text-muted">
-                        {t(`clinical.rx.replacement_schedule.${item.replacement_schedule}`)}
+                        {t(
+                            `clinical.rx.replacement_schedule.${item.replacement_schedule}`
+                        )}
                     </div>
                 </div>
             ),
         },
         {
             header: t("inventory.contact_lenses.fields.type"),
-            accessor: (item: ContactLens) => t(`clinical.rx.types.${item.type}`),
+            accessor: (item: ContactLens) =>
+                t(`clinical.rx.types.${item.type}`),
         },
         {
             header: `${t("clinical.rx.sphere")} / ${t("clinical.rx.cylinder")}`,
@@ -91,7 +94,7 @@ export default function Index({ contactLenses, filters }: Props) {
                         </span>
                     )}
                     {item.cylinder !== null && (
-                        <span className="text-text-muted ml-1">
+                        <span className="text-text-muted ms-1">
                             / {item.cylinder.toFixed(2)}
                             {item.axis && ` x ${item.axis}°`}
                         </span>
@@ -103,16 +106,22 @@ export default function Index({ contactLenses, filters }: Props) {
             header: t("inventory.contact_lenses.boxes"),
             accessor: (item: ContactLens) => (
                 <div>
-                    <Badge variant={item.boxes_in_stock <= 2 ? "danger" : "info"}>
-                        {item.boxes_in_stock} {t("inventory.contact_lenses.boxes")}
+                    <Badge
+                        variant={item.boxes_in_stock <= 2 ? "danger" : "info"}
+                    >
+                        {item.boxes_in_stock}{" "}
+                        {t("inventory.contact_lenses.boxes")}
                     </Badge>
                     {item.expiry_date && (
-                        <div className={`text-[10px] mt-1 ${
-                            new Date(item.expiry_date) < new Date()
-                                ? "text-error-default font-medium"
-                                : "text-text-muted"
-                        }`}>
-                            {t("inventory.contact_lenses.fields.expiry")}: {item.expiry_date}
+                        <div
+                            className={`text-[10px] mt-1 ${
+                                new Date(item.expiry_date) < new Date()
+                                    ? "text-error-default font-medium"
+                                    : "text-text-muted"
+                            }`}
+                        >
+                            {t("inventory.contact_lenses.fields.expiry")}:{" "}
+                            {item.expiry_date}
                         </div>
                     )}
                 </div>
@@ -120,7 +129,7 @@ export default function Index({ contactLenses, filters }: Props) {
         },
         {
             header: t("inventory.contact_lenses.fields.selling_price_per_box"),
-            accessor: (item: ContactLens) => 
+            accessor: (item: ContactLens) =>
                 new Intl.NumberFormat(undefined, {
                     style: "currency",
                     currency: business?.currency_code || "AED",
@@ -129,11 +138,14 @@ export default function Index({ contactLenses, filters }: Props) {
         {
             header: t("common.actions"),
             id: "actions",
-            className: "text-right",
+            className: "text-end",
             accessor: (item: ContactLens) => (
                 <div className="flex justify-end gap-3">
                     <Link
-                        href={route("business.inventory.contact-lenses.edit", item.id)}
+                        href={route(
+                            "business.inventory.contact-lenses.edit",
+                            item.id
+                        )}
                         className="text-interactive-primary hover:text-interactive-primary-hover transition-colors"
                     >
                         <PencilSquareIcon className="w-5 h-5" />
@@ -156,9 +168,11 @@ export default function Index({ contactLenses, filters }: Props) {
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
                         {t("inventory.contact_lenses.title")}
                     </h2>
-                    <Link href={route("business.inventory.contact-lenses.create")}>
+                    <Link
+                        href={route("business.inventory.contact-lenses.create")}
+                    >
                         <Button>
-                            <PlusIcon className="w-4 h-4 mr-2" />
+                            <PlusIcon className="w-4 h-4 me-2" />
                             {t("inventory.contact_lenses.add_new")}
                         </Button>
                     </Link>
@@ -171,17 +185,24 @@ export default function Index({ contactLenses, filters }: Props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Card>
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                            <form onSubmit={handleSearch} className="flex-1 max-w-md">
+                            <form
+                                onSubmit={handleSearch}
+                                className="flex-1 max-w-md"
+                            >
                                 <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                                         <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
                                     </div>
                                     <input
                                         type="text"
                                         value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
-                                        className="block w-full pl-10 pr-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
-                                        placeholder={t("inventory.contact_lenses.search_placeholder")}
+                                        onChange={(e) =>
+                                            setSearch(e.target.value)
+                                        }
+                                        className="block w-full ps-10 pe-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
+                                        placeholder={t(
+                                            "inventory.contact_lenses.search_placeholder"
+                                        )}
                                     />
                                 </div>
                             </form>
@@ -191,7 +212,9 @@ export default function Index({ contactLenses, filters }: Props) {
                             columns={columns}
                             data={contactLenses.data}
                             keyField="id"
-                            emptyMessage={t("inventory.contact_lenses.no_results")}
+                            emptyMessage={t(
+                                "inventory.contact_lenses.no_results"
+                            )}
                             pagination={{
                                 meta: contactLenses.meta,
                                 links: contactLenses.links,

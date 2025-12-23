@@ -28,7 +28,7 @@ export default function POSLayout({ children, title }: Props) {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="text-right hidden sm:block">
+          <div className="text-end hidden sm:block">
             <p className="text-sm font-medium text-gray-900">Branch: Main Store</p>
             <p className="text-xs text-gray-500">{new Date().toLocaleDateString()}</p>
           </div>

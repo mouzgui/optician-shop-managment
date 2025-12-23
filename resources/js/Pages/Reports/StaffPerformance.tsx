@@ -3,8 +3,12 @@ import { Head, Link, usePage, router } from "@inertiajs/react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, FileText, Download } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
+import { enUS, arSA } from "date-fns/locale";
+import { Button } from "@/Components/UI/Button";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface StaffStat {
     name: string;
@@ -23,6 +27,13 @@ interface Props {
 export default function StaffPerformance({ performance, filters }: Props) {
     const { t, i18n } = useTranslation();
     const { business } = usePage().props as any;
+
+    const locales: Record<string, any> = {
+        en: enUS,
+        ar: arSA,
+    };
+
+    const currentLocale = locales[i18n.language] || enUS;
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat(
@@ -46,6 +57,34 @@ export default function StaffPerformance({ performance, filters }: Props) {
         (sum, s) => sum + parseFloat(s.total_collected),
         0
     );
+
+    const handleExportCSV = () => {
+        const headers = [
+            t("reports.staff.fields.staff_member"),
+            t("reports.staff.fields.transactions"),
+            t("reports.staff.fields.total_collected"),
+            t("reports.staff.fields.performance_share"),
+        ];
+
+        const csvData = performance.map((item) => {
+            const share =
+                totalAll > 0
+                    ? (parseFloat(item.total_collected) / totalAll) * 100
+                    : 0;
+            return [
+                item.name,
+                item.payment_count,
+                item.total_collected,
+                `${share.toFixed(1)}%`,
+            ];
+        });
+
+        exportToCSV(
+            csvData,
+            `staff-performance-${filters.start_date}-to-${filters.end_date}`,
+            headers
+        );
+    };
 
     const columns = [
         {
@@ -72,7 +111,7 @@ export default function StaffPerformance({ performance, filters }: Props) {
         },
         {
             header: t("reports.staff.fields.total_collected"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: StaffStat) => (
                 <span className="font-bold text-text-primary">
                     {formatCurrency(parseFloat(item.total_collected))}
@@ -81,7 +120,7 @@ export default function StaffPerformance({ performance, filters }: Props) {
         },
         {
             header: t("reports.staff.fields.performance_share"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: StaffStat) => {
                 const share =
                     totalAll > 0
@@ -115,7 +154,7 @@ export default function StaffPerformance({ performance, filters }: Props) {
                             href={route("business.reports.index")}
                             className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <h1 className="text-2xl font-bold text-text-primary">
@@ -123,39 +162,64 @@ export default function StaffPerformance({ performance, filters }: Props) {
                             </h1>
                             <p className="text-text-muted">
                                 {t("reports.staff.subtitle", {
-                                    start: filters.start_date,
-                                    end: filters.end_date,
+                                    start: format(
+                                        new Date(filters.start_date),
+                                        "PPP",
+                                        {
+                                            locale: currentLocale,
+                                        }
+                                    ),
+                                    end: format(
+                                        new Date(filters.end_date),
+                                        "PPP",
+                                        {
+                                            locale: currentLocale,
+                                        }
+                                    ),
                                 })}
                             </p>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <input
-                            type="date"
-                            className="bg-bg-primary border border-border-default rounded-lg px-3 py-2 text-text-primary outline-none focus:ring-2 focus:ring-interactive-primary text-sm"
-                            defaultValue={filters.start_date}
-                            onChange={(e) =>
-                                handleDateChange(
-                                    e.target.value,
-                                    filters.end_date
-                                )
-                            }
-                        />
-                        <span className="text-text-muted">
-                            {t("common.to")}
-                        </span>
-                        <input
-                            type="date"
-                            className="bg-bg-primary border border-border-default rounded-lg px-3 py-2 text-text-primary outline-none focus:ring-2 focus:ring-interactive-primary text-sm"
-                            defaultValue={filters.end_date}
-                            onChange={(e) =>
-                                handleDateChange(
-                                    filters.start_date,
-                                    e.target.value
-                                )
-                            }
-                        />
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="date"
+                                className="bg-bg-primary border border-border-default rounded-lg px-3 py-2 text-text-primary outline-none focus:ring-2 focus:ring-interactive-primary text-sm"
+                                defaultValue={filters.start_date}
+                                onChange={(e) =>
+                                    handleDateChange(
+                                        e.target.value,
+                                        filters.end_date
+                                    )
+                                }
+                            />
+                            <span className="text-text-muted text-sm">
+                                {t("common.to")}
+                            </span>
+                            <input
+                                type="date"
+                                className="bg-bg-primary border border-border-default rounded-lg px-3 py-2 text-text-primary outline-none focus:ring-2 focus:ring-interactive-primary text-sm"
+                                defaultValue={filters.end_date}
+                                onChange={(e) =>
+                                    handleDateChange(
+                                        filters.start_date,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                        </div>
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => window.print()}
+                        >
+                            <Download className="w-4 h-4 me-2" />
+                            {t("common.export_pdf")}
+                        </Button>
                     </div>
                 </div>
 

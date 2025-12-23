@@ -66,7 +66,7 @@ export default function Show({ jobCard }: Props) {
                         href={route("business.lab.job-cards.index")}
                         className="flex items-center text-text-muted hover:text-brand-main transition-colors"
                     >
-                        <ChevronLeft className="w-4 h-4 mr-1" />
+                        <ChevronLeft className="w-4 h-4 me-1 icon-flip" />
                         Back to Queue
                     </Link>
 
@@ -84,7 +84,7 @@ export default function Show({ jobCard }: Props) {
                                 )
                             }
                         >
-                            <Printer className="w-4 h-4 mr-2" />
+                            <Printer className="w-4 h-4 me-2" />
                             Print Job Card
                         </Button>
                     </div>
@@ -102,7 +102,7 @@ export default function Show({ jobCard }: Props) {
                                 </Badge>
                             </div>
                             <p className="text-text-muted flex items-center">
-                                <Clock className="w-4 h-4 mr-1.5" />
+                                <Clock className="w-4 h-4 me-1.5" />
                                 Created on{" "}
                                 {format(new Date(jobCard.created_at), "PPP")}
                             </p>
@@ -115,7 +115,7 @@ export default function Show({ jobCard }: Props) {
                                     onClick={() => updateStatus("in_progress")}
                                     disabled={processing}
                                 >
-                                    <Play className="w-4 h-4 mr-2" />
+                                    <Play className="w-4 h-4 me-2" />
                                     Start Job
                                 </Button>
                             )}
@@ -127,7 +127,7 @@ export default function Show({ jobCard }: Props) {
                                     }
                                     disabled={processing}
                                 >
-                                    <Eye className="w-4 h-4 mr-2" />
+                                    <Eye className="w-4 h-4 me-2" />
                                     Send to QC
                                 </Button>
                             )}
@@ -137,7 +137,7 @@ export default function Show({ jobCard }: Props) {
                                     onClick={() => updateStatus("completed")}
                                     disabled={processing}
                                 >
-                                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                                    <CheckCircle2 className="w-4 h-4 me-2" />
                                     Complete Job
                                 </Button>
                             )}
@@ -148,13 +148,13 @@ export default function Show({ jobCard }: Props) {
                         {/* Prescription Details */}
                         <div className="md:col-span-2">
                             <h3 className="text-lg font-bold text-text-main mb-4 flex items-center">
-                                <FileText className="w-5 h-5 mr-2 text-brand-main" />
+                                <FileText className="w-5 h-5 me-2 text-brand-main" />
                                 Prescription Details
                             </h3>
                             <div className="overflow-x-auto">
                                 <table className="w-full border-collapse">
                                     <thead>
-                                        <tr className="bg-bg-subtle text-left">
+                                        <tr className="bg-bg-subtle text-start">
                                             <th className="p-3 border border-border-main font-bold">
                                                 EYE
                                             </th>

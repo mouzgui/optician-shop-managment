@@ -135,7 +135,7 @@ export default function Index({ stats }: Props) {
                                 >
                                     <link.icon className="w-6 h-6" />
                                 </div>
-                                <ArrowRight className="w-5 h-5 text-text-muted group-hover:text-interactive-primary group-hover:translate-x-1 transition-all" />
+                                <ArrowRight className="w-5 h-5 text-text-muted group-hover:text-interactive-primary group-hover:translate-x-1 transition-all icon-flip" />
                             </div>
                             <div className="mt-4">
                                 <h3 className="text-lg font-bold text-text-primary group-hover:text-interactive-primary transition-colors">

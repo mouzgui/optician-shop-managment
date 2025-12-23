@@ -1,5 +1,8 @@
 {
     "common": {
+        "showing_results": "عرض {{from}} إلى {{to}} من أصل {{total}} نتيجة",
+        "export_csv": "تصدير CSV",
+        "export_pdf": "تصدير PDF",
         "status": {
             "active": "نشط",
             "inactive": "غير نشط"
@@ -23,7 +26,7 @@
         "never": "أبداً",
         "active": "نشط",
         "expired": "منتهي",
-        "showing_results": "عرض {{from}} إلى {{to}} من أصل {{total}} نتيجة"
+        "to": "إلى"
     },
     "customers": {
         "title": "العملاء",
@@ -64,6 +67,113 @@
             "spectacle_rx": "وصفات النظارات",
             "contact_lens_rx": "وصفات العدسات",
             "invoices": "الفواتير"
+        }
+    },
+    "inventory": {
+        "title": "إدارة المخزون",
+        "frames": {
+            "title": "مخزون الإطارات",
+            "add_new": "إضافة إطار جديد",
+            "edit_frame": "تعديل الإطار",
+            "search_placeholder": "البحث حسب العلامة التجارية أو الموديل أو SKU...",
+            "no_results": "لم يتم العثور على إطارات في المخزون.",
+            "sections": {
+                "basic_info": "المعلومات الأساسية",
+                "specs": "المواصفات",
+                "pricing_stock": "التسعير والمخزون"
+            },
+            "fields": {
+                "sku": "SKU",
+                "barcode": "الباركود",
+                "brand": "العلامة التجارية",
+                "model": "الموديل",
+                "brand_model": "العلامة التجارية / الموديل",
+                "color_code": "كود اللون",
+                "color_name": "اسم اللون",
+                "size_eye": "مقاس العين (مم)",
+                "size_bridge": "مقاس الجسر (مم)",
+                "size_temple": "مقاس الذراع (مم)",
+                "category": "الفئة",
+                "material": "المادة",
+                "gender": "الجنس",
+                "cost_price": "سعر التكلفة",
+                "selling_price": "سعر البيع",
+                "quantity": "الكمية",
+                "low_stock_threshold": "تنبيه نقص المخزون",
+                "is_active": "نشط"
+            },
+            "categories": {
+                "optical": "طبي",
+                "sunglasses": "شمسي",
+                "sports": "رياضي",
+                "kids": "أطفال"
+            },
+            "filters": {
+                "low_stock": "نقص المخزون فقط"
+            }
+        },
+        "lenses": {
+            "title": "كتالوج العدسات",
+            "add_new": "إضافة عدسة جديدة",
+            "edit_lens": "تعديل العدسة",
+            "search_placeholder": "البحث حسب العلامة التجارية أو الموديل أو النوع...",
+            "no_results": "لم يتم العثور على عدسات في الكتالوج.",
+            "stock": "المخزون",
+            "custom_order": "طلب خاص",
+            "sections": {
+                "basic_info": "المعلومات الأساسية",
+                "specs_pricing": "المواصفات والتسعير"
+            },
+            "fields": {
+                "brand": "العلامة التجارية",
+                "name": "اسم العدسة",
+                "brand_name": "العلامة التجارية / الاسم",
+                "type": "النوع",
+                "material": "المادة",
+                "index": "معامل الانكسار",
+                "coatings": "الطبقات",
+                "tint": "اللون",
+                "cost_price": "سعر التكلفة",
+                "selling_price": "سعر البيع",
+                "lab_supplier": "مورد المختبر",
+                "lead_time_days": "مدة التوريد (أيام)",
+                "is_active": "نشط"
+            },
+            "types": {
+                "single_vision": "رؤية واحدة",
+                "bifocal": "ثنائية البؤرة",
+                "progressive": "متعددة البؤرة",
+                "office": "مكتبي",
+                "sports": "رياضي"
+            }
+        },
+        "contact_lenses": {
+            "title": "مخزون العدسات اللاصقة",
+            "add_new": "إضافة عدسة لاصقة جديدة",
+            "edit_cl": "تعديل العدسة اللاصقة",
+            "search_placeholder": "البحث حسب العلامة التجارية أو خط الإنتاج...",
+            "no_results": "لم يتم العثور على عدسات لاصقة في المخزون.",
+            "stock": "المخزون",
+            "boxes": "صناديق",
+            "custom_order": "طلب خاص",
+            "sections": {
+                "product_info": "معلومات المنتج",
+                "rx_pricing": "معايير الوصفة والتسعير"
+            },
+            "fields": {
+                "brand": "العلامة التجارية",
+                "product_line": "خط الإنتاج",
+                "brand_line": "العلامة التجارية / الخط",
+                "type": "النوع",
+                "replacement_schedule": "جدول الاستبدال",
+                "box_quantity": "الكمية في الصندوق",
+                "boxes_in_stock": "الصناديق في المخزون",
+                "cost_price_per_box": "التكلفة / الصندوق",
+                "selling_price_per_box": "السعر / الصندوق",
+                "expiry_date": "تاريخ الانتهاء",
+                "expiry": "الانتهاء",
+                "is_active": "نشط"
+            }
         }
     },
     "auth": {
@@ -155,6 +265,204 @@
         },
         "settings": {
             "title": "إعدادات المتجر"
+        }
+    },
+    "POS": {
+        "title": "نقطة البيع",
+        "add_payment": "إضافة دفعة",
+        "errors": {
+            "select_customer": "يرجى اختيار عميل أولاً",
+            "cart_empty": "عربة التسوق فارغة"
+        },
+        "search": {
+            "placeholder": "البحث عن المنتجات حسب العلامة التجارية أو الموديل أو SKU أو الباركود..."
+        },
+        "products": {
+            "types": {
+                "frame": "إطار",
+                "lens": "عدسة",
+                "contact_lens": "عدسة لاصقة",
+                "service": "خدمة"
+            },
+            "stock": "المخزون",
+            "no_results": "لم يتم العثور على منتجات تطابق \"{{query}}\"",
+            "search_hint": "اكتب حرفين على الأقل للبحث عن المنتجات"
+        },
+        "prescriptions": {
+            "title": "اختر الوصفة الطبية",
+            "type_spectacle": "نظارات",
+            "type_contact_lens": "عدسات لاصقة",
+            "doctor_prefix": "د.",
+            "clear": "مسح الاختيار"
+        },
+        "cart": {
+            "empty": "عربة التسوق فارغة",
+            "each": "لكل قطعة"
+        },
+        "summary": {
+            "subtotal": "المجموع الفرعي",
+            "discount": "الخصم",
+            "tax": "الضريبة",
+            "total": "الإجمالي",
+            "items": "الأصناف",
+            "deposit_required": "العربون المطلوب",
+            "balance_due": "المبلغ المتبقي"
+        },
+        "payments": {
+            "title": "إتمام الدفع",
+            "full_payment": "دفع كامل",
+            "split_payment": "دفع مقسم",
+            "cash": "نقداً",
+            "card": "بطاقة",
+            "amount_to_pay": "المبلغ المطلوب دفعه",
+            "received": "المستلم",
+            "change": "الفكة",
+            "processing": "جاري المعالجة...",
+            "complete": "إتمام العملية",
+            "error_split": "يجب أن يساوي مجموع المبالغ النقدية والبطاقة إجمالي الفاتورة"
+        },
+        "success": {
+            "title": "تمت العملية بنجاح",
+            "invoice_created": "تم إنشاء الفاتورة رقم {{number}}",
+            "print_receipt": "طباعة الإيصال",
+            "new_sale": "بيعة جديدة"
+        }
+    },
+    "reports": {
+        "title": "التقارير والتحليلات",
+        "subtitle": "تتبع أداء عملك ورؤى المتجر",
+        "daily_revenue": "الإيرادات اليومية",
+        "daily_revenue_desc": "تفصيل مبيعات ومدفوعات اليوم",
+        "monthly_revenue": "الإيرادات الشهرية",
+        "monthly_revenue_desc": "أداء المبيعات الشهرية والاتجاهات",
+        "outstanding_balances": "الأرصدة المستحقة",
+        "outstanding_balances_desc": "عرض وإدارة الفواتير غير المدفوعة",
+        "inventory_status": "حالة المخزون",
+        "inventory_status_desc": "تنبيهات المخزون المنخفض ومستويات المخزون",
+        "staff_performance": "أداء الموظفين",
+        "staff_performance_desc": "أداء المبيعات والتحصيل حسب الموظف",
+        "rx_expiry": "انتهاء الوصفات",
+        "rx_expiry_desc": "المرضى الذين تنتهي وصفاتهم الطبية قريباً",
+        "stats": {
+            "today_sales": "مبيعات اليوم",
+            "today_collections": "تحصيلات اليوم",
+            "monthly_revenue": "الإيرادات الشهرية",
+            "pending_jobs": "أعمال المختبر المعلقة"
+        },
+        "revenue": {
+            "daily_title": "تقرير الإيرادات اليومية",
+            "collections_for": "التحصيلات ليوم {{date}}",
+            "monthly_title": "تقرير الإيرادات الشهرية",
+            "monthly_subtitle": "أداء المبيعات لعام {{year}}",
+            "subtitle": "عرض وإدارة المدفوعات اليومية",
+            "summary": "ملخص الإيرادات",
+            "total_collected": "إجمالي المحصل",
+            "by_method": "حسب طريقة الدفع",
+            "yearly_total": "إجمالي الإيرادات السنوية",
+            "monthly_average": "المتوسط الشهري",
+            "trend": "اتجاه الإيرادات",
+            "no_payments": "لا توجد مدفوعات مسجلة لهذا التاريخ.",
+            "fields": {
+                "month": "الشهر",
+                "total_revenue": "إجمالي الإيرادات",
+                "customer": "العميل",
+                "invoice": "الفاتورة",
+                "method": "الطريقة",
+                "staff": "الموظف",
+                "amount": "المبلغ"
+            }
+        },
+        "staff": {
+            "title": "أداء الموظفين",
+            "subtitle": "مراقبة أداء المبيعات من {{start}} إلى {{end}}",
+            "no_data": "لم يتم العثور على بيانات أداء للفترة المختارة.",
+            "fields": {
+                "staff_member": "الموظف",
+                "total_collected": "إجمالي المحصل",
+                "payment_count": "عدد المدفوعات",
+                "transactions": "المعاملات",
+                "performance_share": "حصة الأداء"
+            }
+        },
+        "rx": {
+            "title": "انتهاء الوصفات الطبية",
+            "subtitle": "تتبع الوصفات التي تنتهي خلال الأشهر الثلاثة القادمة",
+            "spectacles": "النظارات",
+            "contact_lenses": "العدسات اللاصقة",
+            "fields": {
+                "patient": "المريض",
+                "expiry_date": "تاريخ الانتهاء",
+                "doctor": "الطبيب",
+                "contact_info": "معلومات الاتصال",
+                "phone": "الهاتف",
+                "email": "البريد الإلكتروني",
+                "type": "النوع"
+            },
+            "recall_patient": "استدعاء المريض",
+            "spectacle_alert": "وصفات النظارات",
+            "spectacle_empty": "لم يتم العثور على وصفات نظارات منتهية.",
+            "cl_alert": "وصفات العدسات اللاصقة",
+            "cl_empty": "لم يتم العثور على وصفات عدسات لاصقة منتهية."
+        },
+        "inventory": {
+            "title": "تنبيهات المخزون",
+            "subtitle": "الأصناف ذات المخزون المنخفض التي تتطلب اهتماماً",
+            "frames_alert": "نقص في مخزون الإطارات",
+            "cl_alert": "نقص في مخزون العدسات اللاصقة",
+            "left": "متبقي",
+            "boxes": "صناديق",
+            "frames_empty": "لا يوجد نقص في مخزون الإطارات حالياً.",
+            "cl_empty": "لا يوجد نقص في مخزون العدسات اللاصقة حالياً.",
+            "fields": {
+                "frame": "الإطار",
+                "stock": "المخزون",
+                "contact_lens": "العدسة اللاصقة",
+                "boxes": "الصناديق"
+            }
+        },
+        "outstanding": {
+            "title": "الأرصدة المستحقة",
+            "subtitle": "إدارة الفواتير غير المدفوعة والمستحقات",
+            "total_receivables": "إجمالي المستحقات",
+            "empty": "رائع! لا توجد أرصدة مستحقة.",
+            "fields": {
+                "invoice": "الفاتورة",
+                "customer": "العميل",
+                "total": "الإجمالي",
+                "paid": "المدفوع",
+                "balance": "الرصيد المستحق"
+            }
+        }
+    },
+    "invoices": {
+        "title": "الفواتير",
+        "index": {
+            "title": "الفواتير",
+            "subtitle": "إدارة فواتير المبيعات والمدفوعات"
+        },
+        "fields": {
+            "invoice_number": "رقم الفاتورة",
+            "customer": "العميل",
+            "total": "الإجمالي",
+            "amount_paid": "المدفوع",
+            "balance_due": "المتبقي",
+            "status": "الحالة",
+            "date": "التاريخ"
+        },
+        "status": {
+            "pending": "معلق",
+            "paid": "مدفوع",
+            "partial": "جزئي",
+            "overdue": "متأخر"
+        },
+        "show": {
+            "title": "تفاصيل الفاتورة",
+            "items": "الأصناف",
+            "payments": "المدفوعات",
+            "subtotal": "المجموع الفرعي",
+            "discount": "الخصم",
+            "tax": "الضريبة",
+            "grand_total": "الإجمالي النهائي"
         }
     },
     "welcome": {

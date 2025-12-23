@@ -83,7 +83,9 @@ export default function Index({ lenses, filters }: Props) {
             header: t("inventory.lenses.fields.lab_supplier"),
             accessor: (item: Lens) => (
                 <div>
-                    <div className="text-text-primary">{item.lab_supplier || "-"}</div>
+                    <div className="text-text-primary">
+                        {item.lab_supplier || "-"}
+                    </div>
                     {item.lead_time_days && (
                         <div className="text-xs text-text-muted">
                             {item.lead_time_days} {t("common.days")}
@@ -94,7 +96,7 @@ export default function Index({ lenses, filters }: Props) {
         },
         {
             header: t("inventory.lenses.fields.selling_price"),
-            accessor: (item: Lens) => 
+            accessor: (item: Lens) =>
                 new Intl.NumberFormat(undefined, {
                     style: "currency",
                     currency: business?.currency_code || "AED",
@@ -103,7 +105,7 @@ export default function Index({ lenses, filters }: Props) {
         {
             header: t("common.actions"),
             id: "actions",
-            className: "text-right",
+            className: "text-end",
             accessor: (item: Lens) => (
                 <div className="flex justify-end gap-3">
                     <Link
@@ -132,7 +134,7 @@ export default function Index({ lenses, filters }: Props) {
                     </h2>
                     <Link href={route("business.inventory.lenses.create")}>
                         <Button>
-                            <PlusIcon className="w-4 h-4 mr-2" />
+                            <PlusIcon className="w-4 h-4 me-2" />
                             {t("inventory.lenses.add_new")}
                         </Button>
                     </Link>
@@ -145,17 +147,24 @@ export default function Index({ lenses, filters }: Props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Card>
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                            <form onSubmit={handleSearch} className="flex-1 max-w-md">
+                            <form
+                                onSubmit={handleSearch}
+                                className="flex-1 max-w-md"
+                            >
                                 <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                                         <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
                                     </div>
                                     <input
                                         type="text"
                                         value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
-                                        className="block w-full pl-10 pr-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
-                                        placeholder={t("inventory.lenses.search_placeholder")}
+                                        onChange={(e) =>
+                                            setSearch(e.target.value)
+                                        }
+                                        className="block w-full ps-10 pe-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
+                                        placeholder={t(
+                                            "inventory.lenses.search_placeholder"
+                                        )}
                                     />
                                 </div>
                             </form>

@@ -5,10 +5,11 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
-import { ChevronLeft, Phone, Eye } from "lucide-react";
+import { ChevronLeft, Phone, Eye, FileText, Download } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Props {
     invoices: any[];
@@ -37,6 +38,26 @@ export default function OutstandingBalances({
                 currency: business?.currency_code || "USD",
             }
         ).format(amount);
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            t("reports.outstanding.fields.invoice"),
+            t("reports.outstanding.fields.customer"),
+            t("reports.outstanding.fields.total"),
+            t("reports.outstanding.fields.paid"),
+            t("reports.outstanding.fields.balance"),
+        ];
+
+        const csvData = invoices.map((item) => [
+            item.invoice_number,
+            `${item.customer?.first_name} ${item.customer?.last_name}`,
+            item.total,
+            item.amount_paid,
+            item.balance_due,
+        ]);
+
+        exportToCSV(csvData, "outstanding-balances", headers);
     };
 
     const columns = [
@@ -71,7 +92,7 @@ export default function OutstandingBalances({
         },
         {
             header: t("reports.outstanding.fields.total"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="text-text-muted">
                     {formatCurrency(parseFloat(item.total))}
@@ -80,7 +101,7 @@ export default function OutstandingBalances({
         },
         {
             header: t("reports.outstanding.fields.paid"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="text-interactive-success font-medium">
                     {formatCurrency(parseFloat(item.amount_paid))}
@@ -89,7 +110,7 @@ export default function OutstandingBalances({
         },
         {
             header: t("reports.outstanding.fields.balance"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="font-bold text-interactive-error">
                     {formatCurrency(parseFloat(item.balance_due))}
@@ -98,7 +119,7 @@ export default function OutstandingBalances({
         },
         {
             header: t("common.actions"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <Link href={route("business.sales.invoices.show", item.id)}>
                     <Button
@@ -125,7 +146,7 @@ export default function OutstandingBalances({
                             href={route("business.reports.index")}
                             className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
                         >
-                            <ChevronLeft className="w-5 h-5" />
+                            <ChevronLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <h1 className="text-2xl font-bold text-text-primary">
@@ -137,15 +158,29 @@ export default function OutstandingBalances({
                         </div>
                     </div>
 
-                    <Card className="bg-interactive-error/5 border-interactive-error/10 px-6 py-3">
-                        <span className="text-xs text-interactive-error block uppercase font-bold tracking-wider opacity-80">
-                            {t("reports.outstanding.total_receivables")}
-                        </span>
-                        <span className="text-2xl font-bold text-interactive-error">
-                            {formatCurrency(total_outstanding)}
-                        </span>
-                    </Card>
+                    <div className="flex items-center gap-3">
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => window.print()}
+                        >
+                            <Download className="w-4 h-4 me-2" />
+                            {t("common.export_pdf")}
+                        </Button>
+                    </div>
                 </div>
+
+                <Card className="bg-interactive-error/5 border-interactive-error/10 px-6 py-3 w-fit">
+                    <span className="text-xs text-interactive-error block uppercase font-bold tracking-wider opacity-80">
+                        {t("reports.outstanding.total_receivables")}
+                    </span>
+                    <span className="text-2xl font-bold text-interactive-error">
+                        {formatCurrency(total_outstanding)}
+                    </span>
+                </Card>
 
                 <Card className="p-0 overflow-hidden">
                     <DataTable

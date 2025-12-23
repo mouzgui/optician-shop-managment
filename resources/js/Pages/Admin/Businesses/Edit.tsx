@@ -94,7 +94,7 @@ export default function Edit({ business }: EditProps) {
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-2">
                             <input
                                 type="checkbox"
                                 id="is_active"

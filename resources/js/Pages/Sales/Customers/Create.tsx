@@ -44,12 +44,12 @@ export default function Create({ branches }: Props) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-4">
                     <Link
                         href={route("business.customers.index")}
                         className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                     >
-                        <ArrowLeftIcon className="w-6 h-6" />
+                        <ArrowLeftIcon className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         {t("customers.add_new")}

@@ -184,7 +184,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                     {t("POS.payment.cash_amount")}
                                 </label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted">
                                         {business?.currency_symbol || "$"}
                                     </span>
                                     <input
@@ -195,7 +195,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                                 Number(e.target.value)
                                             )
                                         }
-                                        className="w-full pl-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
+                                        className="w-full ps-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
                                     />
                                 </div>
                             </div>
@@ -204,7 +204,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                     {t("POS.payment.card_amount")}
                                 </label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted">
                                         {business?.currency_symbol || "$"}
                                     </span>
                                     <input
@@ -215,7 +215,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                                 Number(e.target.value)
                                             )
                                         }
-                                        className="w-full pl-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
+                                        className="w-full ps-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
                                     />
                                 </div>
                             </div>

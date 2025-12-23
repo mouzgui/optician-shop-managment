@@ -20,10 +20,14 @@ export function Sidebar() {
     const branding = props.branding;
 
     return (
-        <aside className="w-64 bg-nav-bg border-e border-border-default flex flex-col fixed inset-y-0 z-20 transition-transform lg:static lg:translate-x-0 -translate-x-full">
+        <aside className="w-64 bg-nav-bg border-e border-border-default flex flex-col fixed inset-y-0 start-0 z-20 transition-transform lg:static lg:translate-x-0 -translate-x-full-rtl">
             <div className="h-16 flex items-center px-6 border-b border-border-default">
                 {branding?.logo_url ? (
-                    <img src={branding.logo_url} alt="Logo" className="h-8 w-auto" />
+                    <img
+                        src={branding.logo_url}
+                        alt="Logo"
+                        className="h-8 w-auto"
+                    />
                 ) : (
                     <span className="text-xl font-bold text-interactive-primary">
                         👓 OptiManager

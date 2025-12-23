@@ -32,7 +32,9 @@ export function DataTable<T>({
                             {columns.map((column, index) => (
                                 <th
                                     key={index}
-                                    className={`px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider ${column.className || ""}`}
+                                    className={`px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider ${
+                                        column.className || ""
+                                    }`}
                                 >
                                     {column.header}
                                 </th>
@@ -44,7 +46,10 @@ export function DataTable<T>({
                             Array.from({ length: 5 }).map((_, rowIndex) => (
                                 <tr key={rowIndex}>
                                     {columns.map((_, colIndex) => (
-                                        <td key={colIndex} className="px-6 py-4">
+                                        <td
+                                            key={colIndex}
+                                            className="px-6 py-4"
+                                        >
                                             <Skeleton className="h-4 w-3/4" />
                                         </td>
                                     ))}
@@ -52,21 +57,32 @@ export function DataTable<T>({
                             ))
                         ) : data.length === 0 ? (
                             <tr>
-                                <td colSpan={columns.length} className="px-6 py-10 text-center text-text-muted">
+                                <td
+                                    colSpan={columns.length}
+                                    className="px-6 py-10 text-center text-text-muted"
+                                >
                                     {emptyMessage}
                                 </td>
                             </tr>
                         ) : (
                             data.map((item) => (
-                                <tr key={String(item[keyField])} className="hover:bg-bg-muted/50 transition-colors">
+                                <tr
+                                    key={String(item[keyField])}
+                                    className="hover:bg-bg-muted/50 transition-colors"
+                                >
                                     {columns.map((column, index) => (
                                         <td
                                             key={index}
-                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${column.className || ""}`}
+                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${
+                                                column.className || ""
+                                            }`}
                                         >
-                                            {typeof column.accessor === "function"
+                                            {typeof column.accessor ===
+                                            "function"
                                                 ? column.accessor(item)
-                                                : (item[column.accessor] as React.ReactNode)}
+                                                : (item[
+                                                      column.accessor
+                                                  ] as React.ReactNode)}
                                         </td>
                                     ))}
                                 </tr>

@@ -80,7 +80,7 @@ export default function Show({ invoice }: Props) {
         },
         {
             header: t("common.price"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="text-text-primary">
                     {formatCurrency(item.unit_price)}
@@ -89,7 +89,7 @@ export default function Show({ invoice }: Props) {
         },
         {
             header: t("invoices.show.discount"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="text-interactive-error">
                     -{formatCurrency(item.discount)}
@@ -98,7 +98,7 @@ export default function Show({ invoice }: Props) {
         },
         {
             header: t("common.total"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: any) => (
                 <span className="font-bold text-text-primary">
                     {formatCurrency(item.total)}
@@ -122,7 +122,7 @@ export default function Show({ invoice }: Props) {
                             href={route("business.sales.invoices.index")}
                             className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
                         >
-                            <ArrowLeft className="w-5 h-5" />
+                            <ArrowLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <div className="flex items-center gap-3">
@@ -267,7 +267,7 @@ export default function Show({ invoice }: Props) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="text-right">
+                                                    <div className="text-end">
                                                         <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1 opacity-60">
                                                             {t(
                                                                 "reports.revenue.fields.received_by"
@@ -321,18 +321,19 @@ export default function Show({ invoice }: Props) {
                                         "business.customers.show",
                                         invoice.customer.id
                                     )}
-                                    className="inline-flex items-center gap-2 text-interactive-primary font-bold text-sm hover:translate-x-1 transition-transform mt-2"
+                                    className="inline-flex items-center gap-2 text-interactive-primary font-bold text-sm hover:ms-1 transition-all mt-2"
                                 >
                                     <Eye className="w-4 h-4" />
-                                    {t("customers.profile_details")} →
+                                    {t("customers.profile_details")}
+                                    <span className="icon-flip">→</span>
                                 </Link>
                             </div>
                         </Card>
 
                         {/* Financial Summary */}
                         <Card className="bg-interactive-primary p-7 text-white shadow-xl shadow-interactive-primary/20 border-none relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <DollarSign className="w-24 h-24 -mr-8 -mt-8" />
+                            <div className="absolute top-0 end-0 p-4 opacity-10">
+                                <DollarSign className="w-24 h-24 -me-8 -mt-8" />
                             </div>
                             <h3 className="font-bold text-white/60 mb-6 flex items-center gap-2 border-b border-white/10 pb-3 uppercase text-[10px] tracking-[0.2em]">
                                 {t("reports.revenue.summary")}

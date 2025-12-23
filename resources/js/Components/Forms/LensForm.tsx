@@ -209,7 +209,7 @@ export default function LensForm({
                             {availableCoatings.map((coating) => (
                                 <label
                                     key={coating}
-                                    className="flex items-center space-x-2"
+                                    className="flex items-center gap-2"
                                 >
                                     <input
                                         type="checkbox"
@@ -324,7 +324,7 @@ export default function LensForm({
                 </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 {onCancel && (
                     <SecondaryButton
                         type="button"

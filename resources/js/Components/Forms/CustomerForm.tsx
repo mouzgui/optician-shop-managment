@@ -138,7 +138,7 @@ export default function CustomerForm({
                 />
                 <textarea
                     id="address"
-                    className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    className="mt-1 block w-full border-border-default bg-bg-base text-text-primary placeholder-text-muted focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
                     value={data.address}
                     onChange={(e) => setData("address", e.target.value)}
                     rows={3}
@@ -176,7 +176,7 @@ export default function CustomerForm({
                     />
                     <select
                         id="branch_id"
-                        className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                        className="mt-1 block w-full border-border-default bg-bg-base text-text-primary focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
                         value={data.branch_id}
                         onChange={(e) => setData("branch_id", e.target.value)}
                     >
@@ -244,7 +244,7 @@ export default function CustomerForm({
                 />
                 <textarea
                     id="notes"
-                    className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                    className="mt-1 block w-full border-border-default bg-bg-base text-text-primary placeholder-text-muted focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
                     value={data.notes}
                     onChange={(e) => setData("notes", e.target.value)}
                     rows={3}
@@ -252,7 +252,7 @@ export default function CustomerForm({
                 <InputError message={errors.notes} className="mt-2" />
             </div>
 
-            <div className="flex items-center justify-end space-x-4">
+            <div className="flex items-center justify-end gap-4">
                 {onCancel && (
                     <SecondaryButton onClick={onCancel} disabled={processing}>
                         {t("common.cancel")}

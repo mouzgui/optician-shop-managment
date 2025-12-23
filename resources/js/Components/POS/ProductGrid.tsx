@@ -53,7 +53,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                     <button
                         key={`${product.type}-${product.id}`}
                         onClick={() => onAddToCart(product)}
-                        className="flex flex-col text-left p-4 rounded-xl border border-border-default bg-bg-base hover:border-primary-500 hover:bg-primary-subtle transition-all group relative overflow-hidden"
+                        className="flex flex-col text-start p-4 rounded-xl border border-border-default bg-bg-base hover:border-primary-500 hover:bg-primary-subtle transition-all group relative overflow-hidden"
                     >
                         <div className="flex items-start justify-between mb-2">
                             <span

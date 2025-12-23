@@ -128,14 +128,19 @@ export default function Index({ invoices }: Props) {
                 <Card>
                     <div className="flex flex-col md:flex-row gap-4 mb-6">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted w-4 h-4" />
+                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted w-4 h-4" />
                             <input
                                 type="text"
-                                placeholder={t("sales.invoices.search_placeholder")}
-                                className="w-full pl-10 pr-4 py-2 rounded-lg border-border-default bg-bg-base text-text-primary focus:ring-border-focus focus:border-border-focus"
+                                placeholder={t(
+                                    "sales.invoices.search_placeholder"
+                                )}
+                                className="w-full ps-10 pe-4 py-2 rounded-lg border-border-default bg-bg-base text-text-primary focus:ring-border-focus focus:border-border-focus"
                             />
                         </div>
-                        <Button variant="secondary" icon={<Filter className="w-4 h-4" />}>
+                        <Button
+                            variant="secondary"
+                            icon={<Filter className="w-4 h-4" />}
+                        >
                             {t("common.filters")}
                         </Button>
                     </div>

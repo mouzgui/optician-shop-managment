@@ -110,7 +110,7 @@ export default function Index({ frames, filters }: Props) {
         },
         {
             header: t("common.actions"),
-            className: "text-right",
+            className: "text-end",
             accessor: (item: Frame) => (
                 <div className="flex justify-end gap-2">
                     <Link href={route("business.inventory.frames.edit", item.id)}>
@@ -144,7 +144,7 @@ export default function Index({ frames, filters }: Props) {
                     </div>
                     <Link href={route("business.inventory.frames.create")}>
                         <Button>
-                            <PlusIcon className="w-4 h-4 mr-2" />
+                            <PlusIcon className="w-4 h-4 me-2" />
                             {t("inventory.frames.add_new")}
                         </Button>
                     </Link>
@@ -154,14 +154,14 @@ export default function Index({ frames, filters }: Props) {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                         <form onSubmit={handleSearch} className="flex-1 max-w-md">
                             <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
                                     <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
                                 </div>
                                 <input
                                     type="text"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="block w-full pl-10 pr-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
+                                    className="block w-full ps-10 pe-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
                                     placeholder={t("inventory.frames.search_placeholder")}
                                 />
                             </div>
@@ -173,7 +173,7 @@ export default function Index({ frames, filters }: Props) {
                                 size="sm"
                                 onClick={toggleLowStock}
                             >
-                                <ExclamationTriangleIcon className="w-4 h-4 mr-2" />
+                                <ExclamationTriangleIcon className="w-4 h-4 me-2" />
                                 {t("inventory.frames.filters.low_stock")}
                             </Button>
                         </div>

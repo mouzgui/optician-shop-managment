@@ -3,9 +3,17 @@ import { Sidebar } from "@/Components/UI/Sidebar";
 import { Header } from "@/Components/UI/Header";
 import { usePage } from "@inertiajs/react";
 import { Toaster, toast } from "react-hot-toast";
+import { useDirection } from "@/Hooks/useDirection";
 
 export function AuthenticatedLayout({ children }: PropsWithChildren) {
     const { branding, flash } = usePage<any>().props;
+    const { direction, isRTL } = useDirection();
+
+    useEffect(() => {
+        // Set document direction
+        document.documentElement.dir = direction;
+        document.documentElement.lang = isRTL ? "ar" : "en";
+    }, [direction, isRTL]);
 
     useEffect(() => {
         if (flash?.success) {
@@ -19,7 +27,16 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
     useEffect(() => {
         if (branding?.primary_color) {
             document.documentElement.style.setProperty(
+                "--interactive-primary",
+                branding.primary_color
+            );
+            document.documentElement.style.setProperty(
                 "--color-primary-600",
+                branding.primary_color
+            );
+            // Also set as border focus
+            document.documentElement.style.setProperty(
+                "--border-focus",
                 branding.primary_color
             );
         }
@@ -36,8 +53,8 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
     }, [branding]);
 
     return (
-        <div className="flex min-h-screen bg-bg-subtle">
-            <Toaster position="top-right" />
+        <div className="flex min-h-screen bg-bg-subtle" dir={direction}>
+            <Toaster position={isRTL ? "top-left" : "top-right"} />
             <Sidebar />
             <div className="flex-1 flex flex-col min-w-0">
                 <Header />

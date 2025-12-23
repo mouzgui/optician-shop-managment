@@ -39,7 +39,7 @@ export default function Index({ staff }: IndexProps) {
                     </h1>
                     <Link
                         href={route("business.staff.create")}
-                        className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                        className="px-4 py-2 bg-interactive-primary text-text-inverted rounded-lg hover:bg-interactive-primary-hover transition-colors"
                     >
                         {t("business.staff.index.create_btn")}
                     </Link>
@@ -49,19 +49,19 @@ export default function Index({ staff }: IndexProps) {
                     <table className="min-w-full divide-y divide-border-subtle">
                         <thead className="bg-bg-muted">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("business.staff.fields.name")}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("business.staff.fields.role")}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("business.staff.fields.branch")}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("business.staff.fields.status")}
                                 </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-end text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("business.staff.fields.actions")}
                                 </th>
                             </tr>
@@ -70,8 +70,12 @@ export default function Index({ staff }: IndexProps) {
                             {staff.data.map((member) => (
                                 <tr key={member.id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-text-primary">{member.name}</div>
-                                        <div className="text-xs text-text-secondary">{member.email}</div>
+                                        <div className="text-sm font-medium text-text-primary">
+                                            {member.name}
+                                        </div>
+                                        <div className="text-xs text-text-secondary">
+                                            {member.email}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
                                         {t(`roles.${member.role}`)}
@@ -81,11 +85,13 @@ export default function Index({ staff }: IndexProps) {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <button
-                                            onClick={() => toggleStatus(member.id)}
-                                            className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                                            onClick={() =>
+                                                toggleStatus(member.id)
+                                            }
+                                            className={`px-2 py-1 text-xs font-semibold rounded-full border ${
                                                 member.is_active
-                                                    ? "bg-green-100 text-green-800"
-                                                    : "bg-red-100 text-red-800"
+                                                    ? "bg-status-success-bg text-status-success-text border-status-success-border"
+                                                    : "bg-status-error-bg text-status-error-text border-status-error-border"
                                             }`}
                                         >
                                             {member.is_active
@@ -93,12 +99,15 @@ export default function Index({ staff }: IndexProps) {
                                                 : t("common.status.inactive")}
                                         </button>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <Link
-                                            href={route("business.staff.edit", member.id)}
-                                            className="text-primary-600 hover:text-primary-900"
+                                            href={route(
+                                                "business.staff.edit",
+                                                member.id
+                                            )}
+                                            className="text-text-link hover:text-text-link-hover"
                                         >
-                                            {t("common.actions.edit")}
+                                            {t("common.edit")}
                                         </Link>
                                     </td>
                                 </tr>

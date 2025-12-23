@@ -43,7 +43,7 @@ const PrescriptionSelector: React.FC<PrescriptionSelectorProps> = ({
                     <button
                         key={`${rx.type}-${rx.id}`}
                         onClick={() => onSelect(rx.id, rx.type)}
-                        className={`w-full text-left p-3 rounded-lg border transition-all ${
+                        className={`w-full text-start p-3 rounded-lg border transition-all ${
                             selectedPrescriptionId === rx.id
                                 ? "border-primary-600 bg-primary-50 ring-1 ring-primary-600"
                                 : "border-border-default hover:border-border-strong bg-bg-subtle"

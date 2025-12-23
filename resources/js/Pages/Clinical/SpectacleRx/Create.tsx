@@ -46,7 +46,7 @@ export default function Create({ customer }: Props) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-4">
                     <Link
                         href={route("business.customers.show", customer.id)}
                         className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -74,7 +74,7 @@ export default function Create({ customer }: Props) {
                                     errors={errors}
                                 />
 
-                                <div className="flex items-center justify-end space-x-4">
+                                <div className="flex items-center justify-end gap-4">
                                     <SecondaryButton
                                         onClick={() => reset()}
                                         disabled={processing}

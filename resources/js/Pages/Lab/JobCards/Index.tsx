@@ -48,11 +48,11 @@ export default function Index({ jobCards, statuses }: Props) {
 
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                        <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                         <input
                             type="text"
                             placeholder="Search by job # or customer name..."
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-border-main rounded-lg focus:ring-2 focus:ring-brand-main focus:border-brand-main outline-none transition-all"
+                            className="w-full ps-10 pe-4 py-2 bg-white border border-border-main rounded-lg focus:ring-2 focus:ring-brand-main focus:border-brand-main outline-none transition-all"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use Illuminate\Support\Facades\Cache;
+
 class SettingsController extends Controller
 {
     public function index()
@@ -46,6 +48,9 @@ class SettingsController extends Controller
         }
 
         $business->update($validated);
+
+        // Clear branding cache
+        Cache::forget("business_{$business->id}_branding");
 
         return back()->with('success', 'Settings updated successfully.');
     }

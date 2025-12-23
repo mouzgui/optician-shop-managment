@@ -28,7 +28,10 @@ export default function Create() {
                     {t("business.branches.create.title")}
                 </h1>
 
-                <form onSubmit={submit} className="bg-bg-primary p-6 rounded-xl border border-border-subtle shadow-sm space-y-4">
+                <form
+                    onSubmit={submit}
+                    className="bg-bg-primary p-6 rounded-xl border border-border-subtle shadow-sm space-y-4"
+                >
                     <div>
                         <label className="block text-sm font-medium text-text-secondary">
                             {t("business.branches.fields.name")}
@@ -37,10 +40,14 @@ export default function Create() {
                             type="text"
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             required
                         />
-                        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                        {errors.name && (
+                            <p className="mt-1 text-xs text-red-500">
+                                {errors.name}
+                            </p>
+                        )}
                     </div>
 
                     <div>
@@ -50,10 +57,14 @@ export default function Create() {
                         <textarea
                             value={data.address}
                             onChange={(e) => setData("address", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             rows={3}
                         />
-                        {errors.address && <p className="mt-1 text-xs text-red-500">{errors.address}</p>}
+                        {errors.address && (
+                            <p className="mt-1 text-xs text-status-error-text">
+                                {errors.address}
+                            </p>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
@@ -64,10 +75,16 @@ export default function Create() {
                             <input
                                 type="text"
                                 value={data.phone}
-                                onChange={(e) => setData("phone", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("phone", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             />
-                            {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
+                            {errors.phone && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.phone}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-text-secondary">
@@ -76,47 +93,70 @@ export default function Create() {
                             <input
                                 type="email"
                                 value={data.email}
-                                onChange={(e) => setData("email", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             />
-                            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                            {errors.email && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
                             <input
                                 type="checkbox"
                                 id="is_headquarters"
                                 checked={data.is_headquarters}
-                                onChange={(e) => setData("is_headquarters", e.target.checked)}
-                                className="rounded border-border-subtle text-primary-600 shadow-sm focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("is_headquarters", e.target.checked)
+                                }
+                                className="rounded border-border-default text-interactive-primary shadow-sm focus:ring-border-focus"
                             />
-                            <label htmlFor="is_headquarters" className="text-sm font-medium text-text-secondary">
+                            <label
+                                htmlFor="is_headquarters"
+                                className="text-sm font-medium text-text-secondary"
+                            >
                                 {t("business.branches.fields.is_hq")}
                             </label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-2">
                             <input
                                 type="checkbox"
                                 id="is_active"
                                 checked={data.is_active}
-                                onChange={(e) => setData("is_active", e.target.checked)}
-                                className="rounded border-border-subtle text-primary-600 shadow-sm focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("is_active", e.target.checked)
+                                }
+                                className="rounded border-border-default text-interactive-primary shadow-sm focus:ring-border-focus"
                             />
-                            <label htmlFor="is_active" className="text-sm font-medium text-text-secondary">
-                                {t("business.branches.fields.active_status")}
+                            <label
+                                htmlFor="is_active"
+                                className="text-sm font-medium text-text-secondary"
+                            >
+                                {t("business.branches.fields.is_active")}
                             </label>
                         </div>
                     </div>
 
-                    <div className="flex justify-end pt-6">
+                    <div className="flex justify-end gap-4">
+                        <button
+                            type="button"
+                            onClick={() => window.history.back()}
+                            className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                            {t("common.actions.cancel")}
+                        </button>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+                            className="px-4 py-2 bg-interactive-primary text-text-inverted rounded-lg hover:bg-interactive-primary-hover disabled:opacity-50 transition-colors"
                         >
-                            {t("business.branches.create.submit_btn")}
+                            {t("common.actions.save")}
                         </button>
                     </div>
                 </form>

@@ -1,6 +1,10 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { PrinterIcon, CalendarIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import {
+    PrinterIcon,
+    CalendarIcon,
+    ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 
 interface PrescriptionBase {
     id: number;
@@ -23,7 +27,7 @@ interface SpectacleRx extends PrescriptionBase {
     os_add: string | number | null;
     pd_far: string | number | null;
     pd_near: string | number | null;
-    pd_type: 'single' | 'dual';
+    pd_type: "single" | "dual";
 }
 
 interface ContactLensRx extends PrescriptionBase {
@@ -42,17 +46,20 @@ interface ContactLensRx extends PrescriptionBase {
 
 interface Props {
     rx: SpectacleRx | ContactLensRx;
-    type: 'spectacle' | 'contact_lens';
+    type: "spectacle" | "contact_lens";
 }
 
 export default function RxDisplay({ rx, type }: Props) {
     const { t } = useTranslation();
     const isExpired = new Date(rx.expires_at) < new Date();
-    const isExpiringSoon = !isExpired && new Date(rx.expires_at) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const isExpiringSoon =
+        !isExpired &&
+        new Date(rx.expires_at) <
+            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
     const formatValue = (val: string | number | null) => {
-        if (val === null || val === undefined || val === '') return '-';
-        if (typeof val === 'number') {
+        if (val === null || val === undefined || val === "") return "-";
+        if (typeof val === "number") {
             return val > 0 ? `+${val.toFixed(2)}` : val.toFixed(2);
         }
         const num = parseFloat(val);
@@ -61,7 +68,7 @@ export default function RxDisplay({ rx, type }: Props) {
     };
 
     const formatAxis = (val: number | null) => {
-        if (val === null || val === undefined) return '-';
+        if (val === null || val === undefined) return "-";
         return `${val}°`;
     };
 
@@ -73,27 +80,27 @@ export default function RxDisplay({ rx, type }: Props) {
         <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-sm overflow-hidden print:shadow-none print:border-none">
             {/* Header */}
             <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b dark:border-gray-700 flex justify-between items-center print:bg-white">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                     <CalendarIcon className="w-4 h-4 text-gray-400" />
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         {new Date(rx.prescribed_at).toLocaleDateString()}
                     </span>
                     {isExpired && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                            {t('clinical.rx.expired')}
+                            {t("clinical.rx.expired")}
                         </span>
                     )}
                     {isExpiringSoon && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                            <ExclamationTriangleIcon className="w-3 h-3 mr-1" />
-                            {t('clinical.rx.expiring_soon')}
+                            <ExclamationTriangleIcon className="w-3 h-3 me-1" />
+                            {t("clinical.rx.expiring_soon")}
                         </span>
                     )}
                 </div>
                 <button
                     onClick={handlePrint}
                     className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 print:hidden"
-                    title={t('common.print')}
+                    title={t("common.print")}
                 >
                     <PrinterIcon className="w-5 h-5" />
                 </button>
@@ -104,46 +111,90 @@ export default function RxDisplay({ rx, type }: Props) {
                 <table className="w-full text-sm border-collapse">
                     <thead>
                         <tr className="text-gray-500 dark:text-gray-400 uppercase text-xs">
-                            <th className="pb-2 text-left w-12"></th>
-                            <th className="pb-2 text-center">{t('clinical.rx.sphere')}</th>
-                            <th className="pb-2 text-center">{t('clinical.rx.cylinder')}</th>
-                            <th className="pb-2 text-center">{t('clinical.rx.axis')}</th>
-                            {type === 'spectacle' ? (
-                                <th className="pb-2 text-center">{t('clinical.rx.add')}</th>
+                            <th className="pb-2 text-start w-12"></th>
+                            <th className="pb-2 text-center">
+                                {t("clinical.rx.sphere")}
+                            </th>
+                            <th className="pb-2 text-center">
+                                {t("clinical.rx.cylinder")}
+                            </th>
+                            <th className="pb-2 text-center">
+                                {t("clinical.rx.axis")}
+                            </th>
+                            {type === "spectacle" ? (
+                                <th className="pb-2 text-center">
+                                    {t("clinical.rx.add")}
+                                </th>
                             ) : (
                                 <>
-                                    <th className="pb-2 text-center">{t('clinical.rx.bc')}</th>
-                                    <th className="pb-2 text-center">{t('clinical.rx.dia')}</th>
+                                    <th className="pb-2 text-center">
+                                        {t("clinical.rx.bc")}
+                                    </th>
+                                    <th className="pb-2 text-center">
+                                        {t("clinical.rx.dia")}
+                                    </th>
                                 </>
                             )}
                         </tr>
                     </thead>
                     <tbody className="divide-y dark:divide-gray-700">
                         <tr>
-                            <td className="py-3 font-bold text-gray-700 dark:text-gray-300">OD</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatValue(rx.od_sphere)}</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatValue(rx.od_cylinder)}</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatAxis(rx.od_axis)}</td>
-                            {type === 'spectacle' ? (
-                                <td className="py-3 text-center font-mono text-lg">{formatValue((rx as SpectacleRx).od_add)}</td>
+                            <td className="py-3 font-bold text-gray-700 dark:text-gray-300">
+                                OD
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatValue(rx.od_sphere)}
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatValue(rx.od_cylinder)}
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatAxis(rx.od_axis)}
+                            </td>
+                            {type === "spectacle" ? (
+                                <td className="py-3 text-center font-mono text-lg">
+                                    {formatValue((rx as SpectacleRx).od_add)}
+                                </td>
                             ) : (
                                 <>
-                                    <td className="py-3 text-center font-mono text-lg">{(rx as ContactLensRx).od_base_curve || '-'}</td>
-                                    <td className="py-3 text-center font-mono text-lg">{(rx as ContactLensRx).od_diameter || '-'}</td>
+                                    <td className="py-3 text-center font-mono text-lg">
+                                        {(rx as ContactLensRx).od_base_curve ||
+                                            "-"}
+                                    </td>
+                                    <td className="py-3 text-center font-mono text-lg">
+                                        {(rx as ContactLensRx).od_diameter ||
+                                            "-"}
+                                    </td>
                                 </>
                             )}
                         </tr>
                         <tr>
-                            <td className="py-3 font-bold text-gray-700 dark:text-gray-300">OS</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatValue(rx.os_sphere)}</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatValue(rx.os_cylinder)}</td>
-                            <td className="py-3 text-center font-mono text-lg">{formatAxis(rx.os_axis)}</td>
-                            {type === 'spectacle' ? (
-                                <td className="py-3 text-center font-mono text-lg">{formatValue((rx as SpectacleRx).os_add)}</td>
+                            <td className="py-3 font-bold text-gray-700 dark:text-gray-300">
+                                OS
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatValue(rx.os_sphere)}
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatValue(rx.os_cylinder)}
+                            </td>
+                            <td className="py-3 text-center font-mono text-lg">
+                                {formatAxis(rx.os_axis)}
+                            </td>
+                            {type === "spectacle" ? (
+                                <td className="py-3 text-center font-mono text-lg">
+                                    {formatValue((rx as SpectacleRx).os_add)}
+                                </td>
                             ) : (
                                 <>
-                                    <td className="py-3 text-center font-mono text-lg">{(rx as ContactLensRx).os_base_curve || '-'}</td>
-                                    <td className="py-3 text-center font-mono text-lg">{(rx as ContactLensRx).os_diameter || '-'}</td>
+                                    <td className="py-3 text-center font-mono text-lg">
+                                        {(rx as ContactLensRx).os_base_curve ||
+                                            "-"}
+                                    </td>
+                                    <td className="py-3 text-center font-mono text-lg">
+                                        {(rx as ContactLensRx).os_diameter ||
+                                            "-"}
+                                    </td>
                                 </>
                             )}
                         </tr>
@@ -152,31 +203,40 @@ export default function RxDisplay({ rx, type }: Props) {
 
                 {/* Additional Details */}
                 <div className="mt-4 pt-4 border-t dark:border-gray-700 grid grid-cols-2 gap-4 text-xs">
-                    {type === 'spectacle' && (
+                    {type === "spectacle" && (
                         <div>
                             <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                                {t('clinical.rx.pd')} ({(rx as SpectacleRx).pd_type})
+                                {t("clinical.rx.pd")} (
+                                {(rx as SpectacleRx).pd_type})
                             </span>
                             <span className="font-medium dark:text-gray-200">
-                                Far: {(rx as SpectacleRx).pd_far || '-'} / Near: {(rx as SpectacleRx).pd_near || '-'}
+                                Far: {(rx as SpectacleRx).pd_far || "-"} / Near:{" "}
+                                {(rx as SpectacleRx).pd_near || "-"}
                             </span>
                         </div>
                     )}
-                    {type === 'contact_lens' && (rx as ContactLensRx).replacement_schedule && (
-                        <div>
-                            <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                                {t('clinical.rx.replacement')}
-                            </span>
-                            <span className="font-medium dark:text-gray-200">
-                                {(rx as ContactLensRx).replacement_schedule}
-                            </span>
-                        </div>
-                    )}
+                    {type === "contact_lens" &&
+                        (rx as ContactLensRx).replacement_schedule && (
+                            <div>
+                                <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
+                                    {t("clinical.rx.replacement")}
+                                </span>
+                                <span className="font-medium dark:text-gray-200">
+                                    {(rx as ContactLensRx).replacement_schedule}
+                                </span>
+                            </div>
+                        )}
                     <div>
                         <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                            {t('clinical.rx.expires')}
+                            {t("clinical.rx.expires")}
                         </span>
-                        <span className={`font-medium ${isExpired ? 'text-red-600' : 'dark:text-gray-200'}`}>
+                        <span
+                            className={`font-medium ${
+                                isExpired
+                                    ? "text-red-600"
+                                    : "dark:text-gray-200"
+                            }`}
+                        >
                             {new Date(rx.expires_at).toLocaleDateString()}
                         </span>
                     </div>
@@ -185,17 +245,18 @@ export default function RxDisplay({ rx, type }: Props) {
                 {rx.notes && (
                     <div className="mt-4 text-xs">
                         <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                            {t('common.notes')}
+                            {t("common.notes")}
                         </span>
                         <p className="text-gray-700 dark:text-gray-300 italic">
                             {rx.notes}
                         </p>
                     </div>
                 )}
-                
+
                 {rx.prescribed_by && (
-                    <div className="mt-4 text-xs text-right text-gray-500">
-                        {t('clinical.rx.prescribed_by')}: {rx.prescribed_by.name}
+                    <div className="mt-4 text-xs text-end text-gray-500">
+                        {t("clinical.rx.prescribed_by")}:{" "}
+                        {rx.prescribed_by.name}
                     </div>
                 )}
             </div>

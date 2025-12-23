@@ -49,7 +49,10 @@ export default function Edit({ staff, branches }: EditProps) {
                     {t("business.staff.edit.title")}
                 </h1>
 
-                <form onSubmit={submit} className="bg-bg-primary p-6 rounded-xl border border-border-subtle shadow-sm space-y-4">
+                <form
+                    onSubmit={submit}
+                    className="bg-bg-primary p-6 rounded-xl border border-border-subtle shadow-sm space-y-4"
+                >
                     <div>
                         <label className="block text-sm font-medium text-text-secondary">
                             {t("business.staff.fields.name")}
@@ -58,10 +61,14 @@ export default function Edit({ staff, branches }: EditProps) {
                             type="text"
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             required
                         />
-                        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                        {errors.name && (
+                            <p className="mt-1 text-xs text-status-error-text">
+                                {errors.name}
+                            </p>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
@@ -72,11 +79,17 @@ export default function Edit({ staff, branches }: EditProps) {
                             <input
                                 type="email"
                                 value={data.email}
-                                onChange={(e) => setData("email", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                                 required
                             />
-                            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                            {errors.email && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-text-secondary">
@@ -85,11 +98,19 @@ export default function Edit({ staff, branches }: EditProps) {
                             <input
                                 type="password"
                                 value={data.password}
-                                onChange={(e) => setData("password", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                                placeholder={t("business.staff.fields.password_placeholder")}
+                                onChange={(e) =>
+                                    setData("password", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
+                                placeholder={t(
+                                    "business.staff.fields.password_placeholder"
+                                )}
                             />
-                            {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
+                            {errors.password && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.password}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -100,16 +121,32 @@ export default function Edit({ staff, branches }: EditProps) {
                             </label>
                             <select
                                 value={data.role}
-                                onChange={(e) => setData("role", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("role", e.target.value)
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             >
-                                <option value="optometrist">{t("roles.optometrist")}</option>
-                                <option value="receptionist">{t("roles.receptionist")}</option>
-                                <option value="sales_agent">{t("roles.sales_agent")}</option>
-                                <option value="lab_technician">{t("roles.lab_technician")}</option>
-                                <option value="inventory_manager">{t("roles.inventory_manager")}</option>
+                                <option value="optometrist">
+                                    {t("roles.optometrist")}
+                                </option>
+                                <option value="receptionist">
+                                    {t("roles.receptionist")}
+                                </option>
+                                <option value="sales_agent">
+                                    {t("roles.sales_agent")}
+                                </option>
+                                <option value="lab_technician">
+                                    {t("roles.lab_technician")}
+                                </option>
+                                <option value="inventory_manager">
+                                    {t("roles.inventory_manager")}
+                                </option>
                             </select>
-                            {errors.role && <p className="mt-1 text-xs text-red-500">{errors.role}</p>}
+                            {errors.role && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.role}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-text-secondary">
@@ -117,8 +154,10 @@ export default function Edit({ staff, branches }: EditProps) {
                             </label>
                             <select
                                 value={data.branch_id}
-                                onChange={(e) => setData("branch_id", Number(e.target.value))}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("branch_id", Number(e.target.value))
+                                }
+                                className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                             >
                                 {branches.map((branch) => (
                                     <option key={branch.id} value={branch.id}>
@@ -126,7 +165,11 @@ export default function Edit({ staff, branches }: EditProps) {
                                     </option>
                                 ))}
                             </select>
-                            {errors.branch_id && <p className="mt-1 text-xs text-red-500">{errors.branch_id}</p>}
+                            {errors.branch_id && (
+                                <p className="mt-1 text-xs text-status-error-text">
+                                    {errors.branch_id}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -138,31 +181,47 @@ export default function Edit({ staff, branches }: EditProps) {
                             type="text"
                             value={data.phone}
                             onChange={(e) => setData("phone", e.target.value)}
-                            className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-border-default bg-bg-base text-text-primary shadow-sm focus:border-border-focus focus:ring-1 focus:ring-border-focus transition-colors"
                         />
-                        {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
+                        {errors.phone && (
+                            <p className="mt-1 text-xs text-status-error-text">
+                                {errors.phone}
+                            </p>
+                        )}
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
                         <input
                             type="checkbox"
                             id="is_active"
                             checked={data.is_active}
-                            onChange={(e) => setData("is_active", e.target.checked)}
-                            className="rounded border-border-subtle text-primary-600 shadow-sm focus:ring-primary-500"
+                            onChange={(e) =>
+                                setData("is_active", e.target.checked)
+                            }
+                            className="rounded border-border-default text-interactive-primary shadow-sm focus:ring-border-focus"
                         />
-                        <label htmlFor="is_active" className="text-sm font-medium text-text-secondary">
-                            {t("business.staff.fields.active_status")}
+                        <label
+                            htmlFor="is_active"
+                            className="text-sm font-medium text-text-secondary"
+                        >
+                            {t("business.staff.fields.is_active")}
                         </label>
                     </div>
 
-                    <div className="flex justify-end pt-6">
+                    <div className="flex justify-end gap-4">
+                        <button
+                            type="button"
+                            onClick={() => window.history.back()}
+                            className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                            {t("common.actions.cancel")}
+                        </button>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+                            className="px-4 py-2 bg-interactive-primary text-text-inverted rounded-lg hover:bg-interactive-primary-hover disabled:opacity-50 transition-colors"
                         >
-                            {t("business.staff.edit.submit_btn")}
+                            {t("common.actions.save")}
                         </button>
                     </div>
                 </form>

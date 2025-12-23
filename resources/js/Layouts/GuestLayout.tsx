@@ -28,7 +28,15 @@ export function GuestLayout({
     useEffect(() => {
         if (branding?.primary_color) {
             document.documentElement.style.setProperty(
+                "--interactive-primary",
+                branding.primary_color
+            );
+            document.documentElement.style.setProperty(
                 "--color-primary-600",
+                branding.primary_color
+            );
+            document.documentElement.style.setProperty(
+                "--border-focus",
                 branding.primary_color
             );
         }
@@ -48,7 +56,7 @@ export function GuestLayout({
         <div className="min-h-screen flex flex-col bg-bg-subtle">
             <Toaster position="top-right" />
             {/* Header with theme/language toggles */}
-            <div className="absolute top-4 right-4 flex items-center gap-3">
+            <div className="absolute top-4 end-4 flex items-center gap-3">
                 <ThemeToggle />
                 <LanguageSwitcher />
             </div>

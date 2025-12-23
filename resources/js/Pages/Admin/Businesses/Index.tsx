@@ -48,16 +48,16 @@ export default function Index({ businesses }: IndexProps) {
                     <table className="min-w-full divide-y divide-border-subtle">
                         <thead className="bg-bg-muted">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("admin.businesses.fields.name")}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("admin.businesses.fields.owner")}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("admin.businesses.fields.status")}
                                 </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                <th className="px-6 py-3 text-end text-xs font-medium text-text-secondary uppercase tracking-wider">
                                     {t("admin.businesses.fields.actions")}
                                 </th>
                             </tr>
@@ -85,7 +85,7 @@ export default function Index({ businesses }: IndexProps) {
                                                 : t("common.status.inactive")}
                                         </button>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <Link
                                             href={route("admin.businesses.edit", business.id)}
                                             className="text-primary-600 hover:text-primary-900"
