@@ -1,7 +1,12 @@
 import React from "react";
-import { Head, useForm } from "@inertiajs/react";
-import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm, Link } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
+import { Input } from "@/Components/UI/Input";
+import { Select } from "@/Components/UI/Select";
+import { Button } from "@/Components/UI/Button";
+import { Card } from "@/Components/UI/Card";
+import { ArrowLeft } from "lucide-react";
 
 export default function Create() {
     const { t } = useTranslation();
@@ -25,115 +30,153 @@ export default function Create() {
         <AuthenticatedLayout>
             <Head title={t("admin.businesses.create.title")} />
 
-            <div className="max-w-2xl mx-auto space-y-6">
-                <h1 className="text-2xl font-bold text-text-primary">
-                    {t("admin.businesses.create.title")}
-                </h1>
+            <div className="space-y-6 max-w-2xl mx-auto">
+                <div className="flex items-center gap-4">
+                    <Link
+                        href={route("admin.businesses.index")}
+                        className="p-2 rounded-lg hover:bg-bg-subtle text-text-muted hover:text-text-primary transition-all"
+                    >
+                        <ArrowLeft className="w-5 h-5 icon-flip" />
+                    </Link>
+                    <h1 className="text-2xl font-bold text-text-primary">
+                        {t("admin.businesses.create.title")}
+                    </h1>
+                </div>
 
-                <form onSubmit={submit} className="bg-bg-primary p-6 rounded-xl border border-border-subtle shadow-sm space-y-4">
-                    <div className="space-y-4">
-                        <h2 className="text-lg font-semibold text-text-primary border-b border-border-subtle pb-2">
-                            {t("admin.businesses.sections.business_info")}
-                        </h2>
-                        
-                        <div>
-                            <label className="block text-sm font-medium text-text-secondary">
-                                {t("admin.businesses.fields.name")}
-                            </label>
-                            <input
+                <Card className="p-6">
+                    <form onSubmit={submit} className="space-y-8">
+                        <div className="space-y-4">
+                            <h2 className="text-lg font-semibold text-text-primary border-b border-border-subtle pb-2">
+                                {t("admin.businesses.sections.business_info")}
+                            </h2>
+
+                            <Input
+                                id="name"
+                                label={t("admin.businesses.fields.name")}
+                                error={errors.name}
                                 type="text"
+                                placeholder={t(
+                                    "admin.businesses.fields.name_placeholder"
+                                )}
                                 value={data.name}
-                                onChange={(e) => setData("name", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                onChange={(e) =>
+                                    setData("name", e.target.value)
+                                }
+                                required
                             />
-                            {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-text-secondary">
-                                    {t("admin.businesses.fields.primary_color")}
-                                </label>
-                                <input
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Input
+                                    id="primary_color"
+                                    label={t(
+                                        "admin.businesses.fields.primary_color"
+                                    )}
+                                    error={errors.primary_color}
                                     type="color"
                                     value={data.primary_color}
-                                    onChange={(e) => setData("primary_color", e.target.value)}
-                                    className="mt-1 block w-full h-10 rounded-md border-border-subtle bg-bg-muted"
+                                    onChange={(e) =>
+                                        setData("primary_color", e.target.value)
+                                    }
+                                    className="h-10"
+                                />
+                                <Select
+                                    id="default_language"
+                                    label={t(
+                                        "admin.businesses.fields.default_language"
+                                    )}
+                                    error={errors.default_language}
+                                    value={data.default_language}
+                                    onChange={(e) =>
+                                        setData(
+                                            "default_language",
+                                            e.target.value
+                                        )
+                                    }
+                                    options={[
+                                        { value: "en", label: "English" },
+                                        { value: "ar", label: "Arabic" },
+                                        { value: "fr", label: "French" },
+                                        { value: "es", label: "Spanish" },
+                                    ]}
                                 />
                             </div>
-                            <div>
-                                <label className="block text-sm font-medium text-text-secondary">
-                                    {t("admin.businesses.fields.default_language")}
-                                </label>
-                                <select
-                                    value={data.default_language}
-                                    onChange={(e) => setData("default_language", e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                                >
-                                    <option value="en">English</option>
-                                    <option value="ar">Arabic</option>
-                                    <option value="fr">French</option>
-                                    <option value="es">Spanish</option>
-                                </select>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h2 className="text-lg font-semibold text-text-primary border-b border-border-subtle pb-2">
+                                {t("admin.businesses.sections.owner_info")}
+                            </h2>
+
+                            <Input
+                                id="owner_name"
+                                label={t("admin.businesses.fields.owner_name")}
+                                error={errors.owner_name}
+                                type="text"
+                                placeholder={t(
+                                    "admin.businesses.fields.owner_name_placeholder"
+                                )}
+                                value={data.owner_name}
+                                onChange={(e) =>
+                                    setData("owner_name", e.target.value)
+                                }
+                                required
+                            />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Input
+                                    id="owner_email"
+                                    label={t(
+                                        "admin.businesses.fields.owner_email"
+                                    )}
+                                    error={errors.owner_email}
+                                    type="email"
+                                    placeholder={t(
+                                        "admin.businesses.fields.owner_email_placeholder"
+                                    )}
+                                    value={data.owner_email}
+                                    onChange={(e) =>
+                                        setData("owner_email", e.target.value)
+                                    }
+                                    required
+                                />
+                                <Input
+                                    id="owner_password"
+                                    label={t(
+                                        "admin.businesses.fields.owner_password"
+                                    )}
+                                    error={errors.owner_password}
+                                    type="password"
+                                    placeholder={t(
+                                        "admin.businesses.fields.owner_password_placeholder"
+                                    )}
+                                    value={data.owner_password}
+                                    onChange={(e) =>
+                                        setData(
+                                            "owner_password",
+                                            e.target.value
+                                        )
+                                    }
+                                    required
+                                />
                             </div>
                         </div>
-                    </div>
 
-                    <div className="space-y-4 pt-4">
-                        <h2 className="text-lg font-semibold text-text-primary border-b border-border-subtle pb-2">
-                            {t("admin.businesses.sections.owner_info")}
-                        </h2>
-
-                        <div>
-                            <label className="block text-sm font-medium text-text-secondary">
-                                {t("admin.businesses.fields.owner_name")}
-                            </label>
-                            <input
-                                type="text"
-                                value={data.owner_name}
-                                onChange={(e) => setData("owner_name", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                            />
-                            {errors.owner_name && <p className="mt-1 text-xs text-red-500">{errors.owner_name}</p>}
+                        <div className="flex justify-end gap-3 pt-6 border-t border-border-subtle">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() =>
+                                    router.get(route("admin.businesses.index"))
+                                }
+                            >
+                                {t("common.cancel")}
+                            </Button>
+                            <Button type="submit" isLoading={processing}>
+                                {t("common.create")}
+                            </Button>
                         </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-text-secondary">
-                                {t("admin.businesses.fields.owner_email")}
-                            </label>
-                            <input
-                                type="email"
-                                value={data.owner_email}
-                                onChange={(e) => setData("owner_email", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                            />
-                            {errors.owner_email && <p className="mt-1 text-xs text-red-500">{errors.owner_email}</p>}
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-text-secondary">
-                                {t("admin.businesses.fields.owner_password")}
-                            </label>
-                            <input
-                                type="password"
-                                value={data.owner_password}
-                                onChange={(e) => setData("owner_password", e.target.value)}
-                                className="mt-1 block w-full rounded-md border-border-subtle bg-bg-muted text-text-primary shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                            />
-                            {errors.owner_password && <p className="mt-1 text-xs text-red-500">{errors.owner_password}</p>}
-                        </div>
-                    </div>
-
-                    <div className="flex justify-end pt-6">
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
-                        >
-                            {t("admin.businesses.create.submit_btn")}
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </Card>
             </div>
         </AuthenticatedLayout>
     );

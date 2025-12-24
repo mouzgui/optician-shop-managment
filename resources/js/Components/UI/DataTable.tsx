@@ -24,9 +24,9 @@ export function DataTable<T>({
     emptyMessage = "No data found",
 }: DataTableProps<T>) {
     return (
-        <div className="bg-bg-primary rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+        <div className="bg-bg-primary rounded-xl border border-border-default shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-border-subtle">
+                <table className="min-w-full divide-y divide-border-default">
                     <thead className="bg-bg-muted">
                         <tr>
                             {columns.map((column, index) => (
@@ -41,7 +41,7 @@ export function DataTable<T>({
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-border-subtle">
+                    <tbody className="divide-y divide-border-default">
                         {isLoading ? (
                             Array.from({ length: 5 }).map((_, rowIndex) => (
                                 <tr key={rowIndex}>

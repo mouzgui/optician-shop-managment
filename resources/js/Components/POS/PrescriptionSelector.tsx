@@ -3,6 +3,7 @@ import { Eye, Activity, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
+import { Badge } from "@/Components/UI/Badge";
 
 interface Prescription {
     id: number;
@@ -45,22 +46,19 @@ const PrescriptionSelector: React.FC<PrescriptionSelectorProps> = ({
                         onClick={() => onSelect(rx.id, rx.type)}
                         className={`w-full text-start p-3 rounded-lg border transition-all ${
                             selectedPrescriptionId === rx.id
-                                ? "border-primary-600 bg-primary-50 ring-1 ring-primary-600"
+                                ? "border-primary-default bg-primary-subtle ring-1 ring-primary-default"
                                 : "border-border-default hover:border-border-strong bg-bg-subtle"
                         }`}
                     >
                         <div className="flex justify-between items-start mb-1">
-                            <span
-                                className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
-                                    rx.type === "spectacle"
-                                        ? "bg-blue-100 text-blue-700"
-                                        : "bg-purple-100 text-purple-700"
-                                }`}
+                            <Badge
+                                variant={rx.type === "spectacle" ? "info" : "warning"}
+                                className="text-[10px] uppercase"
                             >
                                 {rx.type === "spectacle"
                                     ? t("POS.prescriptions.type_spectacle")
                                     : t("POS.prescriptions.type_contact_lens")}
-                            </span>
+                            </Badge>
                             <span className="text-[10px] text-text-muted flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />
                                 {format(new Date(rx.date), "PP", {

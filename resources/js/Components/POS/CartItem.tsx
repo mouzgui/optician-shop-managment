@@ -58,18 +58,18 @@ const CartItem: React.FC<CartItemProps> = ({
                         onClick={() =>
                             onUpdateQuantity(item.cartId, item.quantity - 1)
                         }
-                        className="p-1 hover:bg-bg-subtle text-text-muted"
+                        className="p-1 hover:bg-bg-subtle text-text-muted transition-colors"
                     >
                         <Minus className="w-4 h-4" />
                     </button>
-                    <span className="px-3 py-1 text-sm font-medium border-x border-border-default min-w-[40px] text-center text-text-default">
+                    <span className="px-3 py-1 text-sm font-medium border-x border-border-default min-w-[40px] text-center text-text-default bg-bg-base">
                         {item.quantity}
                     </span>
                     <button
                         onClick={() =>
                             onUpdateQuantity(item.cartId, item.quantity + 1)
                         }
-                        className="p-1 hover:bg-bg-subtle text-text-muted"
+                        className="p-1 hover:bg-bg-subtle text-text-muted transition-colors"
                     >
                         <Plus className="w-4 h-4" />
                     </button>

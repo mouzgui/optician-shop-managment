@@ -2,6 +2,7 @@ import React from "react";
 import { Plus, Package, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePage } from "@inertiajs/react";
+import { Badge } from "@/Components/UI/Badge";
 
 interface Product {
     id: number;
@@ -38,10 +39,25 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         ).format(amount);
     };
 
+    const getTypeBadgeVariant = (type: string): "info" | "neutral" | "success" | "warning" => {
+        switch (type) {
+            case "frame":
+                return "info";
+            case "lens":
+                return "neutral";
+            case "contact_lens":
+                return "warning";
+            case "service":
+                return "success";
+            default:
+                return "neutral";
+        }
+    };
+
     if (isSearching) {
         return (
             <div className="flex justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-default"></div>
             </div>
         );
     }
@@ -53,20 +69,12 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                     <button
                         key={`${product.type}-${product.id}`}
                         onClick={() => onAddToCart(product)}
-                        className="flex flex-col text-start p-4 rounded-xl border border-border-default bg-bg-base hover:border-primary-500 hover:bg-primary-subtle transition-all group relative overflow-hidden"
+                        className="flex flex-col text-start p-4 rounded-xl border border-border-default bg-bg-base hover:border-primary-default hover:bg-primary-subtle transition-all group relative overflow-hidden"
                     >
                         <div className="flex items-start justify-between mb-2">
-                            <span
-                                className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                                    product.type === "frame"
-                                        ? "bg-blue-100 text-blue-700"
-                                        : product.type === "lens"
-                                        ? "bg-purple-100 text-purple-700"
-                                        : "bg-success-subtle text-success-strong"
-                                }`}
-                            >
+                            <Badge variant={getTypeBadgeVariant(product.type)} className="text-[10px] uppercase">
                                 {t(`POS.products.types.${product.type}`)}
-                            </span>
+                            </Badge>
                             {product.stock !== null && (
                                 <span
                                     className={`text-xs ${
@@ -86,7 +94,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                             {product.meta}
                         </p>
                         <div className="mt-auto pt-2 border-t border-border-subtle flex items-center justify-between">
-                            <span className="text-lg font-black text-primary-600">
+                            <span className="text-lg font-black text-primary-default">
                                 {formatCurrency(Number(product.price))}
                             </span>
                             <div className="bg-primary-subtle text-primary-strong p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">

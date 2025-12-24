@@ -1,9 +1,8 @@
 import React from "react";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
+import { Input } from "@/Components/UI/Input";
+import { Button } from "@/Components/UI/Button";
+import { Select } from "@/Components/UI/Select";
+import { TextArea } from "@/Components/UI/TextArea";
 import { useTranslation } from "react-i18next";
 
 import CustomerSearch from "@/Components/Forms/CustomerSearch";
@@ -61,206 +60,178 @@ export default function CustomerForm({
         <div className="space-y-6 max-w-2xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Name */}
-                <div>
-                    <InputLabel
-                        htmlFor="first_name"
-                        value={t("customers.fields.first_name")}
-                    />
-                    <TextInput
-                        id="first_name"
-                        type="text"
-                        className="mt-1 block w-full"
-                        value={data.first_name}
-                        onChange={(e) => setData("first_name", e.target.value)}
-                        required
-                    />
-                    <InputError message={errors.first_name} className="mt-2" />
-                </div>
+                <Input
+                    id="first_name"
+                    label={t("customers.fields.first_name")}
+                    error={errors.first_name}
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.first_name}
+                    onChange={(e) => setData("first_name", e.target.value)}
+                    required
+                />
 
                 {/* Last Name */}
-                <div>
-                    <InputLabel
-                        htmlFor="last_name"
-                        value={t("customers.fields.last_name")}
-                    />
-                    <TextInput
-                        id="last_name"
-                        type="text"
-                        className="mt-1 block w-full"
-                        value={data.last_name}
-                        onChange={(e) => setData("last_name", e.target.value)}
-                        required
-                    />
-                    <InputError message={errors.last_name} className="mt-2" />
-                </div>
+                <Input
+                    id="last_name"
+                    label={t("customers.fields.last_name")}
+                    error={errors.last_name}
+                    type="text"
+                    className="mt-1 block w-full"
+                    value={data.last_name}
+                    onChange={(e) => setData("last_name", e.target.value)}
+                    required
+                />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Phone */}
-                <div>
-                    <InputLabel
-                        htmlFor="phone"
-                        value={t("customers.fields.phone")}
-                    />
-                    <TextInput
-                        id="phone"
-                        type="tel"
-                        className="mt-1 block w-full"
-                        value={data.phone}
-                        onChange={(e) => setData("phone", e.target.value)}
-                        required
-                    />
-                    <InputError message={errors.phone} className="mt-2" />
-                </div>
+                <Input
+                    id="phone"
+                    label={t("customers.fields.phone")}
+                    error={errors.phone}
+                    type="tel"
+                    className="mt-1 block w-full"
+                    value={data.phone}
+                    onChange={(e) => setData("phone", e.target.value)}
+                    required
+                />
 
                 {/* Email */}
-                <div>
-                    <InputLabel
-                        htmlFor="email"
-                        value={t("customers.fields.email")}
-                    />
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                    />
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                <Input
+                    id="email"
+                    label={t("customers.fields.email")}
+                    error={errors.email}
+                    type="email"
+                    className="mt-1 block w-full"
+                    value={data.email}
+                    onChange={(e) => setData("email", e.target.value)}
+                />
             </div>
 
             {/* Address */}
-            <div>
-                <InputLabel
-                    htmlFor="address"
-                    value={t("customers.fields.address")}
-                />
-                <textarea
-                    id="address"
-                    className="mt-1 block w-full border-border-default bg-bg-base text-text-primary placeholder-text-muted focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
-                    value={data.address}
-                    onChange={(e) => setData("address", e.target.value)}
-                    rows={3}
-                />
-                <InputError message={errors.address} className="mt-2" />
-            </div>
+            <TextArea
+                id="address"
+                label={t("customers.fields.address")}
+                error={errors.address}
+                value={data.address}
+                onChange={(e) => setData("address", e.target.value)}
+                rows={3}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Date of Birth */}
-                <div>
-                    <InputLabel
-                        htmlFor="date_of_birth"
-                        value={t("customers.fields.date_of_birth")}
-                    />
-                    <TextInput
-                        id="date_of_birth"
-                        type="date"
-                        className="mt-1 block w-full"
-                        value={data.date_of_birth}
-                        onChange={(e) =>
-                            setData("date_of_birth", e.target.value)
-                        }
-                    />
-                    <InputError
-                        message={errors.date_of_birth}
-                        className="mt-2"
-                    />
-                </div>
+                <Input
+                    id="date_of_birth"
+                    label={t("customers.fields.date_of_birth")}
+                    error={errors.date_of_birth}
+                    type="date"
+                    className="mt-1 block w-full"
+                    value={data.date_of_birth}
+                    onChange={(e) => setData("date_of_birth", e.target.value)}
+                />
 
                 {/* Branch */}
-                <div>
-                    <InputLabel
-                        htmlFor="branch_id"
-                        value={t("customers.fields.branch")}
-                    />
-                    <select
-                        id="branch_id"
-                        className="mt-1 block w-full border-border-default bg-bg-base text-text-primary focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
-                        value={data.branch_id}
-                        onChange={(e) => setData("branch_id", e.target.value)}
-                    >
-                        <option value="">{t("customers.select_branch")}</option>
-                        {branches.map((branch) => (
-                            <option key={branch.id} value={branch.id}>
-                                {branch.name}
-                            </option>
-                        ))}
-                    </select>
-                    <InputError message={errors.branch_id} className="mt-2" />
-                </div>
+                <Select
+                    id="branch_id"
+                    label={t("customers.fields.branch")}
+                    error={errors.branch_id}
+                    value={data.branch_id}
+                    onChange={(e) => setData("branch_id", e.target.value)}
+                    required
+                    options={[
+                        { value: "", label: t("common.select_branch") },
+                        ...branches.map((branch) => ({
+                            value: branch.id,
+                            label: branch.name,
+                        })),
+                    ]}
+                />
+
+                {/* Gender */}
+                <Select
+                    id="gender"
+                    label={t("customers.fields.gender")}
+                    error={errors.gender}
+                    value={data.gender}
+                    onChange={(e) => setData("gender", e.target.value)}
+                    options={[
+                        { value: "", label: t("common.select") },
+                        {
+                            value: "male",
+                            label: t("customers.genders.male"),
+                        },
+                        {
+                            value: "female",
+                            label: t("customers.genders.female"),
+                        },
+                        {
+                            value: "other",
+                            label: t("customers.genders.other"),
+                        },
+                    ]}
+                />
             </div>
 
-            {/* Family Head */}
-            <div>
-                <InputLabel
-                    htmlFor="family_head_id"
-                    value={t("customers.fields.family_head")}
-                />
-                <div className="mt-1">
+            {/* Family Head Selection */}
+            <div className="space-y-4 border-t border-border-default pt-6">
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-text-secondary">
+                        {t("customers.fields.family_head")}
+                    </label>
                     <CustomerSearch
                         onSelect={handleSelectHead}
                         placeholder={t("customers.search_family_head")}
                         className="w-full"
                     />
                 </div>
-                <InputError message={errors.family_head_id} className="mt-2" />
-                {data.family_head_id && (
-                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 flex items-center justify-between bg-gray-50 dark:bg-gray-900 p-2 rounded">
+
+                {selectedHead && (
+                    <div className="mt-2 text-sm text-text-secondary flex items-center justify-between bg-bg-subtle p-2 rounded">
                         <span>
                             {t("customers.selected_head")}:{" "}
-                            {selectedHead
-                                ? `${selectedHead.first_name} ${selectedHead.last_name}`
-                                : potentialFamilyHeads.find(
-                                      (h) => h.id === data.family_head_id
-                                  )
-                                ? `${
-                                      potentialFamilyHeads.find(
-                                          (h) => h.id === data.family_head_id
-                                      )?.first_name
-                                  } ${
-                                      potentialFamilyHeads.find(
-                                          (h) => h.id === data.family_head_id
-                                      )?.last_name
-                                  }`
-                                : t("common.loading")}
+                            {selectedHead.first_name} {selectedHead.last_name}
                         </span>
-                        <button
+                        <Button
                             type="button"
+                            variant="secondary"
                             onClick={handleRemoveHead}
-                            className="text-red-600 hover:text-red-800 text-xs font-medium"
+                            className="!py-1 !px-2 text-xs"
                         >
                             {t("common.remove")}
-                        </button>
+                        </Button>
                     </div>
+                )}
+                {errors.family_head_id && (
+                    <p className="text-xs text-status-error-text">
+                        {errors.family_head_id}
+                    </p>
                 )}
             </div>
 
             {/* Notes */}
-            <div>
-                <InputLabel
-                    htmlFor="notes"
-                    value={t("customers.fields.notes")}
-                />
-                <textarea
-                    id="notes"
-                    className="mt-1 block w-full border-border-default bg-bg-base text-text-primary placeholder-text-muted focus:border-border-focus focus:ring-1 focus:ring-border-focus rounded-md shadow-sm transition-colors"
-                    value={data.notes}
-                    onChange={(e) => setData("notes", e.target.value)}
-                    rows={3}
-                />
-                <InputError message={errors.notes} className="mt-2" />
-            </div>
+            <TextArea
+                id="notes"
+                label={t("customers.fields.notes")}
+                error={errors.notes}
+                value={data.notes}
+                onChange={(e) => setData("notes", e.target.value)}
+                rows={3}
+            />
 
-            <div className="flex items-center justify-end gap-4">
-                {onCancel && (
-                    <SecondaryButton onClick={onCancel} disabled={processing}>
-                        {t("common.cancel")}
-                    </SecondaryButton>
-                )}
-                <PrimaryButton disabled={processing}>
+            {/* Form Actions */}
+            <div className="flex items-center justify-end gap-4 border-t border-border-default pt-6">
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={onCancel}
+                    disabled={processing}
+                >
+                    {t("common.cancel")}
+                </Button>
+                <Button type="submit" disabled={processing}>
                     {submitLabel || t("common.save")}
-                </PrimaryButton>
+                </Button>
             </div>
         </div>
     );

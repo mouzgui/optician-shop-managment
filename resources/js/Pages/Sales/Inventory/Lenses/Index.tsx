@@ -2,12 +2,7 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import {
-    PlusIcon,
-    MagnifyingGlassIcon,
-    PencilSquareIcon,
-    TrashIcon,
-} from "@heroicons/react/24/outline";
+import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/Components/UI/Card";
 import { Button } from "@/Components/UI/Button";
 import { DataTable } from "@/Components/UI/DataTable";
@@ -95,31 +90,34 @@ export default function Index({ lenses, filters }: Props) {
             ),
         },
         {
-            header: t("inventory.lenses.fields.selling_price"),
-            accessor: (item: Lens) =>
-                new Intl.NumberFormat(undefined, {
-                    style: "currency",
-                    currency: business?.currency_code || "AED",
-                }).format(item.selling_price),
+            header: t("inventory.lenses.fields.price"),
+            accessor: (item: Lens) => (
+                <span className="font-bold text-text-primary">
+                    {new Intl.NumberFormat(undefined, {
+                        style: "currency",
+                        currency: business.currency_code,
+                    }).format(item.selling_price)}
+                </span>
+            ),
         },
         {
             header: t("common.actions"),
-            id: "actions",
-            className: "text-end",
             accessor: (item: Lens) => (
-                <div className="flex justify-end gap-3">
+                <div className="flex gap-2">
                     <Link
                         href={route("business.inventory.lenses.edit", item.id)}
-                        className="text-interactive-primary hover:text-interactive-primary-hover transition-colors"
                     >
-                        <PencilSquareIcon className="w-5 h-5" />
+                        <Button variant="secondary" size="sm">
+                            <Pencil className="w-4 h-4" />
+                        </Button>
                     </Link>
-                    <button
+                    <Button
+                        variant="danger"
+                        size="sm"
                         onClick={() => deleteLens(item.id)}
-                        className="text-error-default hover:text-error-hover transition-colors"
                     >
-                        <TrashIcon className="w-5 h-5" />
-                    </button>
+                        <Trash2 className="w-4 h-4" />
+                    </Button>
                 </div>
             ),
         },
@@ -129,13 +127,13 @@ export default function Index({ lenses, filters }: Props) {
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-text-primary leading-tight">
+                    <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("inventory.lenses.title")}
                     </h2>
                     <Link href={route("business.inventory.lenses.create")}>
-                        <Button>
-                            <PlusIcon className="w-4 h-4 me-2" />
-                            {t("inventory.lenses.add_new")}
+                        <Button className="flex items-center gap-2">
+                            <Plus className="w-4 h-4" />
+                            {t("inventory.lenses.create_button")}
                         </Button>
                     </Link>
                 </div>
@@ -143,45 +141,27 @@ export default function Index({ lenses, filters }: Props) {
         >
             <Head title={t("inventory.lenses.title")} />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                            <form
-                                onSubmit={handleSearch}
-                                className="flex-1 max-w-md"
-                            >
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
-                                        <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        value={search}
-                                        onChange={(e) =>
-                                            setSearch(e.target.value)
-                                        }
-                                        className="block w-full ps-10 pe-3 py-2 border border-border-default rounded-lg bg-bg-primary text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-interactive-primary focus:border-transparent sm:text-sm"
-                                        placeholder={t(
-                                            "inventory.lenses.search_placeholder"
-                                        )}
-                                    />
-                                </div>
-                            </form>
-                        </div>
-
-                        <DataTable
-                            columns={columns}
-                            data={lenses.data}
-                            keyField="id"
-                            emptyMessage={t("inventory.lenses.no_results")}
-                            pagination={{
-                                meta: lenses.meta,
-                                links: lenses.links,
-                            }}
+            <div className="space-y-6">
+                <Card className="p-4">
+                    <form onSubmit={handleSearch} className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder={t("common.search")}
+                            className="w-full pl-10 pr-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
                         />
-                    </Card>
-                </div>
+                    </form>
+                </Card>
+
+                <Card>
+                    <DataTable
+                        columns={columns}
+                        data={lenses.data}
+                        meta={lenses.meta}
+                    />
+                </Card>
             </div>
         </AuthenticatedLayout>
     );

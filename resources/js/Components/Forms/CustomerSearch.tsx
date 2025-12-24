@@ -101,11 +101,11 @@ export default function CustomerSearch({
         <div className={`relative ${className}`} ref={dropdownRef}>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                    <MagnifyingGlassIcon className="h-5 w-5 text-text-muted" />
                 </div>
                 <input
                     type="text"
-                    className="block w-full ps-10 pe-10 py-2 border border-gray-300 dark:border-gray-700 rounded-md leading-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors"
+                    className="block w-full ps-10 pe-10 py-2 border border-input-border rounded-lg leading-5 bg-input-bg text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-input-border-focus focus:border-input-border-focus sm:text-sm transition-colors"
                     placeholder={
                         placeholder || t("customers.search_placeholder")
                     }
@@ -118,7 +118,7 @@ export default function CustomerSearch({
                 {query && (
                     <button
                         onClick={clearSearch}
-                        className="absolute inset-y-0 end-0 pe-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                        className="absolute inset-y-0 end-0 pe-3 flex items-center text-text-muted hover:text-text-primary"
                     >
                         <XMarkIcon className="h-5 w-5" />
                     </button>
@@ -126,9 +126,9 @@ export default function CustomerSearch({
             </div>
 
             {isOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                <div className="absolute z-10 mt-1 w-full bg-bg-base border border-border-default shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     {loading ? (
-                        <div className="px-4 py-2 text-gray-500 dark:text-gray-400">
+                        <div className="px-4 py-2 text-text-muted">
                             {t("common.searching")}...
                         </div>
                     ) : results.length > 0 ? (
@@ -137,13 +137,13 @@ export default function CustomerSearch({
                                 <button
                                     key={customer.id}
                                     onClick={() => handleSelect(customer)}
-                                    className="w-full text-start px-4 py-2 hover:bg-indigo-600 hover:text-white transition-colors flex flex-col"
+                                    className="w-full text-start px-4 py-2 hover:bg-bg-subtle hover:text-interactive-primary transition-colors flex flex-col"
                                 >
-                                    <span className="font-medium">
+                                    <span className="font-medium text-text-primary">
                                         {customer.first_name}{" "}
                                         {customer.last_name}
                                     </span>
-                                    <span className="text-xs opacity-80">
+                                    <span className="text-xs text-text-secondary opacity-80">
                                         {customer.phone}
                                     </span>
                                 </button>
@@ -151,12 +151,12 @@ export default function CustomerSearch({
                         </>
                     ) : query.length > 0 ? (
                         <div className="px-4 py-3 text-center">
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                            <p className="text-sm text-text-muted mb-2">
                                 {t("customers.no_results_found")}
                             </p>
                             <Link
                                 href={route("business.customers.create")}
-                                className="inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500"
+                                className="inline-flex items-center text-sm font-medium text-interactive-primary hover:text-interactive-hover"
                             >
                                 <UserPlusIcon className="h-4 w-4 me-1" />
                                 {t("customers.add_new")}

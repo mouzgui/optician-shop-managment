@@ -1,10 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
+import { Input } from "@/Components/UI/Input";
+import { Select } from "@/Components/UI/Select";
+import { Button } from "@/Components/UI/Button";
 
 interface LensFormData {
     name: string;
@@ -78,133 +76,88 @@ export default function LensForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Basic Info */}
                 <div className="space-y-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    <h3 className="text-lg font-medium text-text-primary">
                         {t("inventory.lenses.sections.basic_info")}
                     </h3>
 
-                    <div>
-                        <InputLabel
-                            htmlFor="name"
-                            value={t("inventory.lenses.fields.name")}
-                        />
-                        <TextInput
-                            id="name"
+                    <Input
+                        id="name"
+                        label={t("inventory.lenses.fields.name")}
+                        error={errors.name}
+                        type="text"
+                        className="mt-1 block w-full"
+                        value={data.name}
+                        onChange={(e) => setData("name", e.target.value)}
+                        required
+                    />
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            id="brand"
+                            label={t("inventory.lenses.fields.brand")}
+                            error={errors.brand}
                             type="text"
                             className="mt-1 block w-full"
-                            value={data.name}
-                            onChange={(e) => setData("name", e.target.value)}
-                            required
+                            value={data.brand}
+                            onChange={(e) => setData("brand", e.target.value)}
                         />
-                        <InputError message={errors.name} className="mt-2" />
+                        <Select
+                            id="type"
+                            label={t("inventory.lenses.fields.type")}
+                            error={errors.type}
+                            value={data.type}
+                            onChange={(e) => setData("type", e.target.value)}
+                            required
+                            options={[
+                                { value: "", label: t("common.select") },
+                                ...lensTypes.map((type) => ({
+                                    value: type.id,
+                                    label: type.name,
+                                })),
+                            ]}
+                        />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="brand"
-                                value={t("inventory.lenses.fields.brand")}
-                            />
-                            <TextInput
-                                id="brand"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={data.brand}
-                                onChange={(e) =>
-                                    setData("brand", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.brand}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel
-                                htmlFor="type"
-                                value={t("inventory.lenses.fields.type")}
-                            />
-                            <select
-                                id="type"
-                                className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                value={data.type}
-                                onChange={(e) =>
-                                    setData("type", e.target.value)
-                                }
-                                required
-                            >
-                                <option value="">{t("common.select")}</option>
-                                {lensTypes.map((type) => (
-                                    <option key={type.id} value={type.id}>
-                                        {type.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <InputError
-                                message={errors.type}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="index"
-                                value={t("inventory.lenses.fields.index")}
-                            />
-                            <select
-                                id="index"
-                                className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                value={data.index}
-                                onChange={(e) =>
-                                    setData("index", e.target.value)
-                                }
-                                required
-                            >
-                                <option value="">{t("common.select")}</option>
-                                {lensIndices.map((idx) => (
-                                    <option key={idx} value={idx}>
-                                        {idx}
-                                    </option>
-                                ))}
-                            </select>
-                            <InputError
-                                message={errors.index}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel
-                                htmlFor="material"
-                                value={t("inventory.lenses.fields.material")}
-                            />
-                            <TextInput
-                                id="material"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={data.material}
-                                onChange={(e) =>
-                                    setData("material", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.material}
-                                className="mt-2"
-                            />
-                        </div>
+                        <Select
+                            id="index"
+                            label={t("inventory.lenses.fields.index")}
+                            error={errors.index}
+                            value={data.index}
+                            onChange={(e) => setData("index", e.target.value)}
+                            required
+                            options={[
+                                { value: "", label: t("common.select") },
+                                ...lensIndices.map((idx) => ({
+                                    value: idx,
+                                    label: idx,
+                                })),
+                            ]}
+                        />
+                        <Input
+                            id="material"
+                            label={t("inventory.lenses.fields.material")}
+                            error={errors.material}
+                            type="text"
+                            className="mt-1 block w-full"
+                            value={data.material}
+                            onChange={(e) =>
+                                setData("material", e.target.value)
+                            }
+                        />
                     </div>
                 </div>
 
                 {/* Coatings & Pricing */}
                 <div className="space-y-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    <h3 className="text-lg font-medium text-text-primary">
                         {t("inventory.lenses.sections.specs_pricing")}
                     </h3>
 
                     <div>
-                        <InputLabel
-                            value={t("inventory.lenses.fields.coatings")}
-                        />
+                        <label className="block text-sm font-medium text-text-secondary">
+                            {t("inventory.lenses.fields.coatings")}
+                        </label>
                         <div className="mt-2 grid grid-cols-2 gap-2">
                             {availableCoatings.map((coating) => (
                                 <label
@@ -213,130 +166,94 @@ export default function LensForm({
                                 >
                                     <input
                                         type="checkbox"
-                                        className="rounded border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                        className="rounded bg-bg-base border-border-default text-interactive-primary shadow-sm focus:ring-interactive-primary focus:ring-offset-bg-base"
                                         checked={(data.coatings || []).includes(
                                             coating
                                         )}
                                         onChange={() => toggleCoating(coating)}
                                     />
-                                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                                    <span className="text-sm text-text-secondary">
                                         {coating}
                                     </span>
                                 </label>
                             ))}
                         </div>
-                        <InputError
-                            message={errors.coatings}
-                            className="mt-2"
+                        {errors.coatings && (
+                            <p className="text-xs text-status-error-text mt-2">
+                                {errors.coatings}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            id="cost_price"
+                            label={t("inventory.lenses.fields.cost_price")}
+                            error={errors.cost_price}
+                            type="number"
+                            step="0.01"
+                            className="mt-1 block w-full"
+                            value={data.cost_price}
+                            onChange={(e) =>
+                                setData("cost_price", e.target.value)
+                            }
+                        />
+                        <Input
+                            id="selling_price"
+                            label={t("inventory.lenses.fields.selling_price")}
+                            error={errors.selling_price}
+                            type="number"
+                            step="0.01"
+                            className="mt-1 block w-full"
+                            value={data.selling_price}
+                            onChange={(e) =>
+                                setData("selling_price", e.target.value)
+                            }
+                            required
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="cost_price"
-                                value={t("inventory.lenses.fields.cost_price")}
-                            />
-                            <TextInput
-                                id="cost_price"
-                                type="number"
-                                step="0.01"
-                                className="mt-1 block w-full"
-                                value={data.cost_price}
-                                onChange={(e) =>
-                                    setData("cost_price", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.cost_price}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel
-                                htmlFor="selling_price"
-                                value={t(
-                                    "inventory.lenses.fields.selling_price"
-                                )}
-                            />
-                            <TextInput
-                                id="selling_price"
-                                type="number"
-                                step="0.01"
-                                className="mt-1 block w-full"
-                                value={data.selling_price}
-                                onChange={(e) =>
-                                    setData("selling_price", e.target.value)
-                                }
-                                required
-                            />
-                            <InputError
-                                message={errors.selling_price}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="lab_supplier"
-                                value={t(
-                                    "inventory.lenses.fields.lab_supplier"
-                                )}
-                            />
-                            <TextInput
-                                id="lab_supplier"
-                                type="text"
-                                className="mt-1 block w-full"
-                                value={data.lab_supplier}
-                                onChange={(e) =>
-                                    setData("lab_supplier", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.lab_supplier}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel
-                                htmlFor="lead_time_days"
-                                value={t(
-                                    "inventory.lenses.fields.lead_time_days"
-                                )}
-                            />
-                            <TextInput
-                                id="lead_time_days"
-                                type="number"
-                                className="mt-1 block w-full"
-                                value={data.lead_time_days}
-                                onChange={(e) =>
-                                    setData("lead_time_days", e.target.value)
-                                }
-                            />
-                            <InputError
-                                message={errors.lead_time_days}
-                                className="mt-2"
-                            />
-                        </div>
+                        <Input
+                            id="lab_supplier"
+                            label={t("inventory.lenses.fields.lab_supplier")}
+                            error={errors.lab_supplier}
+                            type="text"
+                            className="mt-1 block w-full"
+                            value={data.lab_supplier}
+                            onChange={(e) =>
+                                setData("lab_supplier", e.target.value)
+                            }
+                        />
+                        <Input
+                            id="lead_time_days"
+                            label={t("inventory.lenses.fields.lead_time_days")}
+                            error={errors.lead_time_days}
+                            type="number"
+                            className="mt-1 block w-full"
+                            value={data.lead_time_days}
+                            onChange={(e) =>
+                                setData("lead_time_days", e.target.value)
+                            }
+                        />
                     </div>
                 </div>
             </div>
 
-            <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-end gap-4 pt-4 border-t border-border-default">
                 {onCancel && (
-                    <SecondaryButton
+                    <Button
+                        variant="secondary"
                         type="button"
                         onClick={onCancel}
                         disabled={processing}
                     >
                         {t("common.cancel")}
-                    </SecondaryButton>
+                    </Button>
                 )}
-                <PrimaryButton disabled={processing}>
+                <Button type="submit" disabled={processing}>
                     {submitLabel || t("common.save")}
-                </PrimaryButton>
+                </Button>
             </div>
         </div>
     );

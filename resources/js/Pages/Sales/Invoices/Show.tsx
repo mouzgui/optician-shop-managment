@@ -120,20 +120,20 @@ export default function Show({ invoice }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={route("business.sales.invoices.index")}
-                            className="p-2 hover:bg-bg-secondary rounded-lg transition-colors text-text-muted"
+                            className="p-2 rounded-lg hover:bg-bg-subtle text-text-muted hover:text-text-primary transition-all"
                         >
                             <ArrowLeft className="w-5 h-5 icon-flip" />
                         </Link>
                         <div>
                             <div className="flex items-center gap-3">
-                                <h1 className="text-2xl font-bold text-text-primary">
+                                <h2 className="font-semibold text-xl text-text-primary leading-tight">
                                     {invoice.invoice_number}
-                                </h1>
+                                </h2>
                                 <Badge variant={status.variant}>
                                     {status.label}
                                 </Badge>
                             </div>
-                            <p className="text-text-muted">
+                            <p className="text-sm text-text-muted mt-1">
                                 {format(new Date(invoice.created_at), "PPP", {
                                     locale: currentLocale,
                                 })}
@@ -141,7 +141,7 @@ export default function Show({ invoice }: Props) {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <Button variant="outline" className="gap-2">
+                        <Button variant="secondary" className="gap-2">
                             <Printer className="w-4 h-4" />
                             {t("common.print")}
                         </Button>
@@ -157,8 +157,8 @@ export default function Show({ invoice }: Props) {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Items Table */}
                         <div className="space-y-4">
-                            <Card className="p-0 overflow-hidden border-none shadow-sm ring-1 ring-border-default">
-                                <div className="px-6 py-4 border-b border-border-default bg-bg-secondary/30">
+                            <Card className="p-0 overflow-hidden">
+                                <div className="px-6 py-4 border-b border-border-subtle bg-bg-subtle/50">
                                     <h3 className="font-bold text-text-primary flex items-center gap-2">
                                         <Package className="w-5 h-5 text-interactive-primary" />
                                         {t("invoices.show.items")}
@@ -173,7 +173,7 @@ export default function Show({ invoice }: Props) {
 
                             {/* Summary Section */}
                             <div className="flex justify-end">
-                                <Card className="w-full md:w-80 p-6 space-y-3 bg-bg-secondary/20">
+                                <Card className="w-full md:w-80 p-6 space-y-3 bg-bg-subtle/50">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-text-muted">
                                             {t("invoices.show.subtotal")}
@@ -196,7 +196,7 @@ export default function Show({ invoice }: Props) {
                                             </span>
                                         </div>
                                     )}
-                                    <div className="pt-3 border-t border-border-default flex justify-between items-baseline">
+                                    <div className="pt-3 border-t border-border-subtle flex justify-between items-baseline">
                                         <span className="font-bold text-text-primary">
                                             {t("invoices.show.grand_total")}
                                         </span>
@@ -209,8 +209,8 @@ export default function Show({ invoice }: Props) {
                         </div>
 
                         {/* Payments History */}
-                        <Card className="p-0 overflow-hidden border-none shadow-sm ring-1 ring-border-default">
-                            <div className="px-6 py-4 border-b border-border-default bg-bg-secondary/30">
+                        <Card className="p-0 overflow-hidden">
+                            <div className="px-6 py-4 border-b border-border-subtle bg-bg-subtle/50">
                                 <h3 className="font-bold text-text-primary flex items-center gap-2">
                                     <History className="w-5 h-5 text-interactive-primary" />
                                     {t("invoices.show.payments")}
@@ -218,7 +218,7 @@ export default function Show({ invoice }: Props) {
                             </div>
                             <div className="p-6">
                                 {invoice.payments.length === 0 ? (
-                                    <div className="text-center py-10 bg-bg-secondary/20 rounded-xl border-2 border-dashed border-border-default">
+                                    <div className="text-center py-10 bg-bg-subtle/30 rounded-xl border-2 border-dashed border-border-subtle">
                                         <p className="text-text-muted italic">
                                             {t(
                                                 "common.no_payments",
@@ -232,10 +232,10 @@ export default function Show({ invoice }: Props) {
                                             (payment: any) => (
                                                 <div
                                                     key={payment.id}
-                                                    className="flex items-center justify-between p-4 bg-bg-secondary/30 rounded-xl border border-border-default hover:border-interactive-primary/30 transition-colors"
+                                                    className="flex items-center justify-between p-4 bg-bg-subtle/50 rounded-xl border border-border-subtle hover:border-interactive-primary/30 transition-colors"
                                                 >
                                                     <div className="flex items-center gap-4">
-                                                        <div className="p-2.5 bg-white rounded-xl shadow-sm border border-border-default">
+                                                        <div className="p-2.5 bg-bg-base rounded-xl shadow-sm border border-border-subtle">
                                                             <DollarSign className="w-5 h-5 text-interactive-success" />
                                                         </div>
                                                         <div>
@@ -273,7 +273,7 @@ export default function Show({ invoice }: Props) {
                                                                 "reports.revenue.fields.received_by"
                                                             )}
                                                         </div>
-                                                        <div className="text-sm font-semibold text-text-primary bg-white px-3 py-1 rounded-lg border border-border-default shadow-sm">
+                                                        <div className="text-sm font-semibold text-text-primary bg-bg-base px-3 py-1 rounded-lg border border-border-subtle shadow-sm">
                                                             {
                                                                 payment
                                                                     .received_by
@@ -293,8 +293,8 @@ export default function Show({ invoice }: Props) {
                     {/* Right Column: Customer & Summary */}
                     <div className="space-y-8">
                         {/* Customer Info */}
-                        <Card className="p-6 border-none shadow-sm ring-1 ring-border-default">
-                            <h3 className="font-bold text-text-primary mb-5 flex items-center gap-2 border-b border-border-default pb-3">
+                        <Card className="p-6">
+                            <h3 className="font-bold text-text-primary mb-5 flex items-center gap-2 border-b border-border-subtle pb-3">
                                 <User className="w-5 h-5 text-interactive-primary" />
                                 {t("invoices.fields.customer")}
                             </h3>
@@ -373,12 +373,12 @@ export default function Show({ invoice }: Props) {
                         </Card>
 
                         {/* Location Info */}
-                        <Card className="p-6 border-none shadow-sm ring-1 ring-border-default bg-bg-secondary/20">
-                            <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2 border-b border-border-default pb-3 text-sm">
+                        <Card className="p-6 border-none shadow-sm ring-1 ring-border-subtle bg-bg-subtle/50">
+                            <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2 border-b border-border-subtle pb-3 text-sm">
                                 <MapPin className="w-4 h-4 text-interactive-primary" />
                                 {t("business.branches.hq")}
                             </h3>
-                            <div className="text-sm font-bold text-text-primary bg-white px-3 py-2 rounded-lg border border-border-default shadow-sm inline-block">
+                            <div className="text-sm font-bold text-text-primary bg-bg-base px-3 py-2 rounded-lg border border-border-subtle shadow-sm inline-block">
                                 {invoice.branch.name}
                             </div>
                         </Card>

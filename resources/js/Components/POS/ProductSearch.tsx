@@ -2,6 +2,7 @@ import React from "react";
 import { Search } from "lucide-react";
 import ProductGrid from "./ProductGrid";
 import { useTranslation } from "react-i18next";
+import { Input } from "@/Components/UI/Input";
 
 interface Product {
     id: number;
@@ -32,11 +33,11 @@ const ProductSearch: React.FC<ProductSearchProps> = ({
     return (
         <div className="flex flex-col h-full bg-bg-base">
             <div className="p-4 border-b border-border-default">
-                <div className="relative">
-                    <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted w-5 h-5" />
-                    <input
+                <div className="relative group">
+                    <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary-default transition-colors w-5 h-5 z-10" />
+                    <Input
                         type="text"
-                        className="w-full ps-10 pe-4 py-3 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500 text-lg"
+                        className="ps-10 text-lg"
                         placeholder={t("POS.search.placeholder")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}

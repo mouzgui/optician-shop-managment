@@ -1,6 +1,7 @@
 import React from "react";
 import { UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Select } from "@/Components/UI/Select";
 
 interface Customer {
     id: number;
@@ -22,6 +23,11 @@ const CustomerSelector: React.FC<CustomerSelectorProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    const options = customers.map((c) => ({
+        value: c.id.toString(),
+        label: `${c.first_name} ${c.last_name}${c.phone ? ` (${c.phone})` : ""}`,
+    }));
+
     return (
         <div className="p-4 border-b border-border-default bg-bg-base">
             <div className="flex items-center justify-between mb-3">
@@ -32,7 +38,7 @@ const CustomerSelector: React.FC<CustomerSelectorProps> = ({
                 {selectedCustomer && (
                     <button
                         onClick={() => onSelect(null)}
-                        className="text-xs text-error hover:underline"
+                        className="text-xs text-error hover:underline transition-all"
                     >
                         {t("POS.customer.change")}
                     </button>
@@ -40,26 +46,24 @@ const CustomerSelector: React.FC<CustomerSelectorProps> = ({
             </div>
 
             {!selectedCustomer ? (
-                <select
-                    className="w-full rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500"
+                <Select
+                    className="w-full"
+                    value=""
                     onChange={(e) => {
                         const customer = customers.find(
                             (c) => c.id === parseInt(e.target.value)
                         );
                         if (customer) onSelect(customer);
                     }}
-                    value=""
-                >
-                    <option value="" disabled>
-                        {t("POS.customer.placeholder")}
-                    </option>
-                    {customers.map((c) => (
-                        <option key={c.id} value={c.id}>
-                            {c.first_name} {c.last_name}{" "}
-                            {c.phone ? `(${c.phone})` : ""}
-                        </option>
-                    ))}
-                </select>
+                    options={[
+                        {
+                            value: "",
+                            label: t("POS.customer.placeholder"),
+                            disabled: true,
+                        },
+                        ...options,
+                    ]}
+                />
             ) : (
                 <div className="p-3 bg-primary-subtle border border-primary-default/10 rounded-lg">
                     <p className="font-bold text-primary-strong">

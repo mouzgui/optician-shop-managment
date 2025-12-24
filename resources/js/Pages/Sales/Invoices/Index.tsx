@@ -1,13 +1,13 @@
 import React from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
-import { Search, Eye, Filter, Plus } from "lucide-react";
-import Pagination from "@/Components/Pagination";
+import { Head, Link, router } from "@inertiajs/react";
+import { Search, Filter, Plus, Eye } from "lucide-react";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
 import { Button } from "@/Components/UI/Button";
 import { Card } from "@/Components/UI/Card";
 import { useTranslation } from "react-i18next";
+import { debounce } from "lodash";
 
 interface Invoice {
     id: number;
@@ -32,13 +32,27 @@ interface Props {
         links: any[];
         meta: any;
     };
+    filters: {
+        search?: string;
+    };
 }
 
-export default function Index({ invoices }: Props) {
+export default function Index({ invoices, filters }: Props) {
     const { t } = useTranslation();
 
+    const handleSearch = debounce((value: string) => {
+        router.get(
+            route("business.sales.invoices.index"),
+            { search: value },
+            { preserveState: true, replace: true }
+        );
+    }, 300);
+
     const getStatusVariant = (status: string): any => {
-        const variants: Record<string, string> = {
+        const variants: Record<
+            string,
+            "info" | "warning" | "success" | "danger" | "neutral"
+        > = {
             deposit_paid: "info",
             in_lab: "warning",
             ready_pickup: "warning",
@@ -69,7 +83,11 @@ export default function Index({ invoices }: Props) {
         },
         {
             header: t("sales.invoices.fields.total"),
-            accessor: (item: Invoice) => item.total,
+            accessor: (item: Invoice) => (
+                <span className="font-bold text-text-primary">
+                    {item.total}
+                </span>
+            ),
         },
         {
             header: t("sales.invoices.fields.balance"),
@@ -96,13 +114,13 @@ export default function Index({ invoices }: Props) {
         {
             header: t("common.actions"),
             accessor: (item: Invoice) => (
-                <Link
-                    href={route("business.sales.invoices.show", item.id)}
-                    className="text-interactive-primary hover:text-interactive-hover flex items-center gap-1"
-                >
-                    <Eye className="w-4 h-4" />
-                    {t("common.view")}
-                </Link>
+                <div className="flex justify-end">
+                    <Link href={route("business.sales.invoices.show", item.id)}>
+                        <Button variant="secondary" size="sm">
+                            <Eye className="w-4 h-4" />
+                        </Button>
+                    </Link>
+                </div>
             ),
         },
     ];
@@ -113,48 +131,41 @@ export default function Index({ invoices }: Props) {
 
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-text-primary">
-                        {t("sales.invoices.title")}
-                    </h1>
-                    <Button
-                        as={Link}
-                        href={route("business.sales.pos.index")}
-                        icon={<Plus className="w-4 h-4" />}
-                    >
-                        {t("sales.invoices.new_sale")}
-                    </Button>
+                    <div>
+                        <h1 className="text-2xl font-black text-text-primary tracking-tight">
+                            {t("sales.invoices.title")}
+                        </h1>
+                        <p className="text-text-muted text-sm mt-1">
+                            {t("sales.invoices.subtitle")}
+                        </p>
+                    </div>
+                    <Link href={route("business.sales.pos.index")}>
+                        <Button className="flex items-center gap-2">
+                            <Plus className="w-5 h-5" />
+                            {t("sales.invoices.new_sale")}
+                        </Button>
+                    </Link>
                 </div>
 
-                <Card>
-                    <div className="flex flex-col md:flex-row gap-4 mb-6">
-                        <div className="relative flex-1">
-                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted w-4 h-4" />
-                            <input
-                                type="text"
-                                placeholder={t(
-                                    "sales.invoices.search_placeholder"
-                                )}
-                                className="w-full ps-10 pe-4 py-2 rounded-lg border-border-default bg-bg-base text-text-primary focus:ring-border-focus focus:border-border-focus"
-                            />
-                        </div>
-                        <Button
-                            variant="secondary"
-                            icon={<Filter className="w-4 h-4" />}
-                        >
-                            {t("common.filters")}
-                        </Button>
+                <Card className="p-4">
+                    <div className="relative max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                        <input
+                            type="text"
+                            defaultValue={filters?.search}
+                            onChange={(e) => handleSearch(e.target.value)}
+                            placeholder={t("common.search")}
+                            className="w-full ps-10 pe-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
+                        />
                     </div>
+                </Card>
 
+                <Card className="overflow-hidden border-none shadow-sm">
                     <DataTable
                         columns={columns}
                         data={invoices.data}
-                        keyField="id"
-                        emptyMessage={t("common.noResults")}
+                        meta={invoices.meta}
                     />
-
-                    <div className="mt-6">
-                        <Pagination links={invoices.links} />
-                    </div>
                 </Card>
             </div>
         </AuthenticatedLayout>

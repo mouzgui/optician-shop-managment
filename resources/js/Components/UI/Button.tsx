@@ -24,7 +24,7 @@ export function Button({
             "bg-btn-primary text-text-inverted hover:bg-btn-primary-hover focus:ring-border-focus",
         secondary:
             "bg-btn-secondary text-text-primary hover:bg-btn-secondary-hover border border-border-default focus:ring-border-focus",
-        danger: "bg-btn-danger text-white hover:bg-btn-danger-hover focus:ring-red-500",
+        danger: "bg-btn-danger text-white hover:bg-btn-danger-hover focus:ring-status-error-border",
         ghost: "bg-transparent text-text-secondary hover:bg-bg-muted focus:ring-border-focus",
     };
 

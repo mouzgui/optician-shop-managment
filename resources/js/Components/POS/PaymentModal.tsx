@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { X, CreditCard, Banknote, Tag, AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePage } from "@inertiajs/react";
+import { Button } from "@/Components/UI/Button";
+import { Input } from "@/Components/UI/Input";
 
 interface PaymentModalProps {
     isOpen: boolean;
@@ -74,8 +76,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             : true;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="bg-bg-base rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-border-default">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-bg-base rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-border-default animate-in zoom-in-95 duration-200">
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-border-subtle flex items-center justify-between bg-bg-subtle">
                     <h2 className="text-xl font-black text-text-default">
@@ -83,9 +85,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-bg-base rounded-full transition-colors"
+                        className="p-2 hover:bg-bg-base rounded-full transition-colors text-text-muted hover:text-text-primary"
                     >
-                        <X className="w-5 h-5 text-text-muted" />
+                        <X className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -135,7 +137,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                 onClick={() => setPaymentMethod("cash")}
                                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${
                                     paymentMethod === "cash"
-                                        ? "border-success bg-success-subtle text-success-strong ring-1 ring-success"
+                                        ? "border-status-success-border bg-status-success-bg text-status-success-text ring-1 ring-status-success-border"
                                         : "border-border-default hover:border-border-strong bg-bg-base"
                                 }`}
                             >
@@ -161,7 +163,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                 onClick={() => setPaymentMethod("split")}
                                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${
                                     paymentMethod === "split"
-                                        ? "border-purple-600 bg-purple-50 text-purple-700 ring-1 ring-purple-600"
+                                        ? "border-status-info-border bg-status-info-bg text-status-info-text ring-1 ring-status-info-border"
                                         : "border-border-default hover:border-border-strong bg-bg-base"
                                 }`}
                             >
@@ -183,11 +185,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                 <label className="text-[10px] font-bold text-text-muted uppercase">
                                     {t("POS.payment.cash_amount")}
                                 </label>
-                                <div className="relative">
-                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                <div className="relative group">
+                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary-default transition-colors z-10">
                                         {business?.currency_symbol || "$"}
                                     </span>
-                                    <input
+                                    <Input
                                         type="number"
                                         value={cashAmount}
                                         onChange={(e) =>
@@ -195,7 +197,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                                 Number(e.target.value)
                                             )
                                         }
-                                        className="w-full ps-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
+                                        className="ps-7"
                                     />
                                 </div>
                             </div>
@@ -203,11 +205,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                 <label className="text-[10px] font-bold text-text-muted uppercase">
                                     {t("POS.payment.card_amount")}
                                 </label>
-                                <div className="relative">
-                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                <div className="relative group">
+                                    <span className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary-default transition-colors z-10">
                                         {business?.currency_symbol || "$"}
                                     </span>
-                                    <input
+                                    <Input
                                         type="number"
                                         value={cardAmount}
                                         onChange={(e) =>
@@ -215,7 +217,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                                 Number(e.target.value)
                                             )
                                         }
-                                        className="w-full ps-7 py-2 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-purple-500 focus:border-purple-500"
+                                        className="ps-7"
                                     />
                                 </div>
                             </div>
@@ -237,25 +239,25 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                         <label className="text-[10px] font-bold text-text-muted uppercase">
                             {t("POS.payment.reference_label")}
                         </label>
-                        <input
+                        <Input
                             type="text"
                             value={reference}
                             onChange={(e) => setReference(e.target.value)}
                             placeholder={t("POS.payment.reference_placeholder")}
-                            className="w-full py-2 px-3 rounded-lg border-border-default bg-bg-base text-text-default focus:ring-primary-500 focus:border-primary-500"
                         />
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="p-6 bg-bg-subtle border-t border-border-subtle">
-                    <button
+                    <Button
+                        variant="primary"
+                        className="w-full py-4 text-lg font-bold"
                         onClick={handleConfirm}
                         disabled={!isSplitValid}
-                        className="w-full py-4 bg-primary-600 text-white rounded-xl font-bold text-lg hover:bg-primary-700 transition-all shadow-lg shadow-primary-200 disabled:opacity-50 disabled:shadow-none"
                     >
                         {t("POS.payment.confirm_button")}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

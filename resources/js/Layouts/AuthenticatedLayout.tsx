@@ -60,7 +60,7 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
                 <Header />
                 <main className="flex-1 p-6 overflow-y-auto">{children}</main>
                 {branding?.footer_text && (
-                    <footer className="p-4 text-center text-sm text-text-muted border-t border-border-subtle bg-bg-primary">
+                    <footer className="p-4 text-center text-sm text-text-muted border-t border-border-default bg-bg-base">
                         {branding.footer_text}
                     </footer>
                 )}

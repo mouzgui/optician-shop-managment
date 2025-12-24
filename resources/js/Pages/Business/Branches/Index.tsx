@@ -1,7 +1,13 @@
 import React from "react";
 import { Head, Link, router } from "@inertiajs/react";
-import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/Components/UI/Button";
+import { Badge } from "@/Components/UI/Badge";
+import { Card } from "@/Components/UI/Card";
+import { DataTable } from "@/Components/UI/DataTable";
+import { Plus, Search, MapPin, Phone, Edit2, Building2 } from "lucide-react";
+import { debounce } from "lodash";
 
 interface Branch {
     id: number;
@@ -17,103 +23,136 @@ interface IndexProps {
         data: Branch[];
         links: any;
     };
+    filters: {
+        search?: string;
+    };
 }
 
-export default function Index({ branches }: IndexProps) {
+export default function Index({ branches, filters }: IndexProps) {
     const { t } = useTranslation();
+
+    const handleSearch = debounce((value: string) => {
+        router.get(
+            route("business.branches.index"),
+            { search: value },
+            { preserveState: true, replace: true }
+        );
+    }, 300);
 
     const toggleStatus = (id: number) => {
         router.post(route("business.branches.toggle-status", id));
     };
+
+    const columns = [
+        {
+            header: t("business.branches.fields.name"),
+            accessor: (branch: Branch) => (
+                <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-text-primary">
+                            {branch.name}
+                        </span>
+                        {branch.is_headquarters && (
+                            <Badge variant="info" size="sm">
+                                {t("business.branches.fields.hq")}
+                            </Badge>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-1 mt-1 text-xs text-text-muted">
+                        <MapPin className="w-3 h-3" />
+                        <span className="truncate max-w-[200px]">
+                            {branch.address}
+                        </span>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            header: t("business.branches.fields.contact"),
+            accessor: (branch: Branch) => (
+                <div className="flex items-center gap-2 text-sm text-text-secondary">
+                    <Phone className="w-3.5 h-3.5 text-text-muted" />
+                    {branch.phone}
+                </div>
+            ),
+        },
+        {
+            header: t("business.branches.fields.status"),
+            accessor: (branch: Branch) => (
+                <button
+                    onClick={() => toggleStatus(branch.id)}
+                    className="hover:opacity-80 transition-opacity"
+                >
+                    <Badge variant={branch.is_active ? "success" : "danger"}>
+                        {branch.is_active
+                            ? t("common.status.active")
+                            : t("common.status.inactive")}
+                    </Badge>
+                </button>
+            ),
+        },
+        {
+            header: t("common.actions.title"),
+            accessor: (branch: Branch) => (
+                <div className="flex justify-end gap-2">
+                    <Link href={route("business.branches.edit", branch.id)}>
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="flex items-center gap-2"
+                        >
+                            <Edit2 className="w-3.5 h-3.5" />
+                            {t("common.actions.edit")}
+                        </Button>
+                    </Link>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <AuthenticatedLayout>
             <Head title={t("business.branches.index.title")} />
 
             <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-text-primary">
-                        {t("business.branches.index.title")}
-                    </h1>
-                    <Link
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 className="text-2xl font-black text-text-primary tracking-tight">
+                            {t("business.branches.index.title")}
+                        </h1>
+                        <p className="text-text-muted text-sm mt-1">
+                            {t("business.branches.index.subtitle")}
+                        </p>
+                    </div>
+                    <Button
                         href={route("business.branches.create")}
-                        className="px-4 py-2 bg-interactive-primary text-text-inverted rounded-lg hover:bg-interactive-primary-hover transition-colors"
+                        className="flex items-center gap-2"
                     >
+                        <Plus className="w-5 h-5" />
                         {t("business.branches.index.create_btn")}
-                    </Link>
+                    </Button>
                 </div>
 
-                <div className="bg-bg-primary rounded-xl border border-border-subtle shadow-sm overflow-hidden">
-                    <table className="min-w-full divide-y divide-border-subtle">
-                        <thead className="bg-bg-muted">
-                            <tr>
-                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
-                                    {t("business.branches.fields.name")}
-                                </th>
-                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
-                                    {t("business.branches.fields.contact")}
-                                </th>
-                                <th className="px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider">
-                                    {t("business.branches.fields.status")}
-                                </th>
-                                <th className="px-6 py-3 text-end text-xs font-medium text-text-secondary uppercase tracking-wider">
-                                    {t("business.branches.fields.actions")}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border-subtle">
-                            {branches.data.map((branch) => (
-                                <tr key={branch.id}>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-text-primary">
-                                            {branch.name}
-                                            {branch.is_headquarters && (
-                                                <span className="ms-2 px-2 py-0.5 text-[10px] bg-status-info-bg text-status-info-text border border-status-info-border rounded-full">
-                                                    {t(
-                                                        "business.branches.fields.hq"
-                                                    )}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="text-xs text-text-secondary">
-                                            {branch.address}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
-                                        {branch.phone}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <button
-                                            onClick={() =>
-                                                toggleStatus(branch.id)
-                                            }
-                                            className={`px-2 py-1 text-xs font-semibold rounded-full border ${
-                                                branch.is_active
-                                                    ? "bg-status-success-bg text-status-success-text border-status-success-border"
-                                                    : "bg-status-error-bg text-status-error-text border-status-error-border"
-                                            }`}
-                                        >
-                                            {branch.is_active
-                                                ? t("common.status.active")
-                                                : t("common.status.inactive")}
-                                        </button>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                        <Link
-                                            href={route(
-                                                "business.branches.edit",
-                                                branch.id
-                                            )}
-                                            className="text-primary-600 hover:text-primary-900"
-                                        >
-                                            {t("common.actions.edit")}
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <Card className="p-4">
+                    <div className="relative max-w-md">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                        <input
+                            type="text"
+                            placeholder={t("common.search")}
+                            className="w-full ps-10 pe-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
+                            defaultValue={filters?.search}
+                            onChange={(e) => handleSearch(e.target.value)}
+                        />
+                    </div>
+                </Card>
+
+                <Card className="overflow-hidden border-none shadow-sm">
+                    <DataTable
+                        columns={columns}
+                        data={branches.data}
+                        meta={branches.links}
+                    />
+                </Card>
             </div>
         </AuthenticatedLayout>
     );
