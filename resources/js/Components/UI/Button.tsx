@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "@inertiajs/react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "primary" | "secondary" | "danger" | "ghost";
+    variant?: "primary" | "secondary" | "danger" | "ghost" | "success";
     size?: "sm" | "md" | "lg";
     isLoading?: boolean;
     children: React.ReactNode;
+    href?: string;
 }
 
 export function Button({
@@ -14,6 +16,7 @@ export function Button({
     disabled,
     children,
     className = "",
+    href,
     ...props
 }: ButtonProps) {
     const baseStyles =
@@ -26,6 +29,7 @@ export function Button({
             "bg-btn-secondary text-text-primary hover:bg-btn-secondary-hover border border-border-default focus:ring-border-focus",
         danger: "bg-btn-danger text-white hover:bg-btn-danger-hover focus:ring-status-error-border",
         ghost: "bg-transparent text-text-secondary hover:bg-bg-muted focus:ring-border-focus",
+        success: "bg-status-success-bg text-status-success-text border border-status-success-border hover:bg-status-success-bg/80 focus:ring-status-success-border",
     };
 
     const sizes = {
@@ -34,10 +38,24 @@ export function Button({
         lg: "px-6 py-3 text-base",
     };
 
+    const combinedClassName = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+
+    // If href is provided, render as a Link
+    if (href) {
+        return (
+            <Link
+                href={href}
+                className={combinedClassName}
+            >
+                {children}
+            </Link>
+        );
+    }
+
     return (
         <button
             disabled={disabled || isLoading}
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+            className={combinedClassName}
             {...props}
         >
             {isLoading && (

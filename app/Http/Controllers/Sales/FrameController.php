@@ -17,15 +17,16 @@ class FrameController extends Controller
     public function index(Request $request)
     {
         $query = Frame::query()
+            ->where('business_id', auth()->user()->business_id)
             ->latest();
 
         if ($request->filled('search')) {
             $term = $request->search;
             $query->where(function ($q) use ($term) {
                 $q->where('sku', 'like', "%{$term}%")
-                  ->orWhere('barcode', 'like', "%{$term}%")
-                  ->orWhere('brand', 'like', "%{$term}%")
-                  ->orWhere('model', 'like', "%{$term}%");
+                    ->orWhere('barcode', 'like', "%{$term}%")
+                    ->orWhere('brand', 'like', "%{$term}%")
+                    ->orWhere('model', 'like', "%{$term}%");
             });
         }
 

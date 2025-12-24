@@ -16,8 +16,19 @@ class BusinessController extends Controller
 {
     public function index()
     {
+        $search = request('search');
+
+        $businesses = Business::with('owner')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return Inertia::render('Admin/Businesses/Index', [
-            'businesses' => Business::with('owner')->paginate(10),
+            'businesses' => $businesses,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 

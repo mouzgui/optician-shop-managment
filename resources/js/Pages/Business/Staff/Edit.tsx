@@ -55,7 +55,7 @@ export default function Edit({ staff, branches }: EditProps) {
                         href={route("business.staff.index")}
                         className="p-2 rounded-lg hover:bg-bg-subtle text-text-muted hover:text-text-primary transition-all"
                     >
-                        <ArrowLeft className="w-5 h-5 icon-flip" />
+                        <ArrowLeftIcon className="w-5 h-5 icon-flip" />
                     </Link>
                     <h1 className="text-2xl font-bold text-text-primary">
                         {t("business.staff.edit.title")}: {staff.name}

@@ -40,7 +40,7 @@ export default function Index({ lenses, filters }: Props) {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            route("business.inventory.lenses.index"),
+            "/business/inventory/lenses",
             { search },
             { preserveState: true }
         );
@@ -48,7 +48,7 @@ export default function Index({ lenses, filters }: Props) {
 
     const deleteLens = (id: number) => {
         if (confirm(t("common.confirm_delete"))) {
-            router.delete(route("business.inventory.lenses.destroy", id));
+            router.delete(`/business/inventory/lenses/${id}`);
         }
     };
 
@@ -101,11 +101,11 @@ export default function Index({ lenses, filters }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             accessor: (item: Lens) => (
                 <div className="flex gap-2">
                     <Link
-                        href={route("business.inventory.lenses.edit", item.id)}
+                        href={`/business/inventory/lenses/${item.id}/edit`}
                     >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
@@ -130,7 +130,7 @@ export default function Index({ lenses, filters }: Props) {
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("inventory.lenses.title")}
                     </h2>
-                    <Link href={route("business.inventory.lenses.create")}>
+                    <Link href="/business/inventory/lenses/create">
                         <Button className="flex items-center gap-2">
                             <Plus className="w-4 h-4" />
                             {t("inventory.lenses.create_button")}

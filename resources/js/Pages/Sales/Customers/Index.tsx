@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { Search, Plus, Eye, Pencil, User, Phone, Calendar } from "lucide-react";
-import { debounce } from "lodash";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
 import { Card } from "@/Components/UI/Card";
@@ -26,7 +25,7 @@ interface Props {
     customers: {
         data: Customer[];
         links: any[];
-        meta: any;
+        meta?: any;
     };
     filters: {
         search?: string;
@@ -35,14 +34,20 @@ interface Props {
 
 export default function Index({ customers, filters }: Props) {
     const { t } = useTranslation();
+    const [searchValue, setSearchValue] = useState(filters?.search || "");
 
-    const handleSearch = debounce((value: string) => {
-        router.get(
-            route("business.customers.index"),
-            { search: value },
-            { preserveState: true, replace: true }
-        );
-    }, 300);
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+        // Simple timeout instead of lodash debounce
+        const timeoutId = setTimeout(() => {
+            router.get(
+                "/business/customers",
+                { search: value },
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+        return () => clearTimeout(timeoutId);
+    };
 
     const columns = [
         {
@@ -92,15 +97,15 @@ export default function Index({ customers, filters }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             accessor: (item: Customer) => (
                 <div className="flex justify-end gap-2">
-                    <Link href={route("business.customers.show", item.id)}>
+                    <Link href={`/business/customers/${item.id}`}>
                         <Button variant="secondary" size="sm">
                             <Eye className="h-4 w-4" />
                         </Button>
                     </Link>
-                    <Link href={route("business.customers.edit", item.id)}>
+                    <Link href={`/business/customers/${item.id}/edit`}>
                         <Button variant="secondary" size="sm">
                             <Pencil className="h-4 w-4" />
                         </Button>
@@ -117,7 +122,7 @@ export default function Index({ customers, filters }: Props) {
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("customers.title")}
                     </h2>
-                    <Link href={route("business.customers.create")}>
+                    <Link href="/business/customers/create">
                         <Button className="flex items-center gap-2">
                             <Plus className="h-5 w-5" />
                             {t("customers.create_button")}
@@ -134,7 +139,7 @@ export default function Index({ customers, filters }: Props) {
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
                         <input
                             type="text"
-                            defaultValue={filters.search}
+                            value={searchValue}
                             onChange={(e) => handleSearch(e.target.value)}
                             placeholder={t("customers.search_placeholder")}
                             className="w-full pl-10 pr-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"

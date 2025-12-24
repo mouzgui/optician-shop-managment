@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "@inertiajs/react";
 import { Skeleton } from "./Skeleton";
 
-interface Column<T> {
+// Export Column interface for use in pages with proper typing
+export interface Column<T> {
     header: string;
     accessor: keyof T | ((item: T) => React.ReactNode);
     className?: string;
@@ -32,9 +33,8 @@ export function DataTable<T>({
                             {columns.map((column, index) => (
                                 <th
                                     key={index}
-                                    className={`px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider ${
-                                        column.className || ""
-                                    }`}
+                                    className={`px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider ${column.className || ""
+                                        }`}
                                 >
                                     {column.header}
                                 </th>
@@ -73,16 +73,15 @@ export function DataTable<T>({
                                     {columns.map((column, index) => (
                                         <td
                                             key={index}
-                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${
-                                                column.className || ""
-                                            }`}
+                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${column.className || ""
+                                                }`}
                                         >
                                             {typeof column.accessor ===
-                                            "function"
+                                                "function"
                                                 ? column.accessor(item)
                                                 : (item[
-                                                      column.accessor
-                                                  ] as React.ReactNode)}
+                                                    column.accessor
+                                                ] as React.ReactNode)}
                                         </td>
                                     ))}
                                 </tr>

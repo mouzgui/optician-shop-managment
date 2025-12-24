@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { Search, Filter, Plus, Eye } from "lucide-react";
@@ -7,7 +7,6 @@ import { Badge } from "@/Components/UI/Badge";
 import { Button } from "@/Components/UI/Button";
 import { Card } from "@/Components/UI/Card";
 import { useTranslation } from "react-i18next";
-import { debounce } from "lodash";
 
 interface Invoice {
     id: number;
@@ -39,14 +38,18 @@ interface Props {
 
 export default function Index({ invoices, filters }: Props) {
     const { t } = useTranslation();
+    const [searchValue, setSearchValue] = useState(filters?.search || "");
 
-    const handleSearch = debounce((value: string) => {
-        router.get(
-            route("business.sales.invoices.index"),
-            { search: value },
-            { preserveState: true, replace: true }
-        );
-    }, 300);
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+        setTimeout(() => {
+            router.get(
+                "/business/sales/invoices",
+                { search: value },
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+    };
 
     const getStatusVariant = (status: string): any => {
         const variants: Record<
@@ -112,10 +115,10 @@ export default function Index({ invoices, filters }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             accessor: (item: Invoice) => (
                 <div className="flex justify-end">
-                    <Link href={route("business.sales.invoices.show", item.id)}>
+                    <Link href={`/business/sales/invoices/${item.id}`}>
                         <Button variant="secondary" size="sm">
                             <Eye className="w-4 h-4" />
                         </Button>
@@ -139,7 +142,7 @@ export default function Index({ invoices, filters }: Props) {
                             {t("sales.invoices.subtitle")}
                         </p>
                     </div>
-                    <Link href={route("business.sales.pos.index")}>
+                    <Link href="/business/sales/pos">
                         <Button className="flex items-center gap-2">
                             <Plus className="w-5 h-5" />
                             {t("sales.invoices.new_sale")}

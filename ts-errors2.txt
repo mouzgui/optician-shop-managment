@@ -1,0 +1,147 @@
+﻿resources/js/Components/Forms/CustomerSearch.tsx(35,27): error TS2554: Expected 1 arguments, but got 0.
+resources/js/Components/Forms/CustomerSearch.tsx(80,26): error TS2345: Argument of type 'Timeout' is not assignable to parameter of type 'number'.
+resources/js/Components/Lab/JobCardItem.tsx(3,25): error TS1149: File name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/types/index.ts' differs from already included file name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Types/index.ts' only in casing.
+  The file is in the program because:
+    Matched by include pattern 'resources/js/**/*.ts' in 'C:/Users/pc/Desktop/projects/opticina-shop-managment/tsconfig.json'
+    Imported via '@/types' from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Components/Lab/JobCardItem.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Index.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Show.tsx'
+resources/js/Components/Lab/JobCardItem.tsx(39,28): error TS2322: Type '"success" | "warning" | "danger" | "info" | "primary" | "secondary"' is not assignable to type '"success" | "warning" | "danger" | "info" | "neutral" | undefined'.
+  Type '"primary"' is not assignable to type '"success" | "warning" | "danger" | "info" | "neutral" | undefined'.
+resources/js/Components/Lab/JobCardItem.tsx(48,34): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Components/Lab/JobCardItem.tsx(48,70): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Components/POS/CustomerSelector.tsx(62,29): error TS2353: Object literal may only specify known properties, and 'disabled' does not exist in type 'Option'.
+resources/js/Pages/Admin/Businesses/Index.tsx(57,25): error TS2322: Type '{ children: (string | Element)[]; href: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Branches/Create.tsx(37,26): error TS2304: Cannot find name 'ArrowLeft'.
+resources/js/Pages/Business/Branches/Create.tsx(121,33): error TS2322: Type '{ children: string; type: "button"; variant: "secondary"; href: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Branches/Edit.tsx(51,26): error TS2304: Cannot find name 'ArrowLeft'.
+resources/js/Pages/Business/Branches/Edit.tsx(157,33): error TS2322: Type '{ children: string; type: "button"; variant: "secondary"; href: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Branches/Index.tsx(56,51): error TS2322: Type '{ children: string; variant: "info"; size: string; }' is not assignable to type 'IntrinsicAttributes & BadgeProps'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & BadgeProps'.
+resources/js/Pages/Business/Branches/Index.tsx(128,25): error TS2322: Type '{ children: (string | Element)[]; href: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Branches/Index.tsx(151,25): error TS2322: Type '{ header: string; accessor: (branch: Branch) => Element; }[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (branch: Branch) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+    Types of property 'accessor' are incompatible.
+      Type '(branch: Branch) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+        Types of parameters 'branch' and 'item' are incompatible.
+          Type 'unknown' is not assignable to type 'Branch'.
+resources/js/Pages/Business/Settings.tsx(74,25): error TS2322: Type '{ children: Element; title: string; icon: Element; }' is not assignable to type 'IntrinsicAttributes & CardProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & CardProps'.
+resources/js/Pages/Business/Settings.tsx(86,33): error TS2322: Type '{ label: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; error: string | undefined; icon: Element; placeholder: string; required: true; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+resources/js/Pages/Business/Settings.tsx(102,37): error TS2322: Type '{ label: string; type: "email"; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; error: string | undefined; icon: Element; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+resources/js/Pages/Business/Settings.tsx(114,37): error TS2322: Type '{ label: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; error: string | undefined; icon: Element; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+resources/js/Pages/Business/Settings.tsx(144,37): error TS2322: Type '{ label: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; error: string | undefined; icon: Element; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+resources/js/Pages/Business/Settings.tsx(161,37): error TS2322: Type '{ label: string; value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void; error: string | undefined; icon: Element; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & InputProps & RefAttributes<HTMLInputElement>'.
+resources/js/Pages/Business/Settings.tsx(173,25): error TS2322: Type '{ children: Element; title: string; icon: Element; }' is not assignable to type 'IntrinsicAttributes & CardProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & CardProps'.
+resources/js/Pages/Business/Staff/Create.tsx(180,33): error TS2322: Type '{ children: string; type: "button"; variant: "secondary"; href: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Staff/Edit.tsx(58,26): error TS2304: Cannot find name 'ArrowLeft'.
+resources/js/Pages/Business/Staff/Edit.tsx(134,71): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+resources/js/Pages/Business/Staff/Edit.tsx(172,33): error TS2322: Type '{ children: string; type: "button"; variant: "secondary"; href: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Staff/Index.tsx(134,25): error TS2322: Type '{ children: (string | Element)[]; href: string; className: string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'href' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+resources/js/Pages/Business/Staff/Index.tsx(157,25): error TS2322: Type '{ header: string; accessor: (member: Staff) => Element; }[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (member: Staff) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+    Types of property 'accessor' are incompatible.
+      Type '(member: Staff) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+        Types of parameters 'member' and 'item' are incompatible.
+          Type 'unknown' is not assignable to type 'Staff'.
+resources/js/Pages/Clinical/ContactLensRx/Create.tsx(48,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Clinical/SpectacleRx/Create.tsx(48,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Lab/JobCards/Index.tsx(4,40): error TS1149: File name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/types/index.ts' differs from already included file name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Types/index.ts' only in casing.
+  The file is in the program because:
+    Matched by include pattern 'resources/js/**/*.ts' in 'C:/Users/pc/Desktop/projects/opticina-shop-managment/tsconfig.json'
+    Imported via '@/types' from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Components/Lab/JobCardItem.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Index.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Show.tsx'
+resources/js/Pages/Lab/JobCards/Index.tsx(24,17): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Index.tsx(27,17): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(4,25): error TS1149: File name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/types/index.ts' differs from already included file name 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Types/index.ts' only in casing.
+  The file is in the program because:
+    Matched by include pattern 'resources/js/**/*.ts' in 'C:/Users/pc/Desktop/projects/opticina-shop-managment/tsconfig.json'
+    Imported via '@/types' from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Components/Lab/JobCardItem.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Index.tsx'
+    Imported via "@/types" from file 'C:/Users/pc/Desktop/projects/opticina-shop-managment/resources/js/Pages/Lab/JobCards/Show.tsx'
+resources/js/Pages/Lab/JobCards/Show.tsx(55,24): error TS2339: Property 'prescription_details' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(56,27): error TS2339: Property 'frame_details' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(57,26): error TS2339: Property 'lens_details' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(100,40): error TS2322: Type '"success" | "warning" | "danger" | "info" | "primary" | "secondary"' is not assignable to type '"success" | "warning" | "danger" | "info" | "neutral" | undefined'.
+  Type '"primary"' is not assignable to type '"success" | "warning" | "danger" | "info" | "neutral" | undefined'.
+resources/js/Pages/Lab/JobCards/Show.tsx(136,37): error TS2322: Type '"success"' is not assignable to type '"danger" | "primary" | "secondary" | "ghost" | undefined'.
+resources/js/Pages/Lab/JobCards/Show.tsx(317,42): error TS2339: Property 'special_instructions' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(329,46): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(330,46): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(339,46): error TS2339: Property 'invoice' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(343,34): error TS2339: Property 'started_at' does not exist on type 'JobCard'.
+resources/js/Pages/Lab/JobCards/Show.tsx(350,62): error TS2339: Property 'started_at' does not exist on type 'JobCard'.
+resources/js/Pages/Sales/Customers/Create.tsx(47,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Customers/Edit.tsx(58,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Customers/Index.tsx(115,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Customers/Index.tsx(147,25): error TS2322: Type '{ header: string; accessor: (item: Customer) => Element; }[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (item: Customer) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+    Types of property 'accessor' are incompatible.
+      Type '(item: Customer) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+        Types of parameters 'item' and 'item' are incompatible.
+          Type 'unknown' is not assignable to type 'Customer'.
+resources/js/Pages/Sales/Customers/Show.tsx(101,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/ContactLenses/Create.tsx(38,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/ContactLenses/Edit.tsx(64,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/ContactLenses/Index.tsx(158,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/ContactLenses/Index.tsx(192,25): error TS2322: Type '({ header: string; accessor: (item: ContactLens) => Element; } | { header: string; accessor: (item: ContactLens) => string; })[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (item: ContactLens) => Element; } | { header: string; accessor: (item: ContactLens) => string; }' is not assignable to type 'Column<unknown>'.
+    Type '{ header: string; accessor: (item: ContactLens) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+      Types of property 'accessor' are incompatible.
+        Type '(item: ContactLens) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+          Types of parameters 'item' and 'item' are incompatible.
+            Type 'unknown' is not assignable to type 'ContactLens'.
+resources/js/Pages/Sales/Inventory/Frames/Create.tsx(40,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Frames/Edit.tsx(66,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Frames/Index.tsx(146,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Frames/Index.tsx(192,25): error TS2322: Type '({ header: string; accessor: string; } | { header: string; accessor: (item: Frame) => Element; } | { header: string; accessor: (item: Frame) => string; })[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: string; } | { header: string; accessor: (item: Frame) => Element; } | { header: string; accessor: (item: Frame) => string; }' is not assignable to type 'Column<unknown>'.
+    Type '{ header: string; accessor: string; }' is not assignable to type 'Column<unknown>'.
+      Types of property 'accessor' are incompatible.
+        Type 'string' is not assignable to type '(item: unknown) => ReactNode'.
+resources/js/Pages/Sales/Inventory/Lenses/Create.tsx(33,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Lenses/Edit.tsx(52,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Lenses/Index.tsx(128,13): error TS2322: Type '{ children: Element[]; header: Element; }' is not assignable to type 'IntrinsicAttributes & { children?: ReactNode; }'.
+  Property 'header' does not exist on type 'IntrinsicAttributes & { children?: ReactNode; }'.
+resources/js/Pages/Sales/Inventory/Lenses/Index.tsx(160,25): error TS2322: Type '({ header: string; accessor: (item: Lens) => Element; } | { header: string; accessor: (item: Lens) => string; } | { header: string; accessor: string; })[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (item: Lens) => Element; } | { header: string; accessor: (item: Lens) => string; } | { header: string; accessor: string; }' is not assignable to type 'Column<unknown>'.
+    Type '{ header: string; accessor: (item: Lens) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+      Types of property 'accessor' are incompatible.
+        Type '(item: Lens) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+          Types of parameters 'item' and 'item' are incompatible.
+            Type 'unknown' is not assignable to type 'Lens'.
+resources/js/Pages/Sales/Invoices/Index.tsx(165,25): error TS2322: Type '({ header: string; accessor: (item: Invoice) => Element; } | { header: string; accessor: (item: Invoice) => string; })[]' is not assignable to type 'Column<unknown>[]'.
+  Type '{ header: string; accessor: (item: Invoice) => Element; } | { header: string; accessor: (item: Invoice) => string; }' is not assignable to type 'Column<unknown>'.
+    Type '{ header: string; accessor: (item: Invoice) => JSX.Element; }' is not assignable to type 'Column<unknown>'.
+      Types of property 'accessor' are incompatible.
+        Type '(item: Invoice) => JSX.Element' is not assignable to type '(item: unknown) => ReactNode'.
+          Types of parameters 'item' and 'item' are incompatible.
+            Type 'unknown' is not assignable to type 'Invoice'.

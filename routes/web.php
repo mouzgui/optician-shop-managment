@@ -7,11 +7,33 @@ use App\Http\Controllers\Sales;
 use App\Http\Controllers\Clinical;
 use App\Http\Controllers\Lab;
 use App\Http\Controllers\Reports;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    $user = auth()->user();
+    $dashboardUrl = null;
+
+    if ($user) {
+        $dashboardUrl = $user->role === 'super_admin'
+            ? '/admin/dashboard'
+            : '/business/dashboard';
+    }
+
+    return Inertia::render('Welcome', [
+        'auth' => ['user' => $user],
+        'dashboardUrl' => $dashboardUrl,
+    ]);
 });
+
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
+
+Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 // Super Admin Routes
 Route::middleware(['auth', 'role:super_admin'])
@@ -24,8 +46,10 @@ Route::middleware(['auth', 'role:super_admin'])
         Route::resource('businesses', Admin\BusinessController::class)
             ->except(['show', 'destroy']);
 
-        Route::post('/businesses/{business}/toggle-status',
-            [Admin\BusinessController::class, 'toggleStatus'])
+        Route::post(
+            '/businesses/{business}/toggle-status',
+            [Admin\BusinessController::class, 'toggleStatus']
+        )
             ->name('businesses.toggle-status');
     });
 
@@ -52,7 +76,7 @@ Route::middleware(['auth', 'business'])
         });
 
         // Sales & Clinical (Staff, Optometrist, Owner)
-        Route::middleware(['role:business_owner,branch_manager,staff,optometrist'])->group(function () {
+        Route::middleware(['role:business_owner,sales_staff,optometrist,lab_technician'])->group(function () {
             // Customer Management
             Route::get('customers/search', [Sales\CustomerController::class, 'search'])
                 ->name('customers.search');

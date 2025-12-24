@@ -14,14 +14,15 @@ class LensController extends Controller
     public function index(Request $request)
     {
         $query = Lens::query()
+            ->where('business_id', auth()->user()->business_id)
             ->latest();
 
         if ($request->filled('search')) {
             $term = $request->search;
             $query->where(function ($q) use ($term) {
                 $q->where('brand', 'like', "%{$term}%")
-                  ->orWhere('model', 'like', "%{$term}%")
-                  ->orWhere('type', 'like', "%{$term}%");
+                    ->orWhere('model', 'like', "%{$term}%")
+                    ->orWhere('type', 'like', "%{$term}%");
             });
         }
 

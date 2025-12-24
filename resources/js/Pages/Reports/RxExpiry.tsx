@@ -124,7 +124,7 @@ export default function RxExpiry({ spectacleRx, contactLensRx }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             className: "text-end",
             accessor: (item: Rx) => (
                 <Link href={route("business.customers.show", item.customer_id)}>

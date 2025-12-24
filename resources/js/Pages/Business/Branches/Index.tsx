@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,6 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Plus, Search, MapPin, Phone, Edit2, Building2 } from "lucide-react";
-import { debounce } from "lodash";
 
 interface Branch {
     id: number;
@@ -30,17 +29,21 @@ interface IndexProps {
 
 export default function Index({ branches, filters }: IndexProps) {
     const { t } = useTranslation();
+    const [searchValue, setSearchValue] = useState(filters?.search || "");
 
-    const handleSearch = debounce((value: string) => {
-        router.get(
-            route("business.branches.index"),
-            { search: value },
-            { preserveState: true, replace: true }
-        );
-    }, 300);
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+        setTimeout(() => {
+            router.get(
+                "/business/branches",
+                { search: value },
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+    };
 
     const toggleStatus = (id: number) => {
-        router.post(route("business.branches.toggle-status", id));
+        router.post(`/business/branches/${id}/toggle-status`);
     };
 
     const columns = [
@@ -95,7 +98,7 @@ export default function Index({ branches, filters }: IndexProps) {
             header: t("common.actions.title"),
             accessor: (branch: Branch) => (
                 <div className="flex justify-end gap-2">
-                    <Link href={route("business.branches.edit", branch.id)}>
+                    <Link href={`/business/branches/${branch.id}/edit`}>
                         <Button
                             variant="secondary"
                             size="sm"
@@ -125,7 +128,7 @@ export default function Index({ branches, filters }: IndexProps) {
                         </p>
                     </div>
                     <Button
-                        href={route("business.branches.create")}
+                        href="/business/branches/create"
                         className="flex items-center gap-2"
                     >
                         <Plus className="w-5 h-5" />

@@ -85,7 +85,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             className: "text-end",
             accessor: (item: Frame) => (
                 <Link href={route("business.inventory.frames.edit", item.id)}>
@@ -127,7 +127,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             className: "text-end",
             accessor: (item: ContactLens) => (
                 <Link

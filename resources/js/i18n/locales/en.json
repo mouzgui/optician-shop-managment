@@ -11,6 +11,7 @@
         "branches": {
             "index": {
                 "title": "Branches Management",
+                "subtitle": "Manage your business locations",
                 "create_btn": "Add New Branch"
             },
             "fields": {
@@ -24,7 +25,15 @@
         "staff": {
             "index": {
                 "title": "Staff Management",
+                "subtitle": "Manage your team members and their permissions",
                 "create_btn": "Add New Staff"
+            },
+            "fields": {
+                "name": "Name",
+                "email": "Email",
+                "role": "Role",
+                "branch": "Branch",
+                "status": "Status"
             }
         },
         "settings": {
@@ -56,7 +65,14 @@
             "active": "Active",
             "inactive": "Inactive"
         },
-        "actions": "Actions",
+        "actions": {
+            "title": "Actions",
+            "edit": "Edit",
+            "delete": "Delete",
+            "save": "Save",
+            "create": "Create",
+            "view": "View"
+        },
         "edit": "Edit",
         "delete": "Delete",
         "save": "Save",
@@ -93,15 +109,40 @@
         },
         "showing_results": "Showing {{from}} to {{to}} of {{total}} results",
         "export_csv": "Export CSV",
-        "export_pdf": "Export PDF"
+        "export_pdf": "Export PDF",
+        "days": "days",
+        "upload_image": "Upload Image"
+    },
+    "sales": {
+        "invoices": {
+            "title": "Invoices",
+            "subtitle": "Manage sales invoices and payments",
+            "new_sale": "New Sale",
+            "fields": {
+                "invoice_number": "Invoice #",
+                "customer": "Customer",
+                "date": "Date",
+                "total": "Total",
+                "balance": "Balance",
+                "status": "Status"
+            },
+            "statuses": {
+                "deposit_paid": "Deposit Paid",
+                "in_lab": "In Lab",
+                "ready_pickup": "Ready for Pickup",
+                "completed": "Completed",
+                "cancelled": "Cancelled"
+            }
+        }
     },
     "customers": {
         "title": "Customers",
-        "add_new": "Add Customer",
+        "add_new": "Add New Customer",
         "search_placeholder": "Search by name or phone...",
         "no_results": "No customers found.",
-        "no_results_found": "No results found.",
+        "no_results_found": "No customers found matching your search.",
         "profile_details": "Profile Details",
+        "create_button": "Add New Customer",
         "add_rx": "Add Prescription",
         "rx_expired": "Expired",
         "rx_valid": "Valid",
@@ -115,9 +156,6 @@
         "no_invoices": "No invoices found.",
         "select_branch": "Select Branch",
         "search_family_head": "Search for family head...",
-        "search_placeholder": "Search by name or phone...",
-        "no_results_found": "No customers found matching your search.",
-        "add_new": "Add New Customer",
         "selected_head": "Selected Family Head",
         "none": "None",
         "edit_customer": "Edit Customer",
@@ -217,7 +255,8 @@
                 "selling_price": "Selling Price",
                 "quantity": "Quantity",
                 "low_stock_threshold": "Low Stock Alert",
-                "is_active": "Is Active"
+                "is_active": "Is Active",
+                "price": "Price"
             },
             "categories": {
                 "optical": "Optical",
@@ -227,7 +266,9 @@
             },
             "filters": {
                 "low_stock": "Low Stock Only"
-            }
+            },
+            "create_button": "Add New Frame",
+            "low_stock_filter": "Low Stock Only"
         },
         "lenses": {
             "title": "Lens Catalog",
@@ -254,7 +295,8 @@
                 "selling_price": "Selling Price",
                 "lab_supplier": "Lab Supplier",
                 "lead_time_days": "Lead Time (Days)",
-                "is_active": "Is Active"
+                "is_active": "Is Active",
+                "price": "Price"
             },
             "types": {
                 "single_vision": "Single Vision",
@@ -262,7 +304,8 @@
                 "progressive": "Progressive",
                 "office": "Office",
                 "sports": "Sports"
-            }
+            },
+            "create_button": "Add New Lens"
         },
         "contact_lenses": {
             "title": "Contact Lens Inventory",
@@ -289,8 +332,13 @@
                 "selling_price_per_box": "Price / Box",
                 "expiry_date": "Expiry Date",
                 "expiry": "Expiry",
-                "is_active": "Is Active"
-            }
+                "is_active": "Is Active",
+                "stock": "Stock",
+                "price": "Price",
+                "boxes": "Boxes",
+                "per_box": "per box"
+            },
+            "create_button": "Add New Contact Lens"
         }
     },
     "auth": {
@@ -299,7 +347,13 @@
         "email": "Email Address",
         "password": "Password",
         "rememberMe": "Remember Me",
-        "forgotPassword": "Forgot Password?"
+        "forgotPassword": "Forgot Password?",
+        "login_title": "Sign in to your account",
+        "login_btn": "Sign in",
+        "remember_me": "Remember me",
+        "forgot_password": "Forgot your password?",
+        "no_account": "Don't have an account?",
+        "register_link": "Register"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -308,9 +362,24 @@
         "inventory": "Inventory",
         "pos": "Point of Sale",
         "invoices": "Invoices",
-        "lab": "Lab",
+        "lab": "Lab Jobs",
         "reports": "Reports",
-        "settings": "Settings"
+        "settings": "Settings",
+        "businesses": "Businesses",
+        "branches": "Branches",
+        "staff": "Staff",
+        "frames": "Frames",
+        "lenses": "Lenses",
+        "contact_lenses": "Contact Lenses"
+    },
+    "roles": {
+        "super_admin": "Super Admin",
+        "business_owner": "Business Owner",
+        "branch_manager": "Branch Manager",
+        "optometrist": "Optometrist",
+        "sales_staff": "Sales Staff",
+        "lab_technician": "Lab Technician",
+        "staff": "Staff"
     },
     "POS": {
         "title": "Point of Sale",
@@ -351,7 +420,8 @@
             "payment_cash": "Cash",
             "payment_card": "Card",
             "deposit_label": "Initial Payment (Deposit)",
-            "checkout_button": "Complete Checkout"
+            "checkout_button": "Complete Checkout",
+            "checkout": "Checkout"
         },
         "customer": {
             "label": "Customer",
@@ -379,6 +449,7 @@
         "dashboard": {
             "title": "Super Admin Dashboard",
             "welcome": "Welcome, Super Admin",
+            "subtitle": "Manage all business operations from here",
             "total_businesses": "Total Businesses",
             "active_businesses": "Active Businesses",
             "total_users": "Total Users"
@@ -550,6 +621,79 @@
             "discount": "Discount",
             "tax": "Tax",
             "grand_total": "Grand Total"
+        }
+    },
+    "home": {
+        "nav": {
+            "sign_in": "Sign In",
+            "features": "Features",
+            "dashboard": "Go to Dashboard"
+        },
+        "hero": {
+            "badge": "Enterprise-Grade Optical Shop Software",
+            "title_1": "Manage Your",
+            "title_2": "Optical Business",
+            "title_3": "Like Never Before",
+            "description": "Complete solution for optical shops - from customer prescriptions to inventory management, POS, and lab job tracking. All in one platform.",
+            "cta_primary": "Get Started",
+            "cta_secondary": "See Features"
+        },
+        "stats": {
+            "shops": "Optical Shops",
+            "prescriptions": "Prescriptions",
+            "uptime": "Uptime",
+            "support": "Support"
+        },
+        "features": {
+            "title": "Everything You Need",
+            "subtitle": "A complete suite of tools designed specifically for optical retail businesses",
+            "customer_management": {
+                "title": "Customer Management",
+                "description": "Track patients, prescriptions, and purchase history in one place"
+            },
+            "prescription_tracking": {
+                "title": "Prescription Tracking",
+                "description": "Manage spectacle and contact lens prescriptions with expiry alerts"
+            },
+            "pos": {
+                "title": "Point of Sale",
+                "description": "Fast checkout with barcode scanning and multiple payment methods"
+            },
+            "invoicing": {
+                "title": "Invoice Management",
+                "description": "Generate professional invoices with payment tracking"
+            },
+            "reports": {
+                "title": "Reports & Analytics",
+                "description": "Revenue reports, inventory alerts, and staff performance tracking"
+            },
+            "lab": {
+                "title": "Lab Job Cards",
+                "description": "Track lens orders from lab submission to customer pickup"
+            }
+        },
+        "benefits": {
+            "title": "Built for Modern",
+            "title_highlight": "Optical Retail",
+            "subtitle": "Whether you run a single store or a chain of optical shops, our platform scales with your business needs.",
+            "multi_branch": "Multi-branch support",
+            "role_access": "Role-based access control",
+            "white_label": "White-label branding",
+            "multi_language": "Multi-language support",
+            "themes": "Dark/Light themes",
+            "responsive": "Mobile responsive",
+            "multi_tenant": "Multi-Tenant Ready",
+            "multi_tenant_desc": "Each business gets isolated data & branding",
+            "rtl": "RTL & Multi-Language",
+            "rtl_desc": "Full Arabic, French, Spanish support"
+        },
+        "cta": {
+            "title": "Ready to Modernize Your Optical Shop?",
+            "subtitle": "Join hundreds of optical businesses that trust Opticina for their daily operations.",
+            "button": "Start Free Trial"
+        },
+        "footer": {
+            "copyright": "© 2024 Opticina. All rights reserved."
         }
     },
     "welcome": {

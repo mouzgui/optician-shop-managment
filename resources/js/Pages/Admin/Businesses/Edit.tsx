@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, useForm, Link, router } from "@inertiajs/react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/Components/UI/Input";
 import { Select } from "@/Components/UI/Select";

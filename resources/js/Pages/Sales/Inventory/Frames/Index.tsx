@@ -42,7 +42,7 @@ export default function Index({ frames, filters }: Props) {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            route("business.inventory.frames.index"),
+            "/business/inventory/frames",
             {
                 search,
                 category: filters.category,
@@ -54,7 +54,7 @@ export default function Index({ frames, filters }: Props) {
 
     const toggleLowStock = () => {
         router.get(
-            route("business.inventory.frames.index"),
+            "/business/inventory/frames",
             {
                 search,
                 category: filters.category,
@@ -66,7 +66,7 @@ export default function Index({ frames, filters }: Props) {
 
     const deleteFrame = (id: number) => {
         if (confirm(t("common.confirm_delete"))) {
-            router.delete(route("business.inventory.frames.destroy", id));
+            router.delete(`/business/inventory/frames/${id}`);
         }
     };
 
@@ -119,11 +119,11 @@ export default function Index({ frames, filters }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             accessor: (item: Frame) => (
                 <div className="flex gap-2">
                     <Link
-                        href={route("business.inventory.frames.edit", item.id)}
+                        href={`/business/inventory/frames/${item.id}/edit`}
                     >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
@@ -148,7 +148,7 @@ export default function Index({ frames, filters }: Props) {
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("inventory.frames.title")}
                     </h2>
-                    <Link href={route("business.inventory.frames.create")}>
+                    <Link href="/business/inventory/frames/create">
                         <Button className="flex items-center gap-2">
                             <Plus className="w-4 h-4" />
                             {t("inventory.frames.create_button")}

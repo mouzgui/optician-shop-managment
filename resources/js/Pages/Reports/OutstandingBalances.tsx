@@ -118,7 +118,7 @@ export default function OutstandingBalances({
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             className: "text-end",
             accessor: (item: any) => (
                 <Link href={route("business.sales.invoices.show", item.id)}>

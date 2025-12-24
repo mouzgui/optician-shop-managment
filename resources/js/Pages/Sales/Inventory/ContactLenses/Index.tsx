@@ -43,7 +43,7 @@ export default function Index({ contactLenses, filters }: Props) {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            route("business.inventory.contact-lenses.index"),
+            "/business/inventory/contact-lenses",
             { search },
             { preserveState: true }
         );
@@ -52,7 +52,7 @@ export default function Index({ contactLenses, filters }: Props) {
     const deleteCL = (id: number) => {
         if (confirm(t("common.confirm_delete"))) {
             router.delete(
-                route("business.inventory.contact-lenses.destroy", id)
+                `/business/inventory/contact-lenses/${id}`
             );
         }
     };
@@ -128,14 +128,11 @@ export default function Index({ contactLenses, filters }: Props) {
             ),
         },
         {
-            header: t("common.actions"),
+            header: t("common.actions.title"),
             accessor: (item: ContactLens) => (
                 <div className="flex gap-2">
                     <Link
-                        href={route(
-                            "business.inventory.contact-lenses.edit",
-                            item.id
-                        )}
+                        href={`/business/inventory/contact-lenses/${item.id}/edit`}
                     >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
@@ -161,7 +158,7 @@ export default function Index({ contactLenses, filters }: Props) {
                         {t("inventory.contact_lenses.title")}
                     </h2>
                     <Link
-                        href={route("business.inventory.contact-lenses.create")}
+                        href="/business/inventory/contact-lenses/create"
                     >
                         <Button className="flex items-center gap-2">
                             <Plus className="w-4 h-4" />

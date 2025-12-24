@@ -96,7 +96,7 @@ export default function Index({ branches, customers }: Props) {
                 setIsSearching(true);
                 try {
                     const response = await axios.get(
-                        route("business.sales.pos.search-products"),
+                        "/business/sales/pos/search-products",
                         {
                             params: { q },
                         }
@@ -128,7 +128,7 @@ export default function Index({ branches, customers }: Props) {
     const fetchPrescriptions = async (customerId: number) => {
         try {
             const response = await axios.get(
-                route("business.sales.pos.customer-prescriptions", customerId)
+                `/business/sales/pos/customer/${customerId}/prescriptions`
             );
             setPrescriptions(response.data);
         } catch (error) {
@@ -192,7 +192,7 @@ export default function Index({ branches, customers }: Props) {
     };
 
     const completeCheckout = (paymentData: any) => {
-        router.post(route("business.sales.pos.checkout"), {
+        router.post("/business/sales/pos/checkout", {
             customer_id: selectedCustomer?.id,
             branch_id: branches[0]?.id,
             items: cart.map((item) => ({

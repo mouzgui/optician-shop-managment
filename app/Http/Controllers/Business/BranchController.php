@@ -10,15 +10,13 @@ use Inertia\Inertia;
 
 class BranchController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Branch::class, 'branch');
-    }
-
     public function index()
     {
+        $branches = Branch::where('business_id', auth()->user()->business_id)
+            ->paginate(10);
+
         return Inertia::render('Business/Branches/Index', [
-            'branches' => Branch::paginate(10),
+            'branches' => $branches,
         ]);
     }
 
@@ -52,8 +50,6 @@ class BranchController extends Controller
 
     public function toggleStatus(Branch $branch)
     {
-        $this->authorize('update', $branch);
-        
         $branch->update(['is_active' => !$branch->is_active]);
 
         return back()->with('success', 'Branch status updated successfully.');

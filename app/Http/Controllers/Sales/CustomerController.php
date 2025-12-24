@@ -18,6 +18,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $query = Customer::query()
+            ->where('business_id', auth()->user()->business_id)
             ->with(['branch'])
             ->latest();
 

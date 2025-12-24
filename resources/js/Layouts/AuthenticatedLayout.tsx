@@ -1,11 +1,16 @@
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren, ReactNode, useEffect } from "react";
 import { Sidebar } from "@/Components/UI/Sidebar";
 import { Header } from "@/Components/UI/Header";
 import { usePage } from "@inertiajs/react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDirection } from "@/Hooks/useDirection";
 
-export function AuthenticatedLayout({ children }: PropsWithChildren) {
+interface AuthenticatedLayoutProps {
+    children: ReactNode;
+    header?: ReactNode;
+}
+
+export function AuthenticatedLayout({ children, header }: AuthenticatedLayoutProps) {
     const { branding, flash } = usePage<any>().props;
     const { direction, isRTL } = useDirection();
 
@@ -58,6 +63,11 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
             <Sidebar />
             <div className="flex-1 flex flex-col min-w-0">
                 <Header />
+                {header && (
+                    <div className="bg-bg-base border-b border-border-default px-6 py-4">
+                        {header}
+                    </div>
+                )}
                 <main className="flex-1 p-6 overflow-y-auto">{children}</main>
                 {branding?.footer_text && (
                     <footer className="p-4 text-center text-sm text-text-muted border-t border-border-default bg-bg-base">
@@ -68,3 +78,6 @@ export function AuthenticatedLayout({ children }: PropsWithChildren) {
         </div>
     );
 }
+
+// Support both named and default imports
+export default AuthenticatedLayout;
