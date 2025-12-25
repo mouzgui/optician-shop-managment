@@ -4,7 +4,6 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import LensForm from "@/Components/Forms/LensForm";
-import { Card } from "@/Components/UI/Card";
 
 interface Lens {
     id: number;
@@ -28,6 +27,15 @@ interface Props {
 export default function Edit({ lens }: Props) {
     const { t } = useTranslation();
 
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
+
     const { data, setData, patch, processing, errors, reset } = useForm({
         name: lens.name || "",
         brand: lens.brand || "",
@@ -38,13 +46,13 @@ export default function Edit({ lens }: Props) {
         cost_price: lens.cost_price || "",
         selling_price: lens.selling_price || "",
         lab_supplier: lens.lab_supplier || "",
-        lead_time_days: lens.lead_time_days || "",
+        lead_time_days: lens.lead_time_days || 7,
         is_active: lens.is_active,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        patch(route("business.inventory.lenses.update", lens.id));
+        patch(`/business/inventory/lenses/${lens.id}`);
     };
 
     return (
@@ -52,22 +60,22 @@ export default function Edit({ lens }: Props) {
             header={
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.inventory.lenses.index")}
+                        href="/business/inventory/lenses"
                         className="text-text-muted hover:text-text-primary transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
-                        {t("inventory.lenses.edit_lens")}
+                        {safeT("inventory.lenses.edit_lens", "Edit Lens")}
                     </h2>
                 </div>
             }
         >
-            <Head title={t("inventory.lenses.edit_lens")} />
+            <Head title={safeT("inventory.lenses.edit_lens", "Edit Lens")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
+                    <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                         <form onSubmit={submit}>
                             <LensForm
                                 data={data}
@@ -75,10 +83,10 @@ export default function Edit({ lens }: Props) {
                                 errors={errors}
                                 processing={processing}
                                 onCancel={() => reset()}
-                                submitLabel={t("common.save")}
+                                submitLabel={safeT("common.save", "Save")}
                             />
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

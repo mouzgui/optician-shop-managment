@@ -4,7 +4,6 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import ContactLensForm from "@/Components/Forms/ContactLensForm";
-import { Card } from "@/Components/UI/Card";
 
 interface ContactLens {
     id: number;
@@ -33,6 +32,15 @@ interface Props {
 export default function Edit({ contactLens }: Props) {
     const { t } = useTranslation();
 
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
+
     const { data, setData, patch, processing, errors, reset } = useForm({
         brand: contactLens.brand || "",
         product_line: contactLens.product_line || "",
@@ -54,9 +62,7 @@ export default function Edit({ contactLens }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        patch(
-            route("business.inventory.contact-lenses.update", contactLens.id)
-        );
+        patch(`/business/inventory/contact-lenses/${contactLens.id}`);
     };
 
     return (
@@ -64,22 +70,22 @@ export default function Edit({ contactLens }: Props) {
             header={
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.inventory.contact-lenses.index")}
+                        href="/business/inventory/contact-lenses"
                         className="text-text-muted hover:text-text-primary transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
-                        {t("inventory.contact_lenses.edit_cl")}
+                        {safeT("inventory.contact_lenses.edit_cl", "Edit Contact Lens")}
                     </h2>
                 </div>
             }
         >
-            <Head title={t("inventory.contact_lenses.edit_cl")} />
+            <Head title={safeT("inventory.contact_lenses.edit_cl", "Edit Contact Lens")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
+                    <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                         <form onSubmit={submit}>
                             <ContactLensForm
                                 data={data}
@@ -87,10 +93,10 @@ export default function Edit({ contactLens }: Props) {
                                 errors={errors}
                                 processing={processing}
                                 onCancel={() => reset()}
-                                submitLabel={t("common.save")}
+                                submitLabel={safeT("common.save", "Save")}
                             />
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

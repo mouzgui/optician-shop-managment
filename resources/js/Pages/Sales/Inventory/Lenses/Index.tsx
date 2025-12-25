@@ -3,10 +3,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
-import { Card } from "@/Components/UI/Card";
 import { Button } from "@/Components/UI/Button";
 import { DataTable } from "@/Components/UI/DataTable";
-import { Badge } from "@/Components/UI/Badge";
 
 interface Lens {
     id: number;
@@ -22,20 +20,29 @@ interface Lens {
 }
 
 interface Props {
-    lenses: {
+    lenses?: {
         data: Lens[];
         links: any[];
         meta: any;
     };
-    filters: {
+    filters?: {
         search?: string;
     };
 }
 
-export default function Index({ lenses, filters }: Props) {
+export default function Index({ lenses = { data: [], links: [], meta: {} }, filters = {} }: Props) {
     const { t } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
+
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,35 +54,66 @@ export default function Index({ lenses, filters }: Props) {
     };
 
     const deleteLens = (id: number) => {
-        if (confirm(t("common.confirm_delete"))) {
+        if (confirm(safeT("common.confirm_delete", "Are you sure you want to delete this item?"))) {
             router.delete(`/business/inventory/lenses/${id}`);
         }
     };
 
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency: business?.currency_code || "USD",
+        }).format(amount);
+    };
+
+    const getTypeLabel = (type: string) => {
+        const typeLabels: Record<string, string> = {
+            single_vision: "Single Vision",
+            progressive: "Progressive",
+            bifocal: "Bifocal",
+            office: "Office",
+            sports: "Sports",
+        };
+        return typeLabels[type] || type;
+    };
+
+    const formatCoatings = (coatings: string[] | string | null) => {
+        if (!coatings) return "-";
+        if (typeof coatings === "string") {
+            try {
+                const parsed = JSON.parse(coatings);
+                return Array.isArray(parsed) ? parsed.join(", ") : coatings;
+            } catch {
+                return coatings;
+            }
+        }
+        return Array.isArray(coatings) ? coatings.join(", ") : "-";
+    };
+
     const columns = [
         {
-            header: t("inventory.lenses.fields.brand_name"),
+            header: safeT("inventory.lenses.fields.brand_name", "Brand / Name"),
             accessor: (item: Lens) => (
                 <div>
                     <div className="font-medium text-text-primary">
                         {item.brand} - {item.name}
                     </div>
                     <div className="text-xs text-text-muted">
-                        {(item.coatings || []).join(", ")}
+                        {formatCoatings(item.coatings)}
                     </div>
                 </div>
             ),
         },
         {
-            header: t("inventory.lenses.fields.type"),
-            accessor: (item: Lens) => t(`inventory.lenses.types.${item.type}`),
+            header: safeT("inventory.lenses.fields.type", "Type"),
+            accessor: (item: Lens) => getTypeLabel(item.type),
         },
         {
-            header: t("inventory.lenses.fields.index"),
+            header: safeT("inventory.lenses.fields.index", "Index"),
             accessor: "index",
         },
         {
-            header: t("inventory.lenses.fields.lab_supplier"),
+            header: safeT("inventory.lenses.fields.lab_supplier", "Supplier"),
             accessor: (item: Lens) => (
                 <div>
                     <div className="text-text-primary">
@@ -83,25 +121,22 @@ export default function Index({ lenses, filters }: Props) {
                     </div>
                     {item.lead_time_days && (
                         <div className="text-xs text-text-muted">
-                            {item.lead_time_days} {t("common.days")}
+                            {item.lead_time_days} {safeT("common.days", "days")}
                         </div>
                     )}
                 </div>
             ),
         },
         {
-            header: t("inventory.lenses.fields.price"),
+            header: safeT("inventory.lenses.fields.price", "Price"),
             accessor: (item: Lens) => (
                 <span className="font-bold text-text-primary">
-                    {new Intl.NumberFormat(undefined, {
-                        style: "currency",
-                        currency: business.currency_code,
-                    }).format(item.selling_price)}
+                    {formatCurrency(item.selling_price)}
                 </span>
             ),
         },
         {
-            header: t("common.actions.title"),
+            header: safeT("common.actions.title", "Actions"),
             accessor: (item: Lens) => (
                 <div className="flex gap-2">
                     <Link
@@ -128,40 +163,40 @@ export default function Index({ lenses, filters }: Props) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
-                        {t("inventory.lenses.title")}
+                        {safeT("inventory.lenses.title", "Prescription Lenses")}
                     </h2>
                     <Link href="/business/inventory/lenses/create">
                         <Button className="flex items-center gap-2">
                             <Plus className="w-4 h-4" />
-                            {t("inventory.lenses.create_button")}
+                            {safeT("inventory.lenses.create_button", "Add Lens")}
                         </Button>
                     </Link>
                 </div>
             }
         >
-            <Head title={t("inventory.lenses.title")} />
+            <Head title={safeT("inventory.lenses.title", "Prescription Lenses")} />
 
             <div className="space-y-6">
-                <Card className="p-4">
+                <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-4">
                     <form onSubmit={handleSearch} className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder={t("common.search")}
+                            placeholder={safeT("common.search", "Search...")}
                             className="w-full pl-10 pr-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
                         />
                     </form>
-                </Card>
+                </div>
 
-                <Card>
+                <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden">
                     <DataTable
                         columns={columns}
-                        data={lenses.data}
+                        data={lenses.data || []}
                         meta={lenses.meta}
                     />
-                </Card>
+                </div>
             </div>
         </AuthenticatedLayout>
     );

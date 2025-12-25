@@ -27,12 +27,7 @@ export default function Show({ jobCard }: Props) {
     });
 
     const updateStatus = (newStatus: string) => {
-        patch(
-            route("business.lab.job-cards.update-status", {
-                job_card: jobCard.id,
-                status: newStatus,
-            })
-        );
+        patch(`/business/lab/job-cards/${jobCard.id}/update-status?status=${newStatus}`);
     };
 
     const getStatusColor = (status: string) => {
@@ -63,7 +58,7 @@ export default function Show({ jobCard }: Props) {
             <div className="max-w-4xl mx-auto space-y-6">
                 <div className="flex items-center justify-between">
                     <Link
-                        href={route("business.lab.job-cards.index")}
+                        href="/business/lab/job-cards"
                         className="flex items-center text-text-muted hover:text-brand-main transition-colors"
                     >
                         <ChevronLeft className="w-4 h-4 me-1 icon-flip" />
@@ -76,10 +71,7 @@ export default function Show({ jobCard }: Props) {
                             size="sm"
                             onClick={() =>
                                 window.open(
-                                    route(
-                                        "business.lab.job-cards.print",
-                                        jobCard.id
-                                    ),
+                                    `/business/lab/job-cards/${jobCard.id}/print`,
                                     "_blank"
                                 )
                             }

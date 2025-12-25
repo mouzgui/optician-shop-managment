@@ -28,6 +28,15 @@ export default function Show({ invoice }: Props) {
     const { t, i18n } = useTranslation();
     const { business } = usePage().props as any;
 
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
+
     const locales: Record<string, any> = {
         en: enUS,
         ar: arSA,
@@ -43,13 +52,13 @@ export default function Show({ invoice }: Props) {
     };
 
     const statusMap: Record<string, { label: string; variant: any }> = {
-        pending: { label: t("invoices.status.pending"), variant: "warning" },
-        partial: { label: t("invoices.status.partial"), variant: "info" },
-        paid: { label: t("invoices.status.paid"), variant: "success" },
-        overdue: { label: t("invoices.status.overdue"), variant: "danger" },
-        deposit_paid: { label: t("invoices.status.partial"), variant: "info" },
-        completed: { label: t("invoices.status.paid"), variant: "success" },
-        cancelled: { label: t("common.status.inactive"), variant: "danger" },
+        pending: { label: safeT("invoices.status.pending", "Pending"), variant: "warning" },
+        partial: { label: safeT("invoices.status.partial", "Partial"), variant: "info" },
+        paid: { label: safeT("invoices.status.paid", "Paid"), variant: "success" },
+        overdue: { label: safeT("invoices.status.overdue", "Overdue"), variant: "danger" },
+        deposit_paid: { label: safeT("invoices.status.partial", "Partial"), variant: "info" },
+        completed: { label: safeT("invoices.status.paid", "Paid"), variant: "success" },
+        cancelled: { label: safeT("common.status.inactive", "Cancelled"), variant: "danger" },
     };
 
     const status = statusMap[invoice.status] || {
@@ -59,7 +68,7 @@ export default function Show({ invoice }: Props) {
 
     const itemColumns = [
         {
-            header: t("invoices.show.items"),
+            header: safeT("invoices.show.items", "Items"),
             accessor: (item: any) => (
                 <div className="flex flex-col">
                     <span className="font-medium text-text-primary">
@@ -72,14 +81,14 @@ export default function Show({ invoice }: Props) {
             ),
         },
         {
-            header: t("common.qty"),
+            header: safeT("common.qty", "Qty"),
             className: "text-center",
             accessor: (item: any) => (
                 <span className="text-text-primary">{item.quantity}</span>
             ),
         },
         {
-            header: t("common.price"),
+            header: safeT("common.price", "Price"),
             className: "text-end",
             accessor: (item: any) => (
                 <span className="text-text-primary">
@@ -88,7 +97,7 @@ export default function Show({ invoice }: Props) {
             ),
         },
         {
-            header: t("invoices.show.discount"),
+            header: safeT("invoices.show.discount", "Discount"),
             className: "text-end",
             accessor: (item: any) => (
                 <span className="text-interactive-error">
@@ -97,7 +106,7 @@ export default function Show({ invoice }: Props) {
             ),
         },
         {
-            header: t("common.total"),
+            header: safeT("common.total", "Total"),
             className: "text-end",
             accessor: (item: any) => (
                 <span className="font-bold text-text-primary">
@@ -110,16 +119,15 @@ export default function Show({ invoice }: Props) {
     return (
         <AuthenticatedLayout>
             <Head
-                title={`${t("invoices.show.title")} - ${
-                    invoice.invoice_number
-                }`}
+                title={`${safeT("invoices.show.title", "Invoice")} - ${invoice.invoice_number
+                    }`}
             />
 
             <div className="space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                         <Link
-                            href={route("business.sales.invoices.index")}
+                            href="/business/sales/invoices"
                             className="p-2 rounded-lg hover:bg-bg-subtle text-text-muted hover:text-text-primary transition-all"
                         >
                             <ArrowLeft className="w-5 h-5 icon-flip" />
@@ -143,11 +151,11 @@ export default function Show({ invoice }: Props) {
                     <div className="flex items-center gap-3">
                         <Button variant="secondary" className="gap-2">
                             <Printer className="w-4 h-4" />
-                            {t("common.print")}
+                            {safeT("common.print", "Print")}
                         </Button>
                         <Button variant="primary" className="gap-2">
                             <CreditCard className="w-4 h-4" />
-                            {t("POS.add_payment")}
+                            {safeT("POS.add_payment", "Add Payment")}
                         </Button>
                     </div>
                 </div>
@@ -161,7 +169,7 @@ export default function Show({ invoice }: Props) {
                                 <div className="px-6 py-4 border-b border-border-subtle bg-bg-subtle/50">
                                     <h3 className="font-bold text-text-primary flex items-center gap-2">
                                         <Package className="w-5 h-5 text-interactive-primary" />
-                                        {t("invoices.show.items")}
+                                        {safeT("invoices.show.items", "Items")}
                                     </h3>
                                 </div>
                                 <DataTable
@@ -176,7 +184,7 @@ export default function Show({ invoice }: Props) {
                                 <Card className="w-full md:w-80 p-6 space-y-3 bg-bg-subtle/50">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-text-muted">
-                                            {t("invoices.show.subtotal")}
+                                            {safeT("invoices.show.subtotal", "Subtotal")}
                                         </span>
                                         <span className="font-medium text-text-primary">
                                             {formatCurrency(invoice.subtotal)}
@@ -184,21 +192,21 @@ export default function Show({ invoice }: Props) {
                                     </div>
                                     {parseFloat(invoice.discount_amount) >
                                         0 && (
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-interactive-error">
-                                                {t("invoices.show.discount")}
-                                            </span>
-                                            <span className="font-medium text-interactive-error">
-                                                -
-                                                {formatCurrency(
-                                                    invoice.discount_amount
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-interactive-error">
+                                                    {safeT("invoices.show.discount", "Discount")}
+                                                </span>
+                                                <span className="font-medium text-interactive-error">
+                                                    -
+                                                    {formatCurrency(
+                                                        invoice.discount_amount
+                                                    )}
+                                                </span>
+                                            </div>
+                                        )}
                                     <div className="pt-3 border-t border-border-subtle flex justify-between items-baseline">
                                         <span className="font-bold text-text-primary">
-                                            {t("invoices.show.grand_total")}
+                                            {safeT("invoices.show.grand_total", "Grand Total")}
                                         </span>
                                         <span className="text-xl font-black text-interactive-primary">
                                             {formatCurrency(invoice.total)}
@@ -213,7 +221,7 @@ export default function Show({ invoice }: Props) {
                             <div className="px-6 py-4 border-b border-border-subtle bg-bg-subtle/50">
                                 <h3 className="font-bold text-text-primary flex items-center gap-2">
                                     <History className="w-5 h-5 text-interactive-primary" />
-                                    {t("invoices.show.payments")}
+                                    {safeT("invoices.show.payments", "Payments")}
                                 </h3>
                             </div>
                             <div className="p-6">
@@ -269,8 +277,9 @@ export default function Show({ invoice }: Props) {
                                                     </div>
                                                     <div className="text-end">
                                                         <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1 opacity-60">
-                                                            {t(
-                                                                "reports.revenue.fields.received_by"
+                                                            {safeT(
+                                                                "reports.revenue.fields.received_by",
+                                                                "Received By"
                                                             )}
                                                         </div>
                                                         <div className="text-sm font-semibold text-text-primary bg-bg-base px-3 py-1 rounded-lg border border-border-subtle shadow-sm">
@@ -296,12 +305,12 @@ export default function Show({ invoice }: Props) {
                         <Card className="p-6">
                             <h3 className="font-bold text-text-primary mb-5 flex items-center gap-2 border-b border-border-subtle pb-3">
                                 <User className="w-5 h-5 text-interactive-primary" />
-                                {t("invoices.fields.customer")}
+                                {safeT("invoices.fields.customer", "Customer")}
                             </h3>
                             <div className="space-y-4">
                                 <div>
                                     <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1 opacity-60">
-                                        {t("customers.fields.name")}
+                                        {safeT("customers.fields.name", "Name")}
                                     </div>
                                     <div className="font-bold text-text-primary text-lg">
                                         {invoice.customer.first_name}{" "}
@@ -310,21 +319,18 @@ export default function Show({ invoice }: Props) {
                                 </div>
                                 <div>
                                     <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1 opacity-60">
-                                        {t("customers.fields.phone")}
+                                        {safeT("customers.fields.phone", "Phone")}
                                     </div>
                                     <div className="text-text-primary font-medium">
                                         {invoice.customer.phone || "N/A"}
                                     </div>
                                 </div>
                                 <Link
-                                    href={route(
-                                        "business.customers.show",
-                                        invoice.customer.id
-                                    )}
+                                    href={`/business/customers/${invoice.customer.id}`}
                                     className="inline-flex items-center gap-2 text-interactive-primary font-bold text-sm hover:ms-1 transition-all mt-2"
                                 >
                                     <Eye className="w-4 h-4" />
-                                    {t("customers.profile_details")}
+                                    {safeT("customers.profile_details", "View Profile")}
                                     <span className="icon-flip">→</span>
                                 </Link>
                             </div>
@@ -336,12 +342,12 @@ export default function Show({ invoice }: Props) {
                                 <DollarSign className="w-24 h-24 -me-8 -mt-8" />
                             </div>
                             <h3 className="font-bold text-white/60 mb-6 flex items-center gap-2 border-b border-white/10 pb-3 uppercase text-[10px] tracking-[0.2em]">
-                                {t("reports.revenue.summary")}
+                                {safeT("reports.revenue.summary", "Summary")}
                             </h3>
                             <div className="space-y-6 relative z-10">
                                 <div className="flex justify-between items-center">
                                     <span className="text-white/70 font-medium">
-                                        {t("invoices.fields.total")}
+                                        {safeT("invoices.fields.total", "Total")}
                                     </span>
                                     <span className="text-2xl font-black">
                                         {formatCurrency(invoice.total)}
@@ -349,7 +355,7 @@ export default function Show({ invoice }: Props) {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-white/70 font-medium">
-                                        {t("invoices.fields.amount_paid")}
+                                        {safeT("invoices.fields.amount_paid", "Amount Paid")}
                                     </span>
                                     <span className="text-xl font-bold">
                                         {formatCurrency(invoice.amount_paid)}
@@ -357,14 +363,13 @@ export default function Show({ invoice }: Props) {
                                 </div>
                                 <div className="pt-5 border-t border-white/10 flex justify-between items-center">
                                     <span className="font-bold text-lg">
-                                        {t("invoices.fields.balance_due")}
+                                        {safeT("invoices.fields.balance_due", "Balance Due")}
                                     </span>
                                     <span
-                                        className={`text-3xl font-black px-4 py-1 rounded-xl ${
-                                            parseFloat(invoice.balance_due) > 0
-                                                ? "bg-white/10 text-white"
-                                                : "bg-interactive-success/20 text-white"
-                                        }`}
+                                        className={`text-3xl font-black px-4 py-1 rounded-xl ${parseFloat(invoice.balance_due) > 0
+                                            ? "bg-white/10 text-white"
+                                            : "bg-interactive-success/20 text-white"
+                                            }`}
                                     >
                                         {formatCurrency(invoice.balance_due)}
                                     </span>
@@ -376,7 +381,7 @@ export default function Show({ invoice }: Props) {
                         <Card className="p-6 border-none shadow-sm ring-1 ring-border-subtle bg-bg-subtle/50">
                             <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2 border-b border-border-subtle pb-3 text-sm">
                                 <MapPin className="w-4 h-4 text-interactive-primary" />
-                                {t("business.branches.hq")}
+                                {safeT("business.branches.hq", "Branch")}
                             </h3>
                             <div className="text-sm font-bold text-text-primary bg-bg-base px-3 py-2 rounded-lg border border-border-subtle shadow-sm inline-block">
                                 {invoice.branch.name}

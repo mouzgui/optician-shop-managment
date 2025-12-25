@@ -11,8 +11,12 @@ class Branch extends Model
     use BelongsToBusiness;
 
     protected $fillable = [
-        'business_id', 'name', 'address', 'phone',
-        'is_headquarters', 'is_active',
+        'business_id',
+        'name',
+        'address',
+        'phone',
+        'is_headquarters',
+        'is_active',
     ];
 
     protected $casts = [
@@ -23,5 +27,13 @@ class Branch extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    /**
+     * Scope a query to only include active branches.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }

@@ -4,10 +4,19 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import FrameForm from "@/Components/Forms/FrameForm";
-import { Card } from "@/Components/UI/Card";
 
 export default function Create() {
     const { t } = useTranslation();
+
+    // Safe translation helper
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
 
     const { data, setData, post, processing, errors, reset } = useForm({
         sku: "",
@@ -32,7 +41,7 @@ export default function Create() {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("business.inventory.frames.store"));
+        post("/business/inventory/frames");
     };
 
     return (
@@ -40,22 +49,22 @@ export default function Create() {
             header={
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.inventory.frames.index")}
+                        href="/business/inventory/frames"
                         className="text-text-muted hover:text-text-primary transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
-                        {t("inventory.frames.add_new")}
+                        {safeT("inventory.frames.add_new", "Add New Frame")}
                     </h2>
                 </div>
             }
         >
-            <Head title={t("inventory.frames.add_new")} />
+            <Head title={safeT("inventory.frames.add_new", "Add New Frame")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
+                    <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                         <form onSubmit={submit}>
                             <FrameForm
                                 data={data}
@@ -63,12 +72,13 @@ export default function Create() {
                                 errors={errors}
                                 processing={processing}
                                 onCancel={() => reset()}
-                                submitLabel={t("common.create")}
+                                submitLabel={safeT("common.create", "Create")}
                             />
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
     );
 }
+

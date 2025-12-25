@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/Components/UI/Input";
 import { Button } from "@/Components/UI/Button";
 import { Select } from "@/Components/UI/Select";
-import { Card } from "@/Components/UI/Card";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 interface Staff {
@@ -25,11 +24,21 @@ interface Branch {
 
 interface EditProps {
     staff: Staff;
-    branches: Branch[];
+    branches?: Branch[];
 }
 
-export default function Edit({ staff, branches }: EditProps) {
+export default function Edit({ staff, branches = [] }: EditProps) {
     const { t } = useTranslation();
+
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
+
     const { data, setData, put, processing, errors } = useForm({
         name: staff.name,
         email: staff.email,
@@ -42,33 +51,33 @@ export default function Edit({ staff, branches }: EditProps) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route("business.staff.update", staff.id));
+        put(`/business/staff/${staff.id}`);
     };
 
     return (
         <AuthenticatedLayout>
-            <Head title={t("business.staff.edit.title")} />
+            <Head title={safeT("business.staff.edit.title", "Edit Staff")} />
 
             <div className="space-y-6 max-w-2xl mx-auto">
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.staff.index")}
+                        href="/business/staff"
                         className="p-2 rounded-lg hover:bg-bg-subtle text-text-muted hover:text-text-primary transition-all"
                     >
                         <ArrowLeftIcon className="w-5 h-5 icon-flip" />
                     </Link>
                     <h1 className="text-2xl font-bold text-text-primary">
-                        {t("business.staff.edit.title")}: {staff.name}
+                        {safeT("business.staff.edit.title", "Edit Staff")}: {staff.name}
                     </h1>
                 </div>
 
-                <Card className="p-6">
+                <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                     <form onSubmit={submit} className="space-y-6">
                         <Input
                             id="name"
-                            label={t("business.staff.fields.name")}
+                            label={safeT("business.staff.fields.name", "Full Name")}
                             error={errors.name}
-                            placeholder={t("business.staff.fields.name_placeholder")}
+                            placeholder={safeT("business.staff.fields.name_placeholder", "e.g., John Doe")}
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
                             required
@@ -77,20 +86,20 @@ export default function Edit({ staff, branches }: EditProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Input
                                 id="email"
-                                label={t("business.staff.fields.email")}
+                                label={safeT("business.staff.fields.email", "Email")}
                                 error={errors.email}
                                 type="email"
-                                placeholder={t("business.staff.fields.email_placeholder")}
+                                placeholder={safeT("business.staff.fields.email_placeholder", "e.g., staff@shop.com")}
                                 value={data.email}
                                 onChange={(e) => setData("email", e.target.value)}
                                 required
                             />
                             <Input
                                 id="password"
-                                label={t("business.staff.fields.password")}
+                                label={safeT("business.staff.fields.password", "Password")}
                                 error={errors.password}
                                 type="password"
-                                placeholder={t("business.staff.fields.password_placeholder")}
+                                placeholder={safeT("business.staff.fields.password_placeholder", "Leave blank to keep current")}
                                 value={data.password}
                                 onChange={(e) => setData("password", e.target.value)}
                             />
@@ -99,39 +108,24 @@ export default function Edit({ staff, branches }: EditProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Select
                                 id="role"
-                                label={t("business.staff.fields.role")}
+                                label={safeT("business.staff.fields.role", "Role")}
                                 error={errors.role}
                                 value={data.role}
                                 onChange={(e) => setData("role", e.target.value)}
                                 options={[
-                                    {
-                                        value: "optometrist",
-                                        label: t("roles.optometrist"),
-                                    },
-                                    {
-                                        value: "receptionist",
-                                        label: t("roles.receptionist"),
-                                    },
-                                    {
-                                        value: "sales_agent",
-                                        label: t("roles.sales_agent"),
-                                    },
-                                    {
-                                        value: "lab_technician",
-                                        label: t("roles.lab_technician"),
-                                    },
-                                    {
-                                        value: "inventory_manager",
-                                        label: t("roles.inventory_manager"),
-                                    },
+                                    { value: "optometrist", label: safeT("roles.optometrist", "Optometrist") },
+                                    { value: "receptionist", label: safeT("roles.receptionist", "Receptionist") },
+                                    { value: "sales_agent", label: safeT("roles.sales_agent", "Sales Agent") },
+                                    { value: "lab_technician", label: safeT("roles.lab_technician", "Lab Technician") },
+                                    { value: "inventory_manager", label: safeT("roles.inventory_manager", "Inventory Manager") },
                                 ]}
                             />
                             <Select
                                 id="branch_id"
-                                label={t("business.staff.fields.branch")}
+                                label={safeT("business.staff.fields.branch", "Branch")}
                                 error={errors.branch_id}
                                 value={data.branch_id}
-                                onChange={(e) => setData("branch_id", e.target.value)}
+                                onChange={(e) => setData("branch_id", parseInt(e.target.value))}
                                 options={branches.map((branch) => ({
                                     value: branch.id,
                                     label: branch.name,
@@ -141,10 +135,10 @@ export default function Edit({ staff, branches }: EditProps) {
 
                         <Input
                             id="phone"
-                            label={t("business.staff.fields.phone")}
+                            label={safeT("business.staff.fields.phone", "Phone")}
                             error={errors.phone}
                             type="tel"
-                            placeholder={t("business.staff.fields.phone_placeholder")}
+                            placeholder={safeT("business.staff.fields.phone_placeholder", "e.g., +1234567890")}
                             value={data.phone}
                             onChange={(e) => setData("phone", e.target.value)}
                         />
@@ -161,7 +155,7 @@ export default function Edit({ staff, branches }: EditProps) {
                                 htmlFor="is_active"
                                 className="text-sm font-medium text-text-primary cursor-pointer select-none"
                             >
-                                {t("business.staff.fields.is_active")}
+                                {safeT("business.staff.fields.is_active", "Is Active")}
                             </label>
                         </div>
 
@@ -169,16 +163,16 @@ export default function Edit({ staff, branches }: EditProps) {
                             <Button
                                 type="button"
                                 variant="secondary"
-                                href={route("business.staff.index")}
+                                href="/business/staff"
                             >
-                                {t("common.cancel")}
+                                {safeT("common.cancel", "Cancel")}
                             </Button>
                             <Button type="submit" isLoading={processing}>
-                                {t("common.save")}
+                                {safeT("common.save", "Save")}
                             </Button>
                         </div>
                     </form>
-                </Card>
+                </div>
             </div>
         </AuthenticatedLayout>
     );

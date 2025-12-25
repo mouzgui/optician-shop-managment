@@ -89,11 +89,21 @@ interface Props {
 export default function Show({ customer }: Props) {
     const { t } = useTranslation();
 
+    // Safe translation helper
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
+
     const tabs = [
-        { name: t("customers.tabs.overview"), icon: ClipboardDocumentListIcon },
-        { name: t("customers.tabs.spectacle_rx"), icon: DocumentTextIcon },
-        { name: t("customers.tabs.contact_lens_rx"), icon: BeakerIcon },
-        { name: t("customers.tabs.invoices"), icon: IdentificationIcon },
+        { name: safeT("customers.tabs.overview", "Overview"), icon: ClipboardDocumentListIcon },
+        { name: safeT("customers.tabs.spectacle_rx", "Spectacle Rx"), icon: DocumentTextIcon },
+        { name: safeT("customers.tabs.contact_lens_rx", "Contact Lens Rx"), icon: BeakerIcon },
+        { name: safeT("customers.tabs.invoices", "Invoices"), icon: IdentificationIcon },
     ];
 
     return (
@@ -102,7 +112,7 @@ export default function Show({ customer }: Props) {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center gap-4">
                         <Link
-                            href={route("business.customers.index")}
+                            href="/business/customers"
                             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >
                             <ArrowLeftIcon className="w-6 h-6 icon-flip" />
@@ -113,11 +123,11 @@ export default function Show({ customer }: Props) {
                     </div>
                     <div className="flex gap-2">
                         <Link
-                            href={route("business.customers.edit", customer.id)}
+                            href={`/business/customers/${customer.id}/edit`}
                             className="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150"
                         >
                             <PencilSquareIcon className="w-4 h-4 me-2" />
-                            {t("common.edit")}
+                            {safeT("common.edit", "Edit")}
                         </Link>
                     </div>
                 </div>
@@ -136,7 +146,7 @@ export default function Show({ customer }: Props) {
                                 </div>
                                 <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        {t("customers.fields.phone")}
+                                        {safeT("customers.fields.phone", "Phone")}
                                     </p>
                                     <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                         {customer.phone}
@@ -151,14 +161,14 @@ export default function Show({ customer }: Props) {
                                 </div>
                                 <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        {t("customers.fields.last_visit")}
+                                        {safeT("customers.fields.last_visit", "Last Visit")}
                                     </p>
                                     <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                         {customer.last_visit_at
                                             ? new Date(
-                                                  customer.last_visit_at
-                                              ).toLocaleDateString()
-                                            : t("common.never")}
+                                                customer.last_visit_at
+                                            ).toLocaleDateString()
+                                            : safeT("common.never", "Never")}
                                     </p>
                                 </div>
                             </div>
@@ -166,28 +176,26 @@ export default function Show({ customer }: Props) {
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
                             <div className="flex items-center">
                                 <div
-                                    className={`p-3 rounded-full ${
-                                        customer.rx_expiry_flagged
-                                            ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400"
-                                            : "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400"
-                                    }`}
+                                    className={`p-3 rounded-full ${customer.rx_expiry_flagged
+                                        ? "bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400"
+                                        : "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400"
+                                        }`}
                                 >
                                     <DocumentTextIcon className="h-6 w-6" />
                                 </div>
                                 <div className="ms-4">
                                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                        {t("customers.fields.rx_status")}
+                                        {safeT("customers.fields.rx_status", "Rx Status")}
                                     </p>
                                     <p
-                                        className={`text-lg font-semibold ${
-                                            customer.rx_expiry_flagged
-                                                ? "text-red-600 dark:text-red-400"
-                                                : "text-gray-900 dark:text-gray-100"
-                                        }`}
+                                        className={`text-lg font-semibold ${customer.rx_expiry_flagged
+                                            ? "text-red-600 dark:text-red-400"
+                                            : "text-gray-900 dark:text-gray-100"
+                                            }`}
                                     >
                                         {customer.rx_expiry_flagged
-                                            ? t("customers.rx_expired")
-                                            : t("customers.rx_valid")}
+                                            ? safeT("customers.rx_expired", "Expired")
+                                            : safeT("customers.rx_valid", "Valid")}
                                     </p>
                                 </div>
                             </div>
@@ -199,7 +207,7 @@ export default function Show({ customer }: Props) {
                         <div className="lg:col-span-1 space-y-6">
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                                    {t("customers.profile_details")}
+                                    {safeT("customers.profile_details", "Profile Details")}
                                 </h3>
                                 <div className="space-y-4">
                                     {customer.email && (
@@ -213,9 +221,9 @@ export default function Show({ customer }: Props) {
                                         <span>
                                             {customer.date_of_birth
                                                 ? new Date(
-                                                      customer.date_of_birth
-                                                  ).toLocaleDateString()
-                                                : t("customers.show.no_dob")}
+                                                    customer.date_of_birth
+                                                ).toLocaleDateString()
+                                                : safeT("customers.show.no_dob", "No date of birth")}
                                         </span>
                                     </div>
 
@@ -223,14 +231,14 @@ export default function Show({ customer }: Props) {
                                         <MapPinIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
                                         <span>
                                             {customer.address ||
-                                                t("customers.show.no_address")}
+                                                safeT("customers.show.no_address", "No address")}
                                         </span>
                                     </div>
                                     <div className="flex items-start text-sm">
                                         <ClipboardDocumentListIcon className="h-5 w-5 text-gray-400 me-2 mt-0.5" />
                                         <div>
                                             <p className="text-xs text-gray-500 uppercase">
-                                                {t("customers.fields.notes")}
+                                                {safeT("customers.fields.notes", "Notes")}
                                             </p>
                                             <p className="text-sm text-gray-900 dark:text-gray-100">
                                                 {customer.notes || "-"}
@@ -243,18 +251,15 @@ export default function Show({ customer }: Props) {
                             {/* Family Info */}
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                                    {t("customers.family")}
+                                    {safeT("customers.family", "Family")}
                                 </h3>
                                 {customer.family_head && (
                                     <div className="mb-4">
                                         <p className="text-xs text-gray-500 uppercase">
-                                            {t("customers.fields.family_head")}
+                                            {safeT("customers.fields.family_head", "Family Head")}
                                         </p>
                                         <Link
-                                            href={route(
-                                                "business.customers.show",
-                                                customer.family_head.id
-                                            )}
+                                            href={`/business/customers/${customer.family_head.id}`}
                                             className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
                                         >
                                             {customer.family_head.full_name}
@@ -264,17 +269,14 @@ export default function Show({ customer }: Props) {
                                 {customer.family_members.length > 0 && (
                                     <div>
                                         <p className="text-xs text-gray-500 uppercase mb-2">
-                                            {t("customers.family_members")}
+                                            {safeT("customers.family_members", "Family Members")}
                                         </p>
                                         <ul className="space-y-2">
                                             {customer.family_members.map(
                                                 (member) => (
                                                     <li key={member.id}>
                                                         <Link
-                                                            href={route(
-                                                                "business.customers.show",
-                                                                member.id
-                                                            )}
+                                                            href={`/business/customers/${member.id}`}
                                                             className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
                                                         >
                                                             {member.full_name}
@@ -288,7 +290,7 @@ export default function Show({ customer }: Props) {
                                 {!customer.family_head &&
                                     customer.family_members.length === 0 && (
                                         <p className="text-sm text-gray-500">
-                                            {t("customers.no_family")}
+                                            {safeT("customers.no_family", "No family members")}
                                         </p>
                                     )}
                             </div>
@@ -322,8 +324,9 @@ export default function Show({ customer }: Props) {
                                         <Tab.Panel className="p-6">
                                             <div className="space-y-6">
                                                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {t(
-                                                        "customers.recent_activity"
+                                                    {safeT(
+                                                        "customers.recent_activity",
+                                                        "Recent Activity"
                                                     )}
                                                 </h4>
                                                 {/* Add recent activity timeline here */}
@@ -338,22 +341,17 @@ export default function Show({ customer }: Props) {
                                         <Tab.Panel className="p-6">
                                             <div className="flex justify-between items-center mb-6">
                                                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {t(
-                                                        "customers.tabs.spectacle_rx"
+                                                    {safeT(
+                                                        "customers.tabs.spectacle_rx",
+                                                        "Spectacle Rx"
                                                     )}
                                                 </h4>
                                                 <Link
-                                                    href={route(
-                                                        "business.spectacle-rx.create",
-                                                        {
-                                                            customer_id:
-                                                                customer.id,
-                                                        }
-                                                    )}
+                                                    href={`/business/spectacle-rx/create?customer_id=${customer.id}`}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
                                                     <PlusIcon className="w-4 h-4 me-1" />
-                                                    {t("customers.add_rx")}
+                                                    {safeT("customers.add_rx", "Add Rx")}
                                                 </Link>
                                             </div>
 
@@ -374,7 +372,7 @@ export default function Show({ customer }: Props) {
                                                 <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
                                                     <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
                                                     <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                        {t("customers.no_rx")}
+                                                        {safeT("customers.no_rx", "No prescriptions")}
                                                     </h3>
                                                 </div>
                                             )}
@@ -384,22 +382,17 @@ export default function Show({ customer }: Props) {
                                         <Tab.Panel className="p-6">
                                             <div className="flex justify-between items-center mb-6">
                                                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {t(
-                                                        "customers.tabs.contact_lens_rx"
+                                                    {safeT(
+                                                        "customers.tabs.contact_lens_rx",
+                                                        "Contact Lens Rx"
                                                     )}
                                                 </h4>
                                                 <Link
-                                                    href={route(
-                                                        "business.contact-lens-rx.create",
-                                                        {
-                                                            customer_id:
-                                                                customer.id,
-                                                        }
-                                                    )}
+                                                    href={`/business/contact-lens-rx/create?customer_id=${customer.id}`}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
                                                     <PlusIcon className="w-4 h-4 me-1" />
-                                                    {t("customers.add_rx")}
+                                                    {safeT("customers.add_rx", "Add Rx")}
                                                 </Link>
                                             </div>
 
@@ -420,7 +413,7 @@ export default function Show({ customer }: Props) {
                                                 <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
                                                     <BeakerIcon className="mx-auto h-12 w-12 text-gray-400" />
                                                     <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                        {t("customers.no_rx")}
+                                                        {safeT("customers.no_rx", "No prescriptions")}
                                                     </h3>
                                                 </div>
                                             )}
@@ -430,23 +423,19 @@ export default function Show({ customer }: Props) {
                                         <Tab.Panel className="p-6">
                                             <div className="flex justify-between items-center mb-6">
                                                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {t(
-                                                        "customers.tabs.invoices"
+                                                    {safeT(
+                                                        "customers.tabs.invoices",
+                                                        "Invoices"
                                                     )}
                                                 </h4>
                                                 <Link
-                                                    href={route(
-                                                        "business.pos.index",
-                                                        {
-                                                            customer_id:
-                                                                customer.id,
-                                                        }
-                                                    )}
+                                                    href={`/business/sales/pos?customer_id=${customer.id}`}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
                                                     <PlusIcon className="w-4 h-4 me-1" />
-                                                    {t(
-                                                        "customers.create_invoice"
+                                                    {safeT(
+                                                        "customers.create_invoice",
+                                                        "Create Invoice"
                                                     )}
                                                 </Link>
                                             </div>
@@ -457,29 +446,19 @@ export default function Show({ customer }: Props) {
                                                         <thead className="bg-gray-50 dark:bg-gray-900">
                                                             <tr>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {t(
-                                                                        "common.date"
-                                                                    )}
+                                                                    {safeT("common.date", "Date")}
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {t(
-                                                                        "invoices.fields.number"
-                                                                    )}
+                                                                    {safeT("invoices.fields.number", "Number")}
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {t(
-                                                                        "invoices.fields.status"
-                                                                    )}
+                                                                    {safeT("invoices.fields.status", "Status")}
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {t(
-                                                                        "invoices.fields.total"
-                                                                    )}
+                                                                    {safeT("invoices.fields.total", "Total")}
                                                                 </th>
                                                                 <th className="px-6 py-3 text-end text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {t(
-                                                                        "common.actions"
-                                                                    )}
+                                                                    {safeT("common.actions", "Actions")}
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -523,10 +502,7 @@ export default function Show({ customer }: Props) {
                                                                         </td>
                                                                         <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                                                                             <Link
-                                                                                href={route(
-                                                                                    "business.invoices.show",
-                                                                                    invoice.id
-                                                                                )}
+                                                                                href={`/business/invoices/${invoice.id}`}
                                                                                 className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400"
                                                                             >
                                                                                 View
@@ -542,8 +518,9 @@ export default function Show({ customer }: Props) {
                                                 <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
                                                     <IdentificationIcon className="mx-auto h-12 w-12 text-gray-400" />
                                                     <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                        {t(
-                                                            "customers.no_invoices"
+                                                        {safeT(
+                                                            "customers.no_invoices",
+                                                            "No invoices yet"
                                                         )}
                                                     </h3>
                                                 </div>

@@ -61,7 +61,7 @@ export default function Index({ businesses }: IndexProps) {
                                         {t("admin.businesses.fields.status")}
                                     </th>
                                     <th className="px-6 py-4 text-end text-xs font-semibold text-text-muted uppercase">
-                                        {t("common.actions")}
+                                        {t("common.actions.title")}
                                     </th>
                                 </tr>
                             </thead>

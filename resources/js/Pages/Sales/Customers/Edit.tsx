@@ -4,7 +4,6 @@ import { Head, useForm, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import CustomerForm from "@/Components/Forms/CustomerForm";
-import { Card } from "@/Components/UI/Card";
 
 interface Branch {
     id: number;
@@ -29,12 +28,21 @@ interface Customer extends CustomerSummary {
 
 interface Props {
     customer: Customer;
-    branches: Branch[];
-    familyHead: CustomerSummary | null;
+    branches?: Branch[];
+    familyHead?: CustomerSummary | null;
 }
 
-export default function Edit({ customer, branches, familyHead }: Props) {
+export default function Edit({ customer, branches = [], familyHead = null }: Props) {
     const { t } = useTranslation();
+
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
 
     const { data, setData, patch, processing, errors, reset } = useForm({
         first_name: customer.first_name,
@@ -50,7 +58,7 @@ export default function Edit({ customer, branches, familyHead }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        patch(route("business.customers.update", customer.id));
+        patch(`/business/customers/${customer.id}`);
     };
 
     return (
@@ -58,23 +66,23 @@ export default function Edit({ customer, branches, familyHead }: Props) {
             header={
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.customers.show", customer.id)}
+                        href={`/business/customers/${customer.id}`}
                         className="text-text-muted hover:text-text-primary transition-colors"
                     >
                         <ArrowLeft className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
-                        {t("customers.edit_customer")}: {customer.first_name}{" "}
+                        {safeT("customers.edit_customer", "Edit Customer")}: {customer.first_name}{" "}
                         {customer.last_name}
                     </h2>
                 </div>
             }
         >
-            <Head title={t("customers.edit_customer")} />
+            <Head title={safeT("customers.edit_customer", "Edit Customer")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
+                    <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                         <form onSubmit={submit}>
                             <CustomerForm
                                 data={data}
@@ -84,10 +92,10 @@ export default function Edit({ customer, branches, familyHead }: Props) {
                                 branches={branches}
                                 initialFamilyHead={familyHead}
                                 onCancel={() => reset()}
-                                submitLabel={t("common.save")}
+                                submitLabel={safeT("common.save", "Save")}
                             />
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

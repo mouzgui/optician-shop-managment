@@ -474,14 +474,18 @@
             },
             "fields": {
                 "name": "Business Name",
+                "name_placeholder": "e.g., Vision Pro Optical",
                 "owner": "Owner",
                 "status": "Status",
                 "actions": "Actions",
                 "primary_color": "Primary Theme Color",
                 "default_language": "Default Language",
                 "owner_name": "Owner Name",
+                "owner_name_placeholder": "Full Name",
                 "owner_email": "Owner Email",
+                "owner_email_placeholder": "email@example.com",
                 "owner_password": "Owner Password",
+                "owner_password_placeholder": "Minimum 8 characters",
                 "active_status": "Is Active"
             }
         }

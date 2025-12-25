@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
-import { Card } from "@/Components/UI/Card";
 import { Button } from "@/Components/UI/Button";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
@@ -25,20 +24,29 @@ interface ContactLens {
 }
 
 interface Props {
-    contactLenses: {
+    contactLenses?: {
         data: ContactLens[];
         links: any[];
         meta: any;
     };
-    filters: {
+    filters?: {
         search?: string;
     };
 }
 
-export default function Index({ contactLenses, filters }: Props) {
+export default function Index({ contactLenses = { data: [], links: [], meta: {} }, filters = {} }: Props) {
     const { t } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
+
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,47 +58,72 @@ export default function Index({ contactLenses, filters }: Props) {
     };
 
     const deleteCL = (id: number) => {
-        if (confirm(t("common.confirm_delete"))) {
+        if (confirm(safeT("common.confirm_delete", "Are you sure you want to delete this item?"))) {
             router.delete(
                 `/business/inventory/contact-lenses/${id}`
             );
         }
     };
 
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency: business?.currency_code || "USD",
+        }).format(amount);
+    };
+
+    const getTypeLabel = (type: string) => {
+        const typeLabels: Record<string, string> = {
+            spherical: "Spherical",
+            toric: "Toric",
+            multifocal: "Multifocal",
+            color: "Color",
+        };
+        return typeLabels[type] || type;
+    };
+
+    const getScheduleLabel = (schedule: string) => {
+        const scheduleLabels: Record<string, string> = {
+            daily: "Daily",
+            biweekly: "Bi-weekly",
+            monthly: "Monthly",
+            quarterly: "Quarterly",
+            yearly: "Yearly",
+        };
+        return scheduleLabels[schedule] || schedule;
+    };
+
     const columns = [
         {
-            header: t("inventory.contact_lenses.fields.brand_line"),
+            header: safeT("inventory.contact_lenses.fields.brand_line", "Brand / Product"),
             accessor: (item: ContactLens) => (
                 <div>
                     <div className="font-medium text-text-primary">
                         {item.brand} - {item.product_line}
                     </div>
                     <div className="text-xs text-text-muted">
-                        {t(
-                            `clinical.rx.replacement_schedule.${item.replacement_schedule}`
-                        )}
+                        {getScheduleLabel(item.replacement_schedule)}
                     </div>
                 </div>
             ),
         },
         {
-            header: t("inventory.contact_lenses.fields.type"),
-            accessor: (item: ContactLens) =>
-                t(`clinical.rx.types.${item.type}`),
+            header: safeT("inventory.contact_lenses.fields.type", "Type"),
+            accessor: (item: ContactLens) => getTypeLabel(item.type),
         },
         {
-            header: `${t("clinical.rx.sphere")} / ${t("clinical.rx.cylinder")}`,
+            header: "Power / Cyl",
             accessor: (item: ContactLens) => (
                 <div className="text-sm text-text-primary">
                     {item.power !== null && (
                         <span>
                             {item.power > 0 ? "+" : ""}
-                            {item.power.toFixed(2)}
+                            {Number(item.power).toFixed(2)}
                         </span>
                     )}
-                    {item.cylinder !== null && (
+                    {item.cylinder !== null && item.cylinder !== 0 && (
                         <span className="text-text-muted ms-1">
-                            / {item.cylinder.toFixed(2)}
+                            / {Number(item.cylinder).toFixed(2)}
                             {item.axis && ` x ${item.axis}°`}
                         </span>
                     )}
@@ -98,7 +131,7 @@ export default function Index({ contactLenses, filters }: Props) {
             ),
         },
         {
-            header: t("inventory.contact_lenses.fields.stock"),
+            header: safeT("inventory.contact_lenses.fields.stock", "Stock"),
             accessor: (item: ContactLens) => (
                 <div className="flex flex-col">
                     <Badge
@@ -106,29 +139,24 @@ export default function Index({ contactLenses, filters }: Props) {
                             item.boxes_in_stock > 5 ? "success" : "warning"
                         }
                     >
-                        {item.boxes_in_stock}{" "}
-                        {t("inventory.contact_lenses.fields.boxes")}
+                        {item.boxes_in_stock} boxes
                     </Badge>
                     <span className="text-[10px] text-text-muted mt-1">
-                        {item.box_quantity}{" "}
-                        {t("inventory.contact_lenses.fields.per_box")}
+                        {item.box_quantity} per box
                     </span>
                 </div>
             ),
         },
         {
-            header: t("inventory.contact_lenses.fields.price"),
+            header: safeT("inventory.contact_lenses.fields.price", "Price"),
             accessor: (item: ContactLens) => (
                 <span className="font-bold text-text-primary">
-                    {new Intl.NumberFormat(undefined, {
-                        style: "currency",
-                        currency: business.currency_code,
-                    }).format(item.selling_price_per_box)}
+                    {formatCurrency(item.selling_price_per_box)}
                 </span>
             ),
         },
         {
-            header: t("common.actions.title"),
+            header: safeT("common.actions.title", "Actions"),
             accessor: (item: ContactLens) => (
                 <div className="flex gap-2">
                     <Link
@@ -155,42 +183,42 @@ export default function Index({ contactLenses, filters }: Props) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
-                        {t("inventory.contact_lenses.title")}
+                        {safeT("inventory.contact_lenses.title", "Contact Lenses")}
                     </h2>
                     <Link
                         href="/business/inventory/contact-lenses/create"
                     >
                         <Button className="flex items-center gap-2">
                             <Plus className="w-4 h-4" />
-                            {t("inventory.contact_lenses.create_button")}
+                            {safeT("inventory.contact_lenses.create_button", "Add Contact Lens")}
                         </Button>
                     </Link>
                 </div>
             }
         >
-            <Head title={t("inventory.contact_lenses.title")} />
+            <Head title={safeT("inventory.contact_lenses.title", "Contact Lenses")} />
 
             <div className="space-y-6">
-                <Card className="p-4">
+                <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-4">
                     <form onSubmit={handleSearch} className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder={t("common.search")}
+                            placeholder={safeT("common.search", "Search...")}
                             className="w-full pl-10 pr-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
                         />
                     </form>
-                </Card>
+                </div>
 
-                <Card>
+                <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden">
                     <DataTable
                         columns={columns}
-                        data={contactLenses.data}
+                        data={contactLenses.data || []}
                         meta={contactLenses.meta}
                     />
-                </Card>
+                </div>
             </div>
         </AuthenticatedLayout>
     );
