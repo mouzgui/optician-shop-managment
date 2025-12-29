@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/Components/UI/Button";
-import { Card } from "@/Components/UI/Card";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import SpectacleRxForm from "@/Components/Forms/SpectacleRxForm";
 
@@ -18,6 +17,15 @@ interface Props {
 
 export default function Create({ customer }: Props) {
     const { t } = useTranslation();
+
+    const safeT = (key: string, fallback?: string) => {
+        try {
+            const result = t(key);
+            return typeof result === "string" ? result : fallback || key;
+        } catch {
+            return fallback || key;
+        }
+    };
 
     const { data, setData, post, processing, errors, reset } = useForm({
         customer_id: customer.id,
@@ -40,7 +48,7 @@ export default function Create({ customer }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("business.spectacle-rx.store"));
+        post("/business/spectacle-rx");
     };
 
     return (
@@ -48,24 +56,22 @@ export default function Create({ customer }: Props) {
             header={
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route("business.customers.show", customer.id)}
+                        href={`/business/customers/${customer.id}`}
                         className="text-text-muted hover:text-text-primary transition-colors"
                     >
                         <ArrowLeftIcon className="w-6 h-6 icon-flip" />
                     </Link>
                     <h2 className="font-semibold text-xl text-text-primary leading-tight">
-                        {t("clinical.rx.new_spec_rx_for", {
-                            name: customer.full_name,
-                        })}
+                        {safeT("clinical.rx.new_spec_rx_for", "New Spectacle Rx for")} {customer.full_name}
                     </h2>
                 </div>
             }
         >
-            <Head title={t("clinical.rx.new_spec_rx")} />
+            <Head title={safeT("clinical.rx.new_spec_rx", "New Spectacle Prescription")} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Card>
+                    <div className="bg-card-bg rounded-xl border border-card-border shadow-theme-md overflow-hidden p-6">
                         <form onSubmit={submit} className="space-y-6">
                             <SpectacleRxForm
                                 data={data}
@@ -80,14 +86,14 @@ export default function Create({ customer }: Props) {
                                     onClick={() => reset()}
                                     disabled={processing}
                                 >
-                                    {t("common.reset")}
+                                    {safeT("common.reset", "Reset")}
                                 </Button>
                                 <Button type="submit" isLoading={processing}>
-                                    {t("common.save")}
+                                    {safeT("common.save", "Save")}
                                 </Button>
                             </div>
                         </form>
-                    </Card>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

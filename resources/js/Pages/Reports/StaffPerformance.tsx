@@ -3,7 +3,7 @@ import { Head, Link, usePage, router } from "@inertiajs/react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
-import { ChevronLeft, FileText, Download } from "lucide-react";
+import { ChevronLeft, FileText, Download, Users, Receipt, DollarSign, Award } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
@@ -58,6 +58,16 @@ export default function StaffPerformance({ performance, filters }: Props) {
         0
     );
 
+    const totalTransactions = performance.reduce(
+        (sum, s) => sum + s.payment_count,
+        0
+    );
+
+    const topPerformer = performance.reduce(
+        (top, s) => parseFloat(s.total_collected) > parseFloat(top?.total_collected || "0") ? s : top,
+        performance[0]
+    );
+
     const handleExportCSV = () => {
         const headers = [
             t("reports.staff.fields.staff_member"),
@@ -86,7 +96,7 @@ export default function StaffPerformance({ performance, filters }: Props) {
         );
     };
 
-    const columns = [
+    const columns: any[] = [
         {
             header: t("reports.staff.fields.staff_member"),
             accessor: (item: StaffStat) => (
@@ -97,6 +107,11 @@ export default function StaffPerformance({ performance, filters }: Props) {
                     <span className="font-medium text-text-primary">
                         {item.name}
                     </span>
+                    {topPerformer && item.name === topPerformer.name && (
+                        <span className="text-xs bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-0.5 rounded-full">
+                            Top Performer
+                        </span>
+                    )}
                 </div>
             ),
         },
@@ -221,6 +236,65 @@ export default function StaffPerformance({ performance, filters }: Props) {
                             {t("common.export_pdf")}
                         </Button>
                     </div>
+                </div>
+
+                {/* Stats Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="p-4 border-l-4 border-l-purple-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Staff Members</p>
+                                <p className="text-2xl font-bold text-text-primary mt-1">
+                                    {performance.length}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                                <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-blue-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Total Transactions</p>
+                                <p className="text-2xl font-bold text-text-primary mt-1">
+                                    {totalTransactions}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                <Receipt className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-green-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Total Collected</p>
+                                <p className="text-xl font-bold text-green-600 dark:text-green-400 mt-1">
+                                    {formatCurrency(totalAll)}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-amber-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Top Performer</p>
+                                <p className="text-lg font-bold text-text-primary mt-1 truncate">
+                                    {topPerformer?.name || "N/A"}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                                <Award className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            </div>
+                        </div>
+                    </Card>
                 </div>
 
                 <Card className="p-0 overflow-hidden">

@@ -55,7 +55,7 @@ export default function RxDisplay({ rx, type }: Props) {
     const isExpiringSoon =
         !isExpired &&
         new Date(rx.expires_at) <
-            new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
     const formatValue = (val: string | number | null) => {
         if (val === null || val === undefined || val === "") return "-";
@@ -87,20 +87,20 @@ export default function RxDisplay({ rx, type }: Props) {
                     </span>
                     {isExpired && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                            {t("clinical.rx.expired")}
+                            Expired
                         </span>
                     )}
                     {isExpiringSoon && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                             <ExclamationTriangleIcon className="w-3 h-3 me-1" />
-                            {t("clinical.rx.expiring_soon")}
+                            Expiring Soon
                         </span>
                     )}
                 </div>
                 <button
                     onClick={handlePrint}
                     className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 print:hidden"
-                    title={t("common.print")}
+                    title="Print"
                 >
                     <PrinterIcon className="w-5 h-5" />
                 </button>
@@ -112,27 +112,15 @@ export default function RxDisplay({ rx, type }: Props) {
                     <thead>
                         <tr className="text-gray-500 dark:text-gray-400 uppercase text-xs">
                             <th className="pb-2 text-start w-12"></th>
-                            <th className="pb-2 text-center">
-                                {t("clinical.rx.sphere")}
-                            </th>
-                            <th className="pb-2 text-center">
-                                {t("clinical.rx.cylinder")}
-                            </th>
-                            <th className="pb-2 text-center">
-                                {t("clinical.rx.axis")}
-                            </th>
+                            <th className="pb-2 text-center">SPH</th>
+                            <th className="pb-2 text-center">CYL</th>
+                            <th className="pb-2 text-center">AXIS</th>
                             {type === "spectacle" ? (
-                                <th className="pb-2 text-center">
-                                    {t("clinical.rx.add")}
-                                </th>
+                                <th className="pb-2 text-center">ADD</th>
                             ) : (
                                 <>
-                                    <th className="pb-2 text-center">
-                                        {t("clinical.rx.bc")}
-                                    </th>
-                                    <th className="pb-2 text-center">
-                                        {t("clinical.rx.dia")}
-                                    </th>
+                                    <th className="pb-2 text-center">BC</th>
+                                    <th className="pb-2 text-center">DIA</th>
                                 </>
                             )}
                         </tr>
@@ -206,7 +194,7 @@ export default function RxDisplay({ rx, type }: Props) {
                     {type === "spectacle" && (
                         <div>
                             <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                                {t("clinical.rx.pd")} (
+                                PD (
                                 {(rx as SpectacleRx).pd_type})
                             </span>
                             <span className="font-medium dark:text-gray-200">
@@ -219,7 +207,7 @@ export default function RxDisplay({ rx, type }: Props) {
                         (rx as ContactLensRx).replacement_schedule && (
                             <div>
                                 <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                                    {t("clinical.rx.replacement")}
+                                    Replacement
                                 </span>
                                 <span className="font-medium dark:text-gray-200">
                                     {(rx as ContactLensRx).replacement_schedule}
@@ -228,14 +216,13 @@ export default function RxDisplay({ rx, type }: Props) {
                         )}
                     <div>
                         <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                            {t("clinical.rx.expires")}
+                            Expires
                         </span>
                         <span
-                            className={`font-medium ${
-                                isExpired
+                            className={`font-medium ${isExpired
                                     ? "text-red-600"
                                     : "dark:text-gray-200"
-                            }`}
+                                }`}
                         >
                             {new Date(rx.expires_at).toLocaleDateString()}
                         </span>
@@ -245,7 +232,7 @@ export default function RxDisplay({ rx, type }: Props) {
                 {rx.notes && (
                     <div className="mt-4 text-xs">
                         <span className="text-gray-500 dark:text-gray-400 block uppercase mb-1">
-                            {t("common.notes")}
+                            Notes
                         </span>
                         <p className="text-gray-700 dark:text-gray-300 italic">
                             {rx.notes}
@@ -255,7 +242,7 @@ export default function RxDisplay({ rx, type }: Props) {
 
                 {rx.prescribed_by && (
                     <div className="mt-4 text-xs text-end text-gray-500">
-                        {t("clinical.rx.prescribed_by")}:{" "}
+                        Prescribed by:{" "}
                         {rx.prescribed_by.name}
                     </div>
                 )}

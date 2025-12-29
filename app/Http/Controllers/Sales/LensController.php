@@ -21,7 +21,7 @@ class LensController extends Controller
             $term = $request->search;
             $query->where(function ($q) use ($term) {
                 $q->where('brand', 'like', "%{$term}%")
-                    ->orWhere('model', 'like', "%{$term}%")
+                    ->orWhere('name', 'like', "%{$term}%")
                     ->orWhere('type', 'like', "%{$term}%");
             });
         }

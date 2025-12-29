@@ -5,7 +5,7 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
-import { ChevronLeft, Box, Package, FileText, Download } from "lucide-react";
+import { ChevronLeft, Box, Package, FileText, Download, AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { exportToCSV } from "@/Utils/csvExport";
 
@@ -61,17 +61,26 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
         exportToCSV(clData, "low-stock-contact-lenses", clHeaders);
     };
 
-    const frameColumns = [
+    const totalAlerts = lowStockFrames.length + lowStockCL.length;
+    const criticalFrames = lowStockFrames.filter(f => f.quantity === 0).length;
+    const criticalCL = lowStockCL.filter(cl => cl.boxes_in_stock <= 2).length;
+
+    const frameColumns: any[] = [
         {
             header: t("reports.inventory.fields.frame"),
             accessor: (item: Frame) => (
-                <div className="flex flex-col">
-                    <span className="font-medium text-text-primary">
-                        {item.brand} - {item.model}
-                    </span>
-                    <span className="text-xs text-text-muted">
-                        {item.color_name} | {item.sku}
-                    </span>
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <Box className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="font-medium text-text-primary">
+                            {item.brand} - {item.model}
+                        </span>
+                        <span className="text-xs text-text-muted">
+                            {item.color_name} | {item.sku}
+                        </span>
+                    </div>
                 </div>
             ),
         },
@@ -101,17 +110,22 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
         },
     ];
 
-    const clColumns = [
+    const clColumns: any[] = [
         {
             header: t("reports.inventory.fields.contact_lens"),
             accessor: (item: ContactLens) => (
-                <div className="flex flex-col">
-                    <span className="font-medium text-text-primary">
-                        {item.brand} - {item.product_line}
-                    </span>
-                    <span className="text-xs text-text-muted">
-                        Power: {item.power} | BC: {item.base_curve}
-                    </span>
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                        <Package className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="font-medium text-text-primary">
+                            {item.brand} - {item.product_line}
+                        </span>
+                        <span className="text-xs text-text-muted">
+                            Power: {item.power} | BC: {item.base_curve}
+                        </span>
+                    </div>
                 </div>
             ),
         },
@@ -184,6 +198,65 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
                             {t("common.export_pdf")}
                         </Button>
                     </div>
+                </div>
+
+                {/* Stats Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="p-4 border-l-4 border-l-amber-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Total Alerts</p>
+                                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
+                                    {totalAlerts}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                                <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-blue-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Low Stock Frames</p>
+                                <p className="text-2xl font-bold text-text-primary mt-1">
+                                    {lowStockFrames.length}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                <Box className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-teal-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Low Stock CLs</p>
+                                <p className="text-2xl font-bold text-text-primary mt-1">
+                                    {lowStockCL.length}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                                <Package className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-red-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Critical (0 Stock)</p>
+                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
+                                    {criticalFrames + criticalCL}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                            </div>
+                        </div>
+                    </Card>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

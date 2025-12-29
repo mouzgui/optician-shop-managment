@@ -322,18 +322,99 @@ export default function Show({ customer }: Props) {
                                     <Tab.Panels className="mt-2">
                                         {/* Overview Panel */}
                                         <Tab.Panel className="p-6">
-                                            <div className="space-y-6">
-                                                <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {safeT(
-                                                        "customers.recent_activity",
-                                                        "Recent Activity"
-                                                    )}
-                                                </h4>
-                                                {/* Add recent activity timeline here */}
-                                                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                                                    Activity history coming
-                                                    soon...
-                                                </p>
+                                            <div className="space-y-8">
+                                                {/* Quick Stats */}
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                                                        <p className="text-2xl font-bold text-indigo-600">{customer.spectacle_prescriptions.length}</p>
+                                                        <p className="text-sm text-gray-500">Spectacle Rx</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                                                        <p className="text-2xl font-bold text-green-600">{customer.contact_lens_prescriptions.length}</p>
+                                                        <p className="text-sm text-gray-500">Contact Lens Rx</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                                                        <p className="text-2xl font-bold text-blue-600">{customer.invoices.length}</p>
+                                                        <p className="text-sm text-gray-500">Total Invoices</p>
+                                                    </div>
+                                                    <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                                                        <p className="text-2xl font-bold text-purple-600">
+                                                            ${customer.invoices.reduce((sum: number, inv: any) => sum + parseFloat(inv.total || 0), 0).toFixed(2)}
+                                                        </p>
+                                                        <p className="text-sm text-gray-500">Total Spent</p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Latest Prescription */}
+                                                {customer.spectacle_prescriptions.length > 0 && (
+                                                    <div>
+                                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Latest Spectacle Prescription</h4>
+                                                        <RxDisplay
+                                                            rx={customer.spectacle_prescriptions[0]}
+                                                            type="spectacle"
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {/* Quick Actions */}
+                                                <div>
+                                                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Quick Actions</h4>
+                                                    <div className="flex flex-wrap gap-3">
+                                                        <Link
+                                                            href={`/business/spectacle-rx/create?customer_id=${customer.id}`}
+                                                            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
+                                                        >
+                                                            <DocumentTextIcon className="w-4 h-4 me-2" />
+                                                            New Spectacle Rx
+                                                        </Link>
+                                                        <Link
+                                                            href={`/business/contact-lens-rx/create?customer_id=${customer.id}`}
+                                                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                                                        >
+                                                            <BeakerIcon className="w-4 h-4 me-2" />
+                                                            New Contact Lens Rx
+                                                        </Link>
+                                                        <Link
+                                                            href={`/business/sales/pos?customer_id=${customer.id}`}
+                                                            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                                                        >
+                                                            <IdentificationIcon className="w-4 h-4 me-2" />
+                                                            New Invoice
+                                                        </Link>
+                                                    </div>
+                                                </div>
+
+                                                {/* Recent Invoices Summary */}
+                                                {customer.invoices.length > 0 && (
+                                                    <div>
+                                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Invoices</h4>
+                                                        <div className="space-y-2">
+                                                            {customer.invoices.slice(0, 3).map((invoice: any) => (
+                                                                <div key={invoice.id} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                                                                    <div>
+                                                                        <span className="font-medium text-sm">{invoice.invoice_number}</span>
+                                                                        <span className="text-xs text-gray-500 ms-2">
+                                                                            {new Date(invoice.created_at).toLocaleDateString()}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className="text-sm font-semibold">${parseFloat(invoice.total || 0).toFixed(2)}</span>
+                                                                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${invoice.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                                                                invoice.status === 'deposit_paid' ? 'bg-yellow-100 text-yellow-800' :
+                                                                                    invoice.status === 'ready_pickup' ? 'bg-purple-100 text-purple-800' :
+                                                                                        'bg-gray-100 text-gray-800'
+                                                                            }`}>
+                                                                            {invoice.status === 'completed' ? 'Completed' :
+                                                                                invoice.status === 'deposit_paid' ? 'Deposit Paid' :
+                                                                                    invoice.status === 'ready_pickup' ? 'Ready' :
+                                                                                        invoice.status}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </Tab.Panel>
 
@@ -423,20 +504,14 @@ export default function Show({ customer }: Props) {
                                         <Tab.Panel className="p-6">
                                             <div className="flex justify-between items-center mb-6">
                                                 <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                    {safeT(
-                                                        "customers.tabs.invoices",
-                                                        "Invoices"
-                                                    )}
+                                                    Invoices
                                                 </h4>
                                                 <Link
                                                     href={`/business/sales/pos?customer_id=${customer.id}`}
                                                     className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-md hover:bg-indigo-700"
                                                 >
                                                     <PlusIcon className="w-4 h-4 me-1" />
-                                                    {safeT(
-                                                        "customers.create_invoice",
-                                                        "Create Invoice"
-                                                    )}
+                                                    Create Invoice
                                                 </Link>
                                             </div>
 
@@ -446,71 +521,74 @@ export default function Show({ customer }: Props) {
                                                         <thead className="bg-gray-50 dark:bg-gray-900">
                                                             <tr>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {safeT("common.date", "Date")}
+                                                                    Date
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {safeT("invoices.fields.number", "Number")}
+                                                                    Invoice #
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {safeT("invoices.fields.status", "Status")}
+                                                                    Status
                                                                 </th>
                                                                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {safeT("invoices.fields.total", "Total")}
+                                                                    Total
                                                                 </th>
                                                                 <th className="px-6 py-3 text-end text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                                    {safeT("common.actions", "Actions")}
+                                                                    Actions
                                                                 </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                                             {customer.invoices.map(
-                                                                (invoice) => (
-                                                                    <tr
-                                                                        key={
-                                                                            invoice.id
-                                                                        }
-                                                                    >
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                                                            {new Date(
-                                                                                invoice.created_at
-                                                                            ).toLocaleDateString()}
-                                                                        </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                                            {
-                                                                                invoice.invoice_number
-                                                                            }
-                                                                        </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap">
-                                                                            <span
-                                                                                className={classNames(
-                                                                                    "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
-                                                                                    invoice.status ===
-                                                                                        "paid"
-                                                                                        ? "bg-green-100 text-green-800"
-                                                                                        : "bg-yellow-100 text-yellow-800"
-                                                                                )}
-                                                                            >
-                                                                                {
-                                                                                    invoice.status
-                                                                                }
-                                                                            </span>
-                                                                        </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                                                            {
-                                                                                invoice.total_amount
-                                                                            }
-                                                                        </td>
-                                                                        <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                                            <Link
-                                                                                href={`/business/invoices/${invoice.id}`}
-                                                                                className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400"
-                                                                            >
-                                                                                View
-                                                                            </Link>
-                                                                        </td>
-                                                                    </tr>
-                                                                )
-                                                            )}
+                                                                (invoice) => {
+                                                                    const statusColors: Record<string, string> = {
+                                                                        completed: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+                                                                        deposit_paid: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+                                                                        in_lab: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+                                                                        ready_pickup: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+                                                                        cancelled: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+                                                                    };
+                                                                    const statusLabels: Record<string, string> = {
+                                                                        completed: "Completed",
+                                                                        deposit_paid: "Deposit Paid",
+                                                                        in_lab: "In Lab",
+                                                                        ready_pickup: "Ready for Pickup",
+                                                                        cancelled: "Cancelled",
+                                                                    };
+                                                                    return (
+                                                                        <tr key={invoice.id}>
+                                                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                                                {new Date(
+                                                                                    invoice.created_at
+                                                                                ).toLocaleDateString()}
+                                                                            </td>
+                                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                                                {invoice.invoice_number}
+                                                                            </td>
+                                                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                                                <span
+                                                                                    className={classNames(
+                                                                                        "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
+                                                                                        statusColors[invoice.status] || "bg-gray-100 text-gray-800"
+                                                                                    )}
+                                                                                >
+                                                                                    {statusLabels[invoice.status] || invoice.status}
+                                                                                </span>
+                                                                            </td>
+                                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                                                ${parseFloat(invoice.total || 0).toFixed(2)}
+                                                                            </td>
+                                                                            <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                                                <Link
+                                                                                    href={`/business/invoices/${invoice.id}`}
+                                                                                    className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400"
+                                                                                >
+                                                                                    View
+                                                                                </Link>
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                })
+                                                            }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -518,10 +596,7 @@ export default function Show({ customer }: Props) {
                                                 <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
                                                     <IdentificationIcon className="mx-auto h-12 w-12 text-gray-400" />
                                                     <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                        {safeT(
-                                                            "customers.no_invoices",
-                                                            "No invoices yet"
-                                                        )}
+                                                        No invoices yet
                                                     </h3>
                                                 </div>
                                             )}

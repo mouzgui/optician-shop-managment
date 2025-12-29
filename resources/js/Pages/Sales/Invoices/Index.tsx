@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import { Search, Filter, Plus, Eye } from "lucide-react";
+import { Search, Plus, Eye, DollarSign, Clock, CheckCircle, Truck } from "lucide-react";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
 import { Button } from "@/Components/UI/Button";
@@ -33,22 +33,41 @@ interface Props {
     };
     filters: {
         search?: string;
+        status?: string;
+    };
+    stats?: {
+        totalRevenue: number;
+        outstandingBalance: number;
+        completedToday: number;
+        pendingPickup: number;
+        depositPaid: number;
+        inLab: number;
     };
 }
 
-export default function Index({ invoices, filters }: Props) {
+export default function Index({ invoices, filters, stats }: Props) {
     const { t } = useTranslation();
     const [searchValue, setSearchValue] = useState(filters?.search || "");
+    const [activeStatus, setActiveStatus] = useState(filters?.status || "all");
 
     const handleSearch = (value: string) => {
         setSearchValue(value);
         setTimeout(() => {
             router.get(
                 "/business/sales/invoices",
-                { search: value },
+                { search: value, status: activeStatus !== "all" ? activeStatus : undefined },
                 { preserveState: true, replace: true }
             );
         }, 300);
+    };
+
+    const handleStatusFilter = (status: string) => {
+        setActiveStatus(status);
+        router.get(
+            "/business/sales/invoices",
+            { search: searchValue, status: status !== "all" ? status : undefined },
+            { preserveState: true, replace: true }
+        );
     };
 
     const getStatusVariant = (status: string): any => {
@@ -65,6 +84,33 @@ export default function Index({ invoices, filters }: Props) {
         return variants[status] || "neutral";
     };
 
+    const getStatusLabel = (status: string) => {
+        const labels: Record<string, string> = {
+            deposit_paid: "Deposit Paid",
+            in_lab: "In Lab",
+            ready_pickup: "Ready",
+            completed: "Completed",
+            cancelled: "Cancelled",
+        };
+        return labels[status] || status;
+    };
+
+    const formatCurrency = (value: number | string) => {
+        const num = typeof value === "string" ? parseFloat(value) : value;
+        return new Intl.NumberFormat(undefined, {
+            style: "currency",
+            currency: "USD",
+        }).format(num || 0);
+    };
+
+    const statusTabs = [
+        { key: "all", label: "All", count: invoices.meta?.total },
+        { key: "deposit_paid", label: "Deposit Paid", count: stats?.depositPaid },
+        { key: "in_lab", label: "In Lab", count: stats?.inLab },
+        { key: "ready_pickup", label: "Ready for Pickup", count: stats?.pendingPickup },
+        { key: "completed", label: "Completed", count: stats?.completedToday },
+    ];
+
     const columns = [
         {
             header: t("sales.invoices.fields.invoice_number"),
@@ -76,8 +122,16 @@ export default function Index({ invoices, filters }: Props) {
         },
         {
             header: t("sales.invoices.fields.customer"),
-            accessor: (item: Invoice) =>
-                `${item.customer.first_name} ${item.customer.last_name}`,
+            accessor: (item: Invoice) => (
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-bg-subtle flex items-center justify-center text-sm font-medium text-text-muted">
+                        {item.customer?.first_name?.[0]}{item.customer?.last_name?.[0]}
+                    </div>
+                    <span className="text-sm">
+                        {item.customer?.first_name} {item.customer?.last_name}
+                    </span>
+                </div>
+            ),
         },
         {
             header: t("sales.invoices.fields.date"),
@@ -88,7 +142,7 @@ export default function Index({ invoices, filters }: Props) {
             header: t("sales.invoices.fields.total"),
             accessor: (item: Invoice) => (
                 <span className="font-bold text-text-primary">
-                    {item.total}
+                    {formatCurrency(item.total)}
                 </span>
             ),
         },
@@ -102,7 +156,7 @@ export default function Index({ invoices, filters }: Props) {
                             : "text-status-success-text"
                     }
                 >
-                    {item.balance_due}
+                    {formatCurrency(item.balance_due)}
                 </span>
             ),
         },
@@ -110,7 +164,7 @@ export default function Index({ invoices, filters }: Props) {
             header: t("sales.invoices.fields.status"),
             accessor: (item: Invoice) => (
                 <Badge variant={getStatusVariant(item.status)}>
-                    {t(`sales.invoices.statuses.${item.status}`)}
+                    {getStatusLabel(item.status)}
                 </Badge>
             ),
         },
@@ -133,6 +187,7 @@ export default function Index({ invoices, filters }: Props) {
             <Head title={t("sales.invoices.title")} />
 
             <div className="space-y-6">
+                {/* Header */}
                 <div className="flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl font-black text-text-primary tracking-tight">
@@ -150,12 +205,98 @@ export default function Index({ invoices, filters }: Props) {
                     </Link>
                 </div>
 
+                {/* Stats Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="p-4 border-l-4 border-l-emerald-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Total Revenue</p>
+                                <p className="text-xl font-bold text-text-primary mt-1">
+                                    {formatCurrency(stats?.totalRevenue || 0)}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                                <DollarSign className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-red-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Outstanding</p>
+                                <p className="text-xl font-bold text-red-600 dark:text-red-400 mt-1">
+                                    {formatCurrency(stats?.outstandingBalance || 0)}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                                <Clock className="w-5 h-5 text-red-600 dark:text-red-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-amber-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Ready for Pickup</p>
+                                <p className="text-xl font-bold text-text-primary mt-1">
+                                    {stats?.pendingPickup || 0}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                                <Truck className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                            </div>
+                        </div>
+                    </Card>
+
+                    <Card className="p-4 border-l-4 border-l-green-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-sm font-medium text-text-muted">Completed Today</p>
+                                <p className="text-xl font-bold text-text-primary mt-1">
+                                    {stats?.completedToday || 0}
+                                </p>
+                            </div>
+                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                            </div>
+                        </div>
+                    </Card>
+                </div>
+
+                {/* Status Filter Tabs */}
+                <Card className="p-2">
+                    <div className="flex flex-wrap gap-2">
+                        {statusTabs.map((tab) => (
+                            <button
+                                key={tab.key}
+                                onClick={() => handleStatusFilter(tab.key)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeStatus === tab.key
+                                        ? "bg-primary-default text-white"
+                                        : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
+                                    }`}
+                            >
+                                {tab.label}
+                                {tab.count !== undefined && (
+                                    <span className={`ms-2 px-2 py-0.5 rounded-full text-xs ${activeStatus === tab.key
+                                            ? "bg-white/20"
+                                            : "bg-bg-base"
+                                        }`}>
+                                        {tab.count}
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </Card>
+
+                {/* Search */}
                 <Card className="p-4">
                     <div className="relative max-w-md">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
                         <input
                             type="text"
-                            defaultValue={filters?.search}
+                            value={searchValue}
                             onChange={(e) => handleSearch(e.target.value)}
                             placeholder={t("common.search")}
                             className="w-full ps-10 pe-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent transition-all"
@@ -163,6 +304,7 @@ export default function Index({ invoices, filters }: Props) {
                     </div>
                 </Card>
 
+                {/* Table */}
                 <Card className="overflow-hidden border-none shadow-sm">
                     <DataTable
                         columns={columns}
