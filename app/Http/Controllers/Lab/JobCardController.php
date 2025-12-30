@@ -18,16 +18,19 @@ class JobCardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Convert enum cases to string values for JavaScript
+        $statuses = array_map(fn($case) => $case->value, JobCardStatus::cases());
+
         return Inertia::render('Lab/JobCards/Index', [
             'jobCards' => $jobCards,
-            'statuses' => JobCardStatus::cases(),
+            'statuses' => $statuses,
         ]);
     }
 
     public function show(JobCard $jobCard)
     {
         $this->authorizeBusiness($jobCard);
-        
+
         $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription']);
 
         return Inertia::render('Lab/JobCards/Show', [
@@ -38,13 +41,27 @@ class JobCardController extends Controller
     public function print(JobCard $jobCard)
     {
         $this->authorizeBusiness($jobCard);
-        
+
         $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription']);
 
         return view('prints.job-card', [
             'jobCard' => $jobCard,
             'business' => Auth::user()->business,
         ]);
+    }
+
+    public function downloadPdf(JobCard $jobCard)
+    {
+        $this->authorizeBusiness($jobCard);
+
+        $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription', 'business']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('prints.job-card', [
+            'jobCard' => $jobCard,
+            'business' => Auth::user()->business,
+        ]);
+
+        return $pdf->download("job-card-{$jobCard->job_number}.pdf");
     }
 
     public function updateStatus(Request $request, JobCard $jobCard)
@@ -56,7 +73,7 @@ class JobCardController extends Controller
         ]);
 
         $status = JobCardStatus::from($validated['status']);
-        
+
         $updateData = ['status' => $status];
 
         if ($status === JobCardStatus::IN_PROGRESS && !$jobCard->started_at) {

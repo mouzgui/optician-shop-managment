@@ -5,9 +5,18 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
-import { ChevronLeft, Box, Package, FileText, Download, AlertTriangle } from "lucide-react";
+import {
+    ChevronLeft,
+    Box,
+    Package,
+    FileText,
+    Download,
+    AlertTriangle,
+    AlertCircle,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { exportToCSV } from "@/Utils/csvExport";
+import { StatCard } from "@/Components/Charts/StatCard";
 
 interface Frame {
     id: number;
@@ -61,9 +70,15 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
         exportToCSV(clData, "low-stock-contact-lenses", clHeaders);
     };
 
+    const handleExportPDF = () => {
+        window.open(route("business.reports.inventory.download"), "_blank");
+    };
+
     const totalAlerts = lowStockFrames.length + lowStockCL.length;
-    const criticalFrames = lowStockFrames.filter(f => f.quantity === 0).length;
-    const criticalCL = lowStockCL.filter(cl => cl.boxes_in_stock <= 2).length;
+    const criticalFrames = lowStockFrames.filter(
+        (f) => f.quantity === 0
+    ).length;
+    const criticalCL = lowStockCL.filter((cl) => cl.boxes_in_stock <= 2).length;
 
     const frameColumns: any[] = [
         {
@@ -190,10 +205,7 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
                             <FileText className="w-4 h-4 me-2" />
                             {t("common.export_csv")}
                         </Button>
-                        <Button
-                            variant="secondary"
-                            onClick={() => window.print()}
-                        >
+                        <Button variant="secondary" onClick={handleExportPDF}>
                             <Download className="w-4 h-4 me-2" />
                             {t("common.export_pdf")}
                         </Button>
@@ -201,62 +213,31 @@ export default function Inventory({ lowStockFrames, lowStockCL }: Props) {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="p-4 border-l-4 border-l-amber-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Alerts</p>
-                                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
-                                    {totalAlerts}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-blue-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Low Stock Frames</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {lowStockFrames.length}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                <Box className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-teal-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Low Stock CLs</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {lowStockCL.length}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                                <Package className="w-5 h-5 text-teal-600 dark:text-teal-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Critical (0 Stock)</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {criticalFrames + criticalCL}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <StatCard
+                        title={t("reports.inventory.total_alerts")}
+                        value={totalAlerts}
+                        icon={AlertTriangle}
+                        color="warning"
+                    />
+                    <StatCard
+                        title={t("reports.inventory.low_stock_frames")}
+                        value={lowStockFrames.length}
+                        icon={Box}
+                        color="primary"
+                    />
+                    <StatCard
+                        title={t("reports.inventory.low_stock_cl")}
+                        value={lowStockCL.length}
+                        icon={Package}
+                        color="info"
+                    />
+                    <StatCard
+                        title={t("reports.inventory.critical_stock")}
+                        value={criticalFrames + criticalCL}
+                        icon={AlertCircle}
+                        color="danger"
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

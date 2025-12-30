@@ -2,11 +2,23 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import { Plus, Search, Pencil, Trash2, DollarSign, Tag, AlertTriangle, Circle } from "lucide-react";
+import {
+    Plus,
+    Search,
+    Pencil,
+    Trash2,
+    DollarSign,
+    Tag,
+    AlertTriangle,
+    Circle,
+    FileText,
+} from "lucide-react";
 import { Button } from "@/Components/UI/Button";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Card } from "@/Components/UI/Card";
 import { Badge } from "@/Components/UI/Badge";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Lens {
     id: number;
@@ -41,7 +53,11 @@ interface Props {
     };
 }
 
-export default function Index({ lenses = { data: [], links: [], meta: {} }, filters = {}, stats }: Props) {
+export default function Index({
+    lenses = { data: [], links: [], meta: {} },
+    filters = {},
+    stats,
+}: Props) {
     const { t } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
@@ -59,7 +75,7 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            "/business/inventory/lenses",
+            route("business.inventory.lenses.index"),
             { search, type: activeType !== "all" ? activeType : undefined },
             { preserveState: true }
         );
@@ -68,21 +84,51 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
     const handleTypeFilter = (type: string) => {
         setActiveType(type);
         router.get(
-            "/business/inventory/lenses",
+            route("business.inventory.lenses.index"),
             { search, type: type !== "all" ? type : undefined },
             { preserveState: true }
         );
     };
 
     const deleteLens = (id: number) => {
-        if (confirm(safeT("common.confirm_delete", "Are you sure you want to delete this item?"))) {
-            router.delete(`/business/inventory/lenses/${id}`);
+        if (
+            confirm(
+                safeT(
+                    "common.confirm_delete",
+                    "Are you sure you want to delete this item?"
+                )
+            )
+        ) {
+            router.delete(route("business.inventory.lenses.destroy", id));
         }
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            safeT("inventory.lenses.fields.name", "Name"),
+            safeT("inventory.lenses.fields.type", "Type"),
+            safeT("inventory.lenses.fields.index", "Index"),
+            safeT("inventory.lenses.fields.supplier", "Supplier"),
+            safeT("inventory.lenses.fields.price", "Price"),
+        ];
+
+        const data = lenses.data.map((item) => [
+            `${item.brand} ${item.name}`,
+            getTypeLabel(item.type),
+            item.index,
+            item.lab_supplier,
+            item.selling_price,
+        ]);
+
+        exportToCSV(data, "lenses-inventory", headers);
     };
 
     const formatCoatings = (coatings: string[]) => {
         if (!coatings || coatings.length === 0) return "None";
-        return coatings.slice(0, 2).join(", ") + (coatings.length > 2 ? ` +${coatings.length - 2}` : "");
+        return (
+            coatings.slice(0, 2).join(", ") +
+            (coatings.length > 2 ? ` +${coatings.length - 2}` : "")
+        );
     };
 
     const formatCurrency = (value: number) => {
@@ -112,8 +158,11 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
     const calculatedStats = {
         total: stats?.total || lenses.data.length,
         lowStock: stats?.lowStock || 0,
-        totalValue: stats?.totalValue || lenses.data.reduce((sum, l) => sum + l.selling_price, 0),
-        types: stats?.types || [...new Set(lenses.data.map(l => l.type))].length,
+        totalValue:
+            stats?.totalValue ||
+            lenses.data.reduce((sum, l) => sum + l.selling_price, 0),
+        types:
+            stats?.types || [...new Set(lenses.data.map((l) => l.type))].length,
     };
 
     const columns: any[] = [
@@ -138,23 +187,27 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
         {
             header: safeT("inventory.lenses.fields.type", "Type"),
             accessor: (item: Lens) => (
-                <Badge variant="info">
-                    {getTypeLabel(item.type)}
-                </Badge>
+                <Badge variant="info">{getTypeLabel(item.type)}</Badge>
             ),
         },
         {
             header: safeT("inventory.lenses.fields.index", "Index"),
             accessor: (item: Lens) => (
-                <span className="text-sm text-text-secondary">{item.index}</span>
+                <span className="text-sm text-text-secondary">
+                    {item.index}
+                </span>
             ),
         },
         {
             header: safeT("inventory.lenses.fields.supplier", "Supplier"),
             accessor: (item: Lens) => (
                 <div className="text-sm">
-                    <div className="text-text-secondary">{item.lab_supplier}</div>
-                    <div className="text-xs text-text-muted">{item.lead_time_days} days lead time</div>
+                    <div className="text-text-secondary">
+                        {item.lab_supplier}
+                    </div>
+                    <div className="text-xs text-text-muted">
+                        {item.lead_time_days} days lead time
+                    </div>
                 </div>
             ),
         },
@@ -170,7 +223,9 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
             header: safeT("common.actions.title", "Actions"),
             accessor: (item: Lens) => (
                 <div className="flex gap-2">
-                    <Link href={`/business/inventory/lenses/${item.id}/edit`}>
+                    <Link
+                        href={route("business.inventory.lenses.edit", item.id)}
+                    >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
                         </Button>
@@ -194,12 +249,21 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {safeT("inventory.lenses.title", "Lenses")}
                     </h2>
-                    <Link href="/business/inventory/lenses/create">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="w-4 h-4" />
-                            {safeT("inventory.lenses.create_button", "Add Lens")}
+                    <div className="flex gap-2">
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
                         </Button>
-                    </Link>
+                        <Link href={route("business.inventory.lenses.create")}>
+                            <Button className="flex items-center gap-2">
+                                <Plus className="w-4 h-4" />
+                                {safeT(
+                                    "inventory.lenses.create_button",
+                                    "Add Lens"
+                                )}
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             }
         >
@@ -207,62 +271,31 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
 
             <div className="space-y-6">
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="p-4 border-l-4 border-l-cyan-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Lenses</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.total}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center">
-                                <Circle className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Low Stock</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {calculatedStats.lowStock}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-green-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Value</p>
-                                <p className="text-xl font-bold text-text-primary mt-1">
-                                    {formatCurrency(calculatedStats.totalValue)}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-purple-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Lens Types</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.types}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                <Tag className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <StatCard
+                        title="Total Lenses"
+                        value={calculatedStats.total}
+                        icon={Circle}
+                        color="primary"
+                    />
+                    <StatCard
+                        title="Low Stock"
+                        value={calculatedStats.lowStock}
+                        icon={AlertTriangle}
+                        color="danger"
+                    />
+                    <StatCard
+                        title="Total Value"
+                        value={formatCurrency(calculatedStats.totalValue)}
+                        icon={DollarSign}
+                        color="success"
+                    />
+                    <StatCard
+                        title="Lens Types"
+                        value={calculatedStats.types}
+                        icon={Tag}
+                        color="info"
+                    />
                 </div>
 
                 {/* Type Filter Tabs */}
@@ -272,10 +305,11 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
                             <button
                                 key={tab.key}
                                 onClick={() => handleTypeFilter(tab.key)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeType === tab.key
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    activeType === tab.key
                                         ? "bg-primary-default text-white"
                                         : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                }`}
                             >
                                 {tab.label}
                             </button>
@@ -285,10 +319,7 @@ export default function Index({ lenses = { data: [], links: [], meta: {} }, filt
 
                 {/* Search */}
                 <Card className="p-4">
-                    <form
-                        onSubmit={handleSearch}
-                        className="relative max-w-md"
-                    >
+                    <form onSubmit={handleSearch} className="relative max-w-md">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
                         <input
                             type="text"

@@ -6,7 +6,19 @@ import { Button } from "@/Components/UI/Button";
 import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
-import { Plus, Building2, Edit2, Search, CheckCircle, XCircle, Users, TrendingUp } from "lucide-react";
+import {
+    Plus,
+    Building2,
+    Edit2,
+    Search,
+    CheckCircle,
+    XCircle,
+    Users,
+    TrendingUp,
+    FileText,
+} from "lucide-react";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Business {
     id: number;
@@ -50,8 +62,11 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
         setSearchValue(value);
         setTimeout(() => {
             router.get(
-                "/admin/businesses",
-                { search: value, status: activeStatus !== "all" ? activeStatus : undefined },
+                route("admin.businesses.index"),
+                {
+                    search: value,
+                    status: activeStatus !== "all" ? activeStatus : undefined,
+                },
                 { preserveState: true, replace: true }
             );
         }, 300);
@@ -60,16 +75,46 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
     const handleStatusFilter = (status: string) => {
         setActiveStatus(status);
         router.get(
-            "/admin/businesses",
-            { search: searchValue, status: status !== "all" ? status : undefined },
+            route("admin.businesses.index"),
+            {
+                search: searchValue,
+                status: status !== "all" ? status : undefined,
+            },
             { preserveState: true }
         );
     };
 
+    const handleExportCSV = () => {
+        const headers = [
+            t("admin.businesses.fields.name"),
+            t("admin.businesses.fields.owner"),
+            "Staff Count",
+            "Branches Count",
+            t("admin.businesses.fields.status"),
+            "Created At",
+        ];
+
+        const data = businessList.map((business) => [
+            business.name,
+            business.owner?.name || "-",
+            business.staff_count || 0,
+            business.branches_count || 0,
+            business.is_active
+                ? t("common.status.active")
+                : t("common.status.inactive"),
+            business.created_at
+                ? new Date(business.created_at).toLocaleDateString()
+                : "-",
+        ]);
+
+        exportToCSV(data, "businesses-list", headers);
+    };
+
     const calculatedStats = {
         total: stats?.total || businessList.length,
-        active: stats?.active || businessList.filter(b => b.is_active).length,
-        inactive: stats?.inactive || businessList.filter(b => !b.is_active).length,
+        active: stats?.active || businessList.filter((b) => b.is_active).length,
+        inactive:
+            stats?.inactive || businessList.filter((b) => !b.is_active).length,
         newThisMonth: stats?.newThisMonth || 0,
     };
 
@@ -93,7 +138,10 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
                         </span>
                         {business.created_at && (
                             <p className="text-xs text-text-muted">
-                                Created {new Date(business.created_at).toLocaleDateString()}
+                                Created{" "}
+                                {new Date(
+                                    business.created_at
+                                ).toLocaleDateString()}
                             </p>
                         )}
                     </div>
@@ -127,9 +175,10 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
                             {business.staff_count} staff
                         </span>
                     )}
-                    {business.branches_count === undefined && business.staff_count === undefined && (
-                        <span className="text-text-muted">—</span>
-                    )}
+                    {business.branches_count === undefined &&
+                        business.staff_count === undefined && (
+                            <span className="text-text-muted">—</span>
+                        )}
                 </div>
             ),
         },
@@ -147,7 +196,7 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
             header: t("common.actions.title"),
             accessor: (business: Business) => (
                 <div className="flex justify-end">
-                    <Link href={`/admin/businesses/${business.id}/edit`}>
+                    <Link href={route("admin.businesses.edit", business.id)}>
                         <Button variant="secondary" size="sm">
                             <Edit2 className="w-3.5 h-3.5" />
                         </Button>
@@ -172,71 +221,50 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
                             Manage all businesses on the platform
                         </p>
                     </div>
-                    <Link href="/admin/businesses/create">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="w-4 h-4" />
-                            {t("admin.businesses.index.create_btn")}
+                    <div className="flex items-center gap-3">
+                        <Link href={route("admin.businesses.create")}>
+                            <Button className="flex items-center gap-2">
+                                <Plus className="w-4 h-4" />
+                                {t("admin.businesses.index.create_btn")}
+                            </Button>
+                        </Link>
+                        <Button
+                            variant="secondary"
+                            onClick={handleExportCSV}
+                            className="flex items-center gap-2"
+                        >
+                            <FileText className="w-4 h-4" />
+                            {t("common.actions.export")}
                         </Button>
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="p-4 border-l-4 border-l-blue-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.total}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                <Building2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-green-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Active</p>
-                                <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">
-                                    {calculatedStats.active}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Inactive</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {calculatedStats.inactive}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-amber-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">New This Month</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.newThisMonth}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                                <TrendingUp className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    <StatCard
+                        title="Total Businesses"
+                        value={calculatedStats.total}
+                        icon={Building2}
+                        color="primary"
+                    />
+                    <StatCard
+                        title="Active"
+                        value={calculatedStats.active}
+                        icon={CheckCircle}
+                        color="success"
+                    />
+                    <StatCard
+                        title="Inactive"
+                        value={calculatedStats.inactive}
+                        icon={XCircle}
+                        color="danger"
+                    />
+                    <StatCard
+                        title="New This Month"
+                        value={calculatedStats.newThisMonth}
+                        icon={TrendingUp}
+                        color="warning"
+                    />
                 </div>
 
                 {/* Status Filter Tabs */}
@@ -246,10 +274,11 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
                             <button
                                 key={tab.key}
                                 onClick={() => handleStatusFilter(tab.key)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeStatus === tab.key
-                                    ? "bg-primary-default text-white"
-                                    : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    activeStatus === tab.key
+                                        ? "bg-primary-default text-white"
+                                        : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
+                                }`}
                             >
                                 {tab.label}
                             </button>

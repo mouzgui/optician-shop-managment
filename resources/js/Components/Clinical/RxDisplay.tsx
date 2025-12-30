@@ -73,7 +73,13 @@ export default function RxDisplay({ rx, type }: Props) {
     };
 
     const handlePrint = () => {
-        window.print();
+        const routeName =
+            type === "spectacle"
+                ? "business.spectacle-rx.download"
+                : "business.contact-lens-rx.download";
+        const paramName = type === "spectacle" ? "spectacle_rx" : "contact_lens_rx";
+        
+        window.open(route(routeName, { [paramName]: rx.id }), "_blank");
     };
 
     return (

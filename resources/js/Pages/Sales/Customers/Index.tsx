@@ -2,11 +2,26 @@ import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import { Search, Plus, Eye, Pencil, User, Phone, Calendar } from "lucide-react";
+import {
+    Search,
+    Plus,
+    Eye,
+    Pencil,
+    User,
+    Phone,
+    Calendar,
+    FileText,
+    Trash2,
+    Users,
+    UserPlus,
+    History,
+} from "lucide-react";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
 import { Card } from "@/Components/UI/Card";
 import { Badge } from "@/Components/UI/Badge";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Customer {
     id: number;
@@ -41,12 +56,40 @@ export default function Index({ customers, filters }: Props) {
         // Simple timeout instead of lodash debounce
         const timeoutId = setTimeout(() => {
             router.get(
-                "/business/customers",
+                route("business.customers.index"),
                 { search: value },
                 { preserveState: true, replace: true }
             );
         }, 300);
         return () => clearTimeout(timeoutId);
+    };
+
+    const handleDelete = (id: number) => {
+        if (confirm(t("common.confirm_delete"))) {
+            router.delete(route("business.customers.destroy", id));
+        }
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            t("customers.fields.name"),
+            t("customers.fields.phone"),
+            t("customers.fields.email"),
+            t("customers.fields.branch"),
+            t("customers.fields.last_visit"),
+        ];
+
+        const data = customers.data.map((item) => [
+            `${item.first_name} ${item.last_name}`,
+            item.phone,
+            item.email || "-",
+            item.branch?.name || "-",
+            item.last_visit_at
+                ? new Date(item.last_visit_at).toLocaleDateString()
+                : "-",
+        ]);
+
+        exportToCSV(data, "customers-report", headers);
     };
 
     const columns = [
@@ -100,16 +143,23 @@ export default function Index({ customers, filters }: Props) {
             header: t("common.actions.title"),
             accessor: (item: Customer) => (
                 <div className="flex justify-end gap-2">
-                    <Link href={`/business/customers/${item.id}`}>
+                    <Link href={route("business.customers.show", item.id)}>
                         <Button variant="secondary" size="sm">
                             <Eye className="h-4 w-4" />
                         </Button>
                     </Link>
-                    <Link href={`/business/customers/${item.id}/edit`}>
+                    <Link href={route("business.customers.edit", item.id)}>
                         <Button variant="secondary" size="sm">
                             <Pencil className="h-4 w-4" />
                         </Button>
                     </Link>
+                    <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDelete(item.id)}
+                    >
+                        <Trash2 className="h-4 w-4" />
+                    </Button>
                 </div>
             ),
         },
@@ -122,18 +172,57 @@ export default function Index({ customers, filters }: Props) {
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("customers.title")}
                     </h2>
-                    <Link href="/business/customers/create">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="h-5 w-5" />
-                            {t("customers.create_button")}
+                    <div className="flex gap-2">
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="h-5 w-5 me-2" />
+                            {t("common.export_csv")}
                         </Button>
-                    </Link>
+                        <Link href={route("business.customers.create")}>
+                            <Button className="flex items-center gap-2">
+                                <Plus className="h-5 w-5" />
+                                {t("customers.create_button")}
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             }
         >
             <Head title={t("customers.title")} />
 
             <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <StatCard
+                        title={t("customers.stats.total")}
+                        value={customers.meta?.total || customers.data.length}
+                        icon={Users}
+                        color="primary"
+                    />
+                    <StatCard
+                        title={t("customers.stats.new_this_month")}
+                        value={
+                            customers.data.filter((c) => {
+                                const date = c.last_visit_at
+                                    ? new Date(c.last_visit_at)
+                                    : null;
+                                return (
+                                    date &&
+                                    date.getMonth() === new Date().getMonth()
+                                );
+                            }).length
+                        }
+                        icon={UserPlus}
+                        color="success"
+                    />
+                    <StatCard
+                        title={t("customers.stats.recent_visits")}
+                        value={
+                            customers.data.filter((c) => c.last_visit_at).length
+                        }
+                        icon={History}
+                        color="info"
+                    />
+                </div>
+
                 <Card className="p-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />

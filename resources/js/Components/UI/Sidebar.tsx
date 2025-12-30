@@ -54,6 +54,7 @@ const staffMenuItems: MenuItem[] = [
     { icon: <ShoppingCart className="w-5 h-5" />, label: "nav.pos", href: "/business/sales/pos" },
     { icon: <FileText className="w-5 h-5" />, label: "nav.invoices", href: "/business/sales/invoices" },
     { icon: <FlaskConical className="w-5 h-5" />, label: "nav.lab", href: "/business/lab/job-cards" },
+    { icon: <BarChart3 className="w-5 h-5" />, label: "nav.reports", href: "/business/reports" },
 ];
 
 export function Sidebar() {

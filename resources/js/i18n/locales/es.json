@@ -1,43 +1,709 @@
 {
-  "common": {
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "delete": "Eliminar",
-    "edit": "Editar",
-    "create": "Crear",
-    "search": "Buscar...",
-    "loading": "Cargando...",
-    "noResults": "No se encontraron resultados",
-    "confirm": "Confirmar",
-    "back": "Volver",
-    "next": "Siguiente",
-    "close": "Cerrar",
-    "export_csv": "Exportar CSV",
-    "export_pdf": "Exportar PDF"
-  },
-  "auth": {
-    "login": "Iniciar sesión",
-    "logout": "Cerrar sesión",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "rememberMe": "Recordarme",
-    "forgotPassword": "¿Olvidó su contraseña?"
-  },
-  "nav": {
-    "dashboard": "Tablero",
-    "customers": "Clientes",
-    "prescriptions": "Recetas",
-    "inventory": "Inventario",
-    "pos": "Punto de venta",
-    "invoices": "Facturas",
-    "lab": "Laboratorio",
-    "reports": "Informes",
-    "settings": "Configuración"
-  },
-  "welcome": {
-    "title": "Sistema de Gestión de Óptica",
-    "description": "Bienvenido a su nuevo sistema de gestión. ¡Los tokens y i18n están funcionando!",
-    "status": "Tailwind CSS 4 + Tokens Semánticos + i18n están activos.",
-    "test_button": "Botón de Prueba"
-  }
+    "business": {
+        "dashboard": {
+            "title": "Panel de Negocios",
+            "welcome": "Resumen del Panel",
+            "today_sales": "Ventas de Hoy",
+            "pending_pickups": "Recogidas Pendientes",
+            "total_customers": "Total de Clientes",
+            "recent_invoices": "Facturas Recientes"
+        },
+        "branches": {
+            "index": {
+                "title": "Gestión de Sucursales",
+                "subtitle": "Gestione las ubicaciones de su negocio",
+                "create_btn": "Añadir Nueva Sucursal"
+            },
+            "fields": {
+                "name": "Nombre de la Sucursal",
+                "contact": "Información de Contacto",
+                "status": "Estado",
+                "actions": "Acciones",
+                "hq": "Sede Central"
+            }
+        },
+        "staff": {
+            "index": {
+                "title": "Gestión de Personal",
+                "subtitle": "Gestione los miembros de su equipo y sus permisos",
+                "create_btn": "Añadir Nuevo Personal"
+            },
+            "fields": {
+                "name": "Nombre",
+                "email": "Correo electrónico",
+                "role": "Rol",
+                "branch": "Sucursal",
+                "status": "Estado"
+            }
+        },
+        "settings": {
+            "title": "Configuración del Negocio",
+            "submit_btn": "Guardar Configuración",
+            "sections": {
+                "general": "Información General",
+                "branding": "Marca Blanca y Personalización"
+            },
+            "fields": {
+                "name": "Nombre del Negocio",
+                "email": "Correo del Negocio",
+                "phone": "Teléfono del Negocio",
+                "address": "Dirección",
+                "tax_number": "Número de Impuestos / IVA",
+                "registration_number": "Número de Registro Comercial",
+                "logo": "Logo del Negocio",
+                "favicon": "Favicon (PNG/ICO)",
+                "primary_color": "Color Principal de la Marca",
+                "footer_text": "Texto Personalizado del Pie de Página"
+            },
+            "placeholders": {
+                "footer_text": "ej., © 2024 Nombre de su Tienda. Todos los derechos reservados."
+            }
+        }
+    },
+    "common": {
+        "status": {
+            "active": "Activo",
+            "inactive": "Inactivo"
+        },
+        "actions": {
+            "title": "Acciones",
+            "edit": "Editar",
+            "delete": "Eliminar",
+            "save": "Guardar",
+            "create": "Crear",
+            "view": "Ver"
+        },
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "create": "Crear",
+        "select": "Seleccionar...",
+        "remove": "Eliminar",
+        "loading": "Cargando...",
+        "view": "Ver",
+        "print": "Imprimir",
+        "search": "Buscar...",
+        "searching": "Buscando",
+        "noResults": "No se encontraron resultados",
+        "confirm": "Confirmar",
+        "confirm_delete": "¿Está seguro de que desea eliminar este elemento?",
+        "back": "Volver",
+        "next": "Siguiente",
+        "close": "Cerrar",
+        "reset": "Restablecer",
+        "none": "Ninguno",
+        "never": "Nunca",
+        "active": "Activo",
+        "expired": "Expirado",
+        "qty": "Cant",
+        "price": "Precio",
+        "total": "Total",
+        "no_payments": "No hay pagos registrados aún.",
+        "to": "a",
+        "gender": {
+            "male": "Masculino",
+            "female": "Femenino",
+            "unisex": "Unisex",
+            "kids": "Niños"
+        },
+        "showing_results": "Mostrando {{from}} a {{to}} de {{total}} resultados",
+        "export_csv": "Exportar CSV",
+        "export_pdf": "Exportar PDF",
+        "days": "días",
+        "upload_image": "Subir Imagen"
+    },
+    "sales": {
+        "invoices": {
+            "title": "Facturas",
+            "subtitle": "Gestione facturas de venta y pagos",
+            "new_sale": "Nueva Venta",
+            "fields": {
+                "invoice_number": "Factura #",
+                "customer": "Cliente",
+                "date": "Fecha",
+                "total": "Total",
+                "balance": "Saldo",
+                "status": "Estado"
+            },
+            "statuses": {
+                "deposit_paid": "Depósito Pagado",
+                "in_lab": "En Laboratorio",
+                "ready_pickup": "Listo para Recoger",
+                "completed": "Completado",
+                "cancelled": "Cancelado"
+            }
+        }
+    },
+    "customers": {
+        "title": "Clientes",
+        "add_new": "Añadir Nuevo Cliente",
+        "search_placeholder": "Buscar por nombre o teléfono...",
+        "no_results": "No se encontraron clientes.",
+        "no_results_found": "No se encontraron clientes que coincidan con su búsqueda.",
+        "profile_details": "Detalles del Perfil",
+        "create_button": "Añadir Nuevo Cliente",
+        "add_rx": "Añadir Receta",
+        "rx_expired": "Expirada",
+        "rx_valid": "Válida",
+        "family": "Familia",
+        "family_members": "Miembros de la Familia",
+        "no_family": "No se encontraron vínculos familiares.",
+        "recent_activity": "Actividad Reciente",
+        "prescribed_by": "Prescrito por",
+        "no_rx": "No se encontraron recetas.",
+        "create_invoice": "Crear Factura",
+        "no_invoices": "No se encontraron facturas.",
+        "select_branch": "Seleccionar Sucursal",
+        "search_family_head": "Buscar cabeza de familia...",
+        "selected_head": "Cabeza de Familia Seleccionado",
+        "none": "Ninguno",
+        "edit_customer": "Editar Cliente",
+        "fields": {
+            "name": "Nombre",
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "phone": "Teléfono",
+            "email": "Correo electrónico",
+            "address": "Dirección",
+            "date_of_birth": "Fecha de Nacimiento",
+            "branch": "Sucursal",
+            "last_visit": "Última Visita",
+            "rx_status": "Estado de Receta",
+            "notes": "Notas",
+            "family_head": "Cabeza de Familia"
+        },
+        "tabs": {
+            "overview": "Resumen",
+            "spectacle_rx": "Receta de Gafas",
+            "contact_lens_rx": "Receta de Lentillas",
+            "invoices": "Facturas"
+        }
+    },
+    "clinical": {
+        "rx": {
+            "sphere": "Esfera",
+            "cylinder": "Cilindro",
+            "axis": "Eje",
+            "add": "Adición",
+            "od": "OD (Ojo Derecho)",
+            "os": "OS (Ojo Izquierdo)",
+            "pd_type": "Tipo de DP",
+            "pd_single": "DP Única",
+            "pd_dual": "DP Dual",
+            "pd_far": "DP Lejos",
+            "pd_near": "DP Cerca",
+            "additional_details": "Detalles Adicionales",
+            "bc": "Curva Base",
+            "dia": "Diámetro",
+            "pd": "D.P.",
+            "replacement": "Reemplazo",
+            "replacement_schedule": {
+                "label": "Horario de Reemplazo",
+                "daily": "Diario",
+                "weekly": "Semanal",
+                "bi_weekly": "Quincenal",
+                "monthly": "Mensual",
+                "yearly": "Anual"
+            },
+            "types": {
+                "spherical": "Esférica",
+                "toric": "Tórica",
+                "multifocal": "Multifocal",
+                "color": "Color"
+            },
+            "brand": "Marca",
+            "product": "Producto",
+            "expires": "Expira",
+            "prescribed_by": "Prescrito por",
+            "expired": "Expirado",
+            "expiring_soon": "Expira Pronto",
+            "copy_od_to_os": "Copiar OD a OS",
+            "new_cl_rx": "Nueva Receta de Lentes de Contacto",
+            "new_cl_rx_for": "Nueva Receta de Lentes de Contacto para {{name}}",
+            "new_spec_rx": "Nueva Receta de Gafas",
+            "new_spec_rx_for": "Nueva Receta de Gafas para {{name}}"
+        }
+    },
+    "inventory": {
+        "frames": {
+            "title": "Inventario de Monturas",
+            "add_new": "Añadir Nueva Montura",
+            "edit_frame": "Editar Montura",
+            "search_placeholder": "Buscar por SKU, Marca, Modelo o Código de Barras...",
+            "no_results": "No se encontraron monturas en el inventario.",
+            "sections": {
+                "basic_info": "Información Básica",
+                "specs": "Especificaciones",
+                "pricing_stock": "Precios y Stock"
+            },
+            "fields": {
+                "sku": "SKU",
+                "barcode": "Código de Barras",
+                "brand": "Marca",
+                "model": "Modelo",
+                "brand_model": "Marca / Modelo",
+                "color_code": "Código de Color",
+                "color_name": "Nombre de Color",
+                "size_eye": "Tamaño del Ojo (mm)",
+                "size_bridge": "Tamaño del Puente (mm)",
+                "size_temple": "Tamaño de la Varilla (mm)",
+                "category": "Categoría",
+                "material": "Material",
+                "gender": "Género",
+                "cost_price": "Precio de Coste",
+                "selling_price": "Precio de Venta",
+                "quantity": "Cantidad",
+                "low_stock_threshold": "Alerta de Stock Bajo",
+                "is_active": "Está Activo",
+                "price": "Precio"
+            },
+            "categories": {
+                "optical": "Óptico",
+                "sunglasses": "Gafas de Sol",
+                "sports": "Deportivo",
+                "kids": "Niños"
+            },
+            "filters": {
+                "low_stock": "Solo Stock Bajo"
+            },
+            "create_button": "Añadir Nueva Montura",
+            "low_stock_filter": "Solo Stock Bajo"
+        },
+        "lenses": {
+            "title": "Catálogo de Lentes",
+            "add_new": "Añadir Nueva Lente",
+            "edit_lens": "Editar Lente",
+            "search_placeholder": "Buscar por Marca, Modelo o Tipo...",
+            "no_results": "No se encontraron lentes en el catálogo.",
+            "stock": "Stock",
+            "custom_order": "Pedido Personalizado",
+            "sections": {
+                "basic_info": "Información Básica",
+                "specs_pricing": "Especificaciones y Precios"
+            },
+            "fields": {
+                "brand": "Marca",
+                "name": "Nombre de la Lente",
+                "brand_name": "Marca / Nombre",
+                "type": "Tipo",
+                "material": "Material",
+                "index": "Índice",
+                "coatings": "Tratamientos",
+                "tint": "Tinte",
+                "cost_price": "Precio de Coste",
+                "selling_price": "Precio de Venta",
+                "lab_supplier": "Proveedor de Laboratorio",
+                "lead_time_days": "Tiempo de Entrega (Días)",
+                "is_active": "Está Activo",
+                "price": "Precio"
+            },
+            "types": {
+                "single_vision": "Monofocal",
+                "bifocal": "Bifocal",
+                "progressive": "Progresivo",
+                "office": "Ocupacional",
+                "sports": "Deportivo"
+            },
+            "create_button": "Añadir Nueva Lente"
+        },
+        "contact_lenses": {
+            "title": "Inventario de Lentes de Contacto",
+            "add_new": "Añadir Nueva Lente de Contacto",
+            "edit_cl": "Editar Lente de Contacto",
+            "search_placeholder": "Buscar por Marca o Línea de Producto...",
+            "no_results": "No se encontraron lentes de contacto en el inventario.",
+            "stock": "Stock",
+            "boxes": "Cajas",
+            "custom_order": "Pedido Personalizado",
+            "sections": {
+                "product_info": "Información del Producto",
+                "rx_pricing": "Parámetros RX y Precios"
+            },
+            "fields": {
+                "brand": "Marca",
+                "product_line": "Línea de Producto",
+                "brand_line": "Marca / Línea",
+                "type": "Tipo",
+                "replacement_schedule": "Horario de Reemplazo",
+                "box_quantity": "Cant. por Caja",
+                "boxes_in_stock": "Cajas en Stock",
+                "cost_price_per_box": "Coste / Caja",
+                "selling_price_per_box": "Precio / Caja",
+                "expiry_date": "Fecha de Caducidad",
+                "expiry": "Caducidad",
+                "is_active": "Está Activo",
+                "stock": "Stock",
+                "price": "Precio",
+                "boxes": "Cajas",
+                "per_box": "por caja"
+            },
+            "create_button": "Añadir Nueva Lente de Contacto"
+        }
+    },
+    "auth": {
+        "login": "Iniciar Sesión",
+        "logout": "Cerrar Sesión",
+        "email": "Dirección de Correo",
+        "password": "Contraseña",
+        "rememberMe": "Recordarme",
+        "forgotPassword": "¿Olvidó su contraseña?",
+        "login_title": "Inicie sesión en su cuenta",
+        "login_btn": "Iniciar sesión",
+        "remember_me": "Recordarme",
+        "forgot_password": "¿Olvidó su contraseña?",
+        "no_account": "¿No tiene una cuenta?",
+        "register_link": "Registrarse"
+    },
+    "nav": {
+        "dashboard": "Tablero",
+        "customers": "Clientes",
+        "prescriptions": "Recetas",
+        "inventory": "Inventario",
+        "pos": "Punto de Venta",
+        "invoices": "Facturas",
+        "lab": "Trabajos de Lab",
+        "reports": "Informes",
+        "settings": "Configuración",
+        "businesses": "Negocios",
+        "branches": "Sucursales",
+        "staff": "Personal",
+        "frames": "Monturas",
+        "lenses": "Lentes",
+        "contact_lenses": "Lentes de Contacto"
+    },
+    "roles": {
+        "super_admin": "Super Administrador",
+        "business_owner": "Dueño de Negocio",
+        "branch_manager": "Gerente de Sucursal",
+        "optometrist": "Optometrista",
+        "sales_staff": "Personal de Ventas",
+        "lab_technician": "Técnico de Laboratorio",
+        "staff": "Personal"
+    },
+    "POS": {
+        "title": "Punto de Venta",
+        "add_payment": "Añadir Pago",
+        "errors": {
+            "select_customer": "Por favor, seleccione un cliente primero",
+            "cart_empty": "Su carrito está vacío"
+        },
+        "search": {
+            "placeholder": "Buscar productos por marca, modelo, SKU o código de barras..."
+        },
+        "products": {
+            "types": {
+                "frame": "Montura",
+                "lens": "Lente",
+                "contact_lens": "Lente de Contacto",
+                "service": "Servicio"
+            },
+            "stock": "Stock",
+            "no_results": "No se encontraron productos que coincidan con \"{{query}}\"",
+            "search_hint": "Escriba al menos 2 caracteres para buscar productos"
+        },
+        "prescriptions": {
+            "title": "Seleccionar Receta",
+            "type_spectacle": "Gafas",
+            "type_contact_lens": "LC",
+            "doctor_prefix": "Dr.",
+            "clear": "Limpiar Selección"
+        },
+        "cart": {
+            "empty": "Su carrito está vacío",
+            "each": "cada uno"
+        },
+        "summary": {
+            "subtotal": "Subtotal",
+            "discount": "Descuento",
+            "total": "Total",
+            "payment_cash": "Efectivo",
+            "payment_card": "Tarjeta",
+            "deposit_label": "Pago Inicial (Depósito)",
+            "checkout_button": "Completar Pago",
+            "checkout": "Pagar"
+        },
+        "customer": {
+            "label": "Cliente",
+            "change": "Cambiar",
+            "placeholder": "Seleccionar un cliente..."
+        },
+        "payment": {
+            "title": "Completar Pago",
+            "amount_due": "Cantidad Pendiente",
+            "initial_deposit": "Depósito Inicial",
+            "final_total": "Total Final",
+            "method_label": "Método de Pago",
+            "method_cash": "Efectivo",
+            "method_card": "Tarjeta",
+            "method_split": "Dividido",
+            "cash_amount": "Cantidad en Efectivo",
+            "card_amount": "Cantidad en Tarjeta",
+            "split_error": "La división total ({{current}}) debe ser igual al total pendiente ({{total}})",
+            "reference_label": "Referencia / Notas",
+            "reference_placeholder": "ej. ID de Transacción, Código de Autorización...",
+            "confirm_button": "Confirmar e Imprimir Factura"
+        }
+    },
+    "admin": {
+        "dashboard": {
+            "title": "Panel de Super Administrador",
+            "welcome": "Bienvenido, Super Administrador",
+            "subtitle": "Gestione todas las operaciones comerciales desde aquí",
+            "total_businesses": "Total de Negocios",
+            "active_businesses": "Negocios Activos",
+            "total_users": "Total de Usuarios"
+        },
+        "businesses": {
+            "index": {
+                "title": "Gestión de Negocios",
+                "create_btn": "Añadir Nuevo Negocio"
+            },
+            "create": {
+                "title": "Crear Nuevo Negocio",
+                "submit_btn": "Crear Negocio"
+            },
+            "edit": {
+                "title": "Editar Negocio",
+                "submit_btn": "Actualizar Negocio",
+                "owner_note": "Los detalles del propietario no se pueden cambiar desde aquí por razones de seguridad."
+            },
+            "sections": {
+                "business_info": "Información del Negocio",
+                "owner_info": "Información del Propietario Principal"
+            },
+            "fields": {
+                "name": "Nombre del Negocio",
+                "name_placeholder": "ej., Vision Pro Optical",
+                "owner": "Propietario",
+                "status": "Estado",
+                "actions": "Acciones",
+                "primary_color": "Color Temático Principal",
+                "default_language": "Idioma Predeterminado",
+                "owner_name": "Nombre del Propietario",
+                "owner_name_placeholder": "Nombre Completo",
+                "owner_email": "Correo del Propietario",
+                "owner_email_placeholder": "correo@ejemplo.com",
+                "owner_password": "Contraseña del Propietario",
+                "owner_password_placeholder": "Mínimo 8 caracteres",
+                "active_status": "Está Activo"
+            }
+        }
+    },
+    "reports": {
+        "title": "Informes y Análisis",
+        "subtitle": "Siga el rendimiento y las perspectivas de su negocio",
+        "daily_revenue": "Ingresos Diarios",
+        "daily_revenue_desc": "Desglose detallado de las ventas y pagos de hoy",
+        "monthly_revenue": "Ingresos Mensuales",
+        "monthly_revenue_desc": "Rendimiento de ventas mensuales y tendencias",
+        "outstanding_balances": "Saldos Pendientes",
+        "outstanding_balances_desc": "Ver y gestionar facturas impagadas",
+        "inventory_status": "Estado del Inventario",
+        "inventory_status_desc": "Alertas de stock bajo y niveles de inventario",
+        "staff_performance": "Rendimiento del Personal",
+        "staff_performance_desc": "Rendimiento de ventas y cobros por personal",
+        "rx_expiry": "Vencimiento de RX",
+        "rx_expiry_desc": "Pacientes con recetas que van a vencer",
+        "stats": {
+            "today_sales": "Ventas de Hoy",
+            "today_collections": "Cobros de Hoy",
+            "monthly_revenue": "Ingresos Mensuales",
+            "pending_jobs": "Trabajos de Laboratorio Pendientes"
+        },
+        "revenue": {
+            "daily_title": "Informe de Ingresos Diarios",
+            "collections_for": "Cobros para {{date}}",
+            "monthly_title": "Informe de Ingresos Mensuales",
+            "monthly_subtitle": "Rendimiento de ventas para {{year}}",
+            "subtitle": "Ver y gestionar pagos diarios",
+            "summary": "Resumen de Ingresos",
+            "total_collected": "Total Cobrado",
+            "by_method": "Por Método de Pago",
+            "yearly_total": "Total de Ingresos Anuales",
+            "monthly_average": "Promedio Mensual",
+            "trend": "Tendencia de Ingresos",
+            "no_payments": "No se registraron pagos para esta fecha.",
+            "fields": {
+                "month": "Mes",
+                "total_revenue": "Total de Ingresos",
+                "customer": "Cliente",
+                "invoice": "Factura",
+                "method": "Método",
+                "staff": "Personal",
+                "amount": "Cantidad"
+            }
+        },
+        "staff": {
+            "title": "Rendimiento del Personal",
+            "subtitle": "Supervisar el rendimiento de ventas desde {{start}} hasta {{end}}",
+            "no_data": "No se encontraron datos de rendimiento para el período seleccionado.",
+            "fields": {
+                "staff_member": "Miembro del Personal",
+                "total_collected": "Total Cobrado",
+                "payment_count": "Recuento de Pagos",
+                "transactions": "Transacciones",
+                "performance_share": "Cuota de Rendimiento"
+            }
+        },
+        "rx": {
+            "title": "Vencimiento de Receta",
+            "subtitle": "Seguimiento de recetas que vencen en los próximos 3 meses",
+            "spectacles": "Gafas",
+            "contact_lenses": "Lentes de Contacto",
+            "fields": {
+                "patient": "Paciente",
+                "expiry_date": "Fecha de Vencimiento",
+                "doctor": "Doctor",
+                "contact_info": "Información de Contacto",
+                "phone": "Teléfono",
+                "email": "Correo electrónico",
+                "type": "Tipo"
+            },
+            "recall_patient": "Recordatorio al Paciente",
+            "spectacle_alert": "Recetas de Gafas",
+            "spectacle_empty": "No se encontraron recetas de gafas que vencen.",
+            "cl_alert": "Recetas de Lentes de Contacto",
+            "cl_empty": "No se encontraron recetas de lentes de contacto que vencen."
+        },
+        "inventory": {
+            "title": "Alertas de Inventario",
+            "subtitle": "Artículos con poco stock que requieren atención",
+            "frames_alert": "Poco Stock de Monturas",
+            "cl_alert": "Poco Stock de Lentes de Contacto",
+            "left": "quedan",
+            "boxes": "cajas",
+            "frames_empty": "No hay monturas con poco stock actualmente.",
+            "cl_empty": "No hay lentes de contacto con poco stock actualmente.",
+            "fields": {
+                "frame": "Montura",
+                "stock": "Stock",
+                "contact_lens": "Lente de Contacto",
+                "boxes": "Cajas"
+            }
+        },
+        "outstanding": {
+            "title": "Saldos Pendientes",
+            "subtitle": "Gestionar facturas impagadas y cuentas por cobrar",
+            "total_receivables": "Total de Cuentas por Cobrar",
+            "empty": "¡Genial! No se encontraron saldos pendientes.",
+            "fields": {
+                "invoice": "Factura",
+                "customer": "Cliente",
+                "total": "Total",
+                "paid": "Pagado",
+                "balance": "Saldo Pendiente"
+            }
+        }
+    },
+    "invoices": {
+        "title": "Facturas",
+        "index": {
+            "title": "Facturas",
+            "subtitle": "Gestione facturas de venta y pagos"
+        },
+        "fields": {
+            "invoice_number": "Factura #",
+            "customer": "Cliente",
+            "total": "Total",
+            "amount_paid": "Pagado",
+            "balance_due": "Saldo",
+            "status": "Estado",
+            "date": "Fecha"
+        },
+        "status": {
+            "pending": "Pendiente",
+            "paid": "Pagado",
+            "partial": "Parcial",
+            "overdue": "Vencido"
+        },
+        "show": {
+            "title": "Detalles de la Factura",
+            "items": "Artículos",
+            "payments": "Pagos",
+            "subtotal": "Subtotal",
+            "discount": "Descuento",
+            "tax": "Impuesto",
+            "grand_total": "Total General"
+        }
+    },
+    "home": {
+        "nav": {
+            "sign_in": "Iniciar Sesión",
+            "features": "Características",
+            "dashboard": "Ir al Panel"
+        },
+        "hero": {
+            "badge": "Software para Ópticas de Grado Empresarial",
+            "title_1": "Gestione su",
+            "title_2": "Negocio Óptico",
+            "title_3": "Como Nunca Antes",
+            "description": "Solución completa para ópticas: desde recetas de clientes hasta gestión de inventario, POS y seguimiento de trabajos de laboratorio. Todo en una sola plataforma.",
+            "cta_primary": "Comenzar",
+            "cta_secondary": "Ver Características"
+        },
+        "stats": {
+            "shops": "Ópticas",
+            "prescriptions": "Recetas",
+            "uptime": "Tiempo de Actividad",
+            "support": "Soporte"
+        },
+        "features": {
+            "title": "Todo lo que Necesita",
+            "subtitle": "Una suite completa de herramientas diseñadas específicamente para el comercio minorista óptico",
+            "customer_management": {
+                "title": "Gestión de Clientes",
+                "description": "Siga a los pacientes, recetas e historial de compras en un solo lugar"
+            },
+            "prescription_tracking": {
+                "title": "Seguimiento de Recetas",
+                "description": "Gestione recetas de gafas y lentes de contacto con alertas de vencimiento"
+            },
+            "pos": {
+                "title": "Punto de Venta",
+                "description": "Pago rápido con escaneo de códigos de barras y múltiples métodos de pago"
+            },
+            "invoicing": {
+                "title": "Gestión de Facturas",
+                "description": "Genere facturas profesionales con seguimiento de pagos"
+            },
+            "reports": {
+                "title": "Informes y Análisis",
+                "description": "Informes de ingresos, alertas de inventario y seguimiento del rendimiento del personal"
+            },
+            "lab": {
+                "title": "Tarjetas de Trabajo de Lab",
+                "description": "Siga los pedidos de lentes desde el envío al laboratorio hasta la recogida del cliente"
+            }
+        },
+        "benefits": {
+            "title": "Construido para el Sector",
+            "title_highlight": "Óptico Moderno",
+            "subtitle": "Ya sea que dirija una sola tienda o una cadena de ópticas, nuestra plataforma se escala con las necesidades de su negocio.",
+            "multi_branch": "Soporte multi-sucursal",
+            "role_access": "Control de acceso basado en roles",
+            "white_label": "Marca blanca personalizada",
+            "multi_language": "Soporte multi-idioma",
+            "themes": "Temas Oscuro/Claro",
+            "responsive": "Diseño adaptable",
+            "multi_tenant": "Listo para Multi-Inquilino",
+            "multi_tenant_desc": "Cada negocio obtiene datos y marca aislados",
+            "rtl": "Soporte RTL e Idiomas",
+            "rtl_desc": "Soporte completo para Árabe, Francés y Español"
+        },
+        "cta": {
+            "title": "¿Listo para Modernizar su Óptica?",
+            "subtitle": "Únase a cientos de negocios ópticos que confían en Opticina para sus operaciones diarias.",
+            "button": "Iniciar Prueba Gratuita"
+        },
+        "footer": {
+            "copyright": "© 2024 Opticina. Todos los derechos reservados."
+        }
+    },
+    "welcome": {
+        "title": "Sistema de Gestión de Óptica",
+        "description": "Bienvenido a su nuevo sistema de gestión. ¡Los tokens y i18n están funcionando!",
+        "status": "Tailwind CSS 4 + Tokens Semánticos + i18n están activos.",
+        "test_button": "Botón de Prueba"
+    }
 }

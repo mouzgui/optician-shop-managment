@@ -112,10 +112,6 @@
     </style>
 </head>
 <body>
-    <div class="no-print" style="margin-bottom: 20px; text-align: right;">
-        <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer;">Print Now</button>
-    </div>
-
     <div class="header">
         <h1>LAB JOB CARD</h1>
         <div>{{ $business->name }} - {{ $jobCard->invoice->branch->name }}</div>

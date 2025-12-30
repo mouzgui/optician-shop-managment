@@ -1,13 +1,22 @@
 import React, { useState } from "react";
-import { Head, Link } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
-import { JobCard, JobCardStatus } from "@/types";
-import { Badge } from "@/Components/UI/Badge";
-import { Button } from "@/Components/UI/Button";
+import { JobCard } from "@/types";
 import { Card } from "@/Components/UI/Card";
-import { Search, Clock, ChevronRight, Filter, Package, CheckCircle, AlertTriangle, Hourglass, Wrench } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import {
+    Search,
+    Package,
+    CheckCircle,
+    AlertTriangle,
+    Hourglass,
+    Wrench,
+    Clipboard,
+    FileText,
+} from "lucide-react";
 import { JobCardItem } from "@/Components/Lab/JobCardItem";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
+import { Button } from "@/Components/UI/Button";
 
 interface Props {
     jobCards: JobCard[];
@@ -21,46 +30,98 @@ interface Props {
     };
 }
 
-export default function Index({ jobCards, statuses, stats }: Props) {
+export default function Index({ jobCards = [], statuses = [], stats }: Props) {
     const [filter, setFilter] = useState<string>("all");
     const [search, setSearch] = useState("");
 
-    const filteredJobs = jobCards.filter((job) => {
+    const safeJobCards = jobCards || [];
+
+    const filteredJobs = safeJobCards.filter((job) => {
+        if (!job) return false;
         const matchesStatus = filter === "all" || job.status === filter;
+        const searchLower = search.toLowerCase();
         const matchesSearch =
-            job.job_number.toLowerCase().includes(search.toLowerCase()) ||
-            job.invoice?.customer?.first_name
-                ?.toLowerCase()
-                .includes(search.toLowerCase()) ||
-            job.invoice?.customer?.last_name
-                ?.toLowerCase()
-                .includes(search.toLowerCase());
+            (job.job_number || "").toLowerCase().includes(searchLower) ||
+            (job.invoice?.customer?.first_name || "")
+                .toLowerCase()
+                .includes(searchLower) ||
+            (job.invoice?.customer?.last_name || "")
+                .toLowerCase()
+                .includes(searchLower);
         return matchesStatus && matchesSearch;
     });
 
-    // Calculate stats from data if not provided
     const calculatedStats = {
-        total: stats?.total || jobCards.length,
-        pending: stats?.pending || jobCards.filter(j => j.status === 'pending').length,
-        inProgress: stats?.inProgress || jobCards.filter(j => j.status === 'in_progress' || j.status === 'in_lab').length,
-        completed: stats?.completed || jobCards.filter(j => j.status === 'completed' || j.status === 'ready_pickup').length,
-        urgent: stats?.urgent || jobCards.filter(j => (j as any).is_urgent || (j as any).priority === 'high').length,
+        total: stats?.total || safeJobCards.length,
+        pending:
+            stats?.pending ||
+            safeJobCards.filter((j) => j?.status === "pending").length,
+        inProgress:
+            stats?.inProgress ||
+            safeJobCards.filter(
+                (j) => j?.status === "in_progress" || j?.status === "in_lab"
+            ).length,
+        completed:
+            stats?.completed ||
+            safeJobCards.filter(
+                (j) => j?.status === "completed" || j?.status === "ready_pickup"
+            ).length,
+        urgent:
+            stats?.urgent ||
+            safeJobCards.filter(
+                (j) => (j as any)?.is_urgent || (j as any)?.priority === "high"
+            ).length,
     };
 
     const getStatusLabel = (status: string) => {
         const labels: Record<string, string> = {
             pending: "Pending",
             in_progress: "In Progress",
+            quality_check: "Quality Check",
             in_lab: "In Lab",
             ready_pickup: "Ready for Pickup",
             completed: "Completed",
             cancelled: "Cancelled",
         };
-        return labels[status] || status.replace("_", " ");
+        return (
+            labels[status] ||
+            status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+        );
     };
 
     const getStatusCount = (status: string) => {
-        return jobCards.filter(j => j.status === status).length;
+        return safeJobCards.filter((j) => j?.status === status).length;
+    };
+
+    const handleExportCSV = () => {
+        const headers = ["Job Number", "Customer", "Status", "Created At"];
+
+        const data = safeJobCards.map((job) => [
+            job.job_number,
+            `${job.invoice?.customer?.first_name || ""} ${
+                job.invoice?.customer?.last_name || ""
+            }`,
+            getStatusLabel(job.status || ""),
+            job.created_at
+                ? new Date(job.created_at).toLocaleDateString()
+                : "-",
+        ]);
+
+        exportToCSV(data, "lab-job-cards", headers);
+    };
+
+    const getStatusButtonStyle = (status: string, isActive: boolean) => {
+        if (isActive) {
+            const activeStyles: Record<string, string> = {
+                pending: "bg-amber-500 text-white",
+                in_progress: "bg-blue-500 text-white",
+                quality_check: "bg-purple-500 text-white",
+                completed: "bg-green-500 text-white",
+                cancelled: "bg-red-500 text-white",
+            };
+            return activeStyles[status] || "bg-blue-600 text-white";
+        }
+        return "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600";
     };
 
     return (
@@ -70,99 +131,73 @@ export default function Index({ jobCards, statuses, stats }: Props) {
             <div className="space-y-6">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-bold text-text-primary">
-                            Lab Job Cards
-                        </h1>
-                        <p className="text-text-muted text-sm mt-1">
-                            Manage and track laboratory jobs
-                        </p>
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                            <Clipboard className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                Lab Job Cards
+                            </h1>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm mt-0.5">
+                                Manage and track laboratory jobs
+                            </p>
+                        </div>
                     </div>
+                    <Button
+                        variant="secondary"
+                        onClick={handleExportCSV}
+                        className="flex items-center gap-2"
+                    >
+                        <FileText className="w-4 h-4" />
+                        Export CSV
+                    </Button>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <Card className="p-4 border-l-4 border-l-blue-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Jobs</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.total}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                <Package className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-amber-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Pending</p>
-                                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
-                                    {calculatedStats.pending}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                                <Hourglass className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-purple-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">In Progress</p>
-                                <p className="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-1">
-                                    {calculatedStats.inProgress}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                <Wrench className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-green-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Completed</p>
-                                <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">
-                                    {calculatedStats.completed}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Urgent</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {calculatedStats.urgent}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <StatCard
+                        title="Total Jobs"
+                        value={calculatedStats.total}
+                        icon={Package}
+                        color="primary"
+                    />
+                    <StatCard
+                        title="Pending"
+                        value={calculatedStats.pending}
+                        icon={Hourglass}
+                        color="warning"
+                    />
+                    <StatCard
+                        title="In Progress"
+                        value={calculatedStats.inProgress}
+                        icon={Wrench}
+                        color="info"
+                    />
+                    <StatCard
+                        title="Completed"
+                        value={calculatedStats.completed}
+                        icon={CheckCircle}
+                        color="success"
+                    />
+                    <StatCard
+                        title="Urgent"
+                        value={calculatedStats.urgent}
+                        icon={AlertTriangle}
+                        color="danger"
+                    />
                 </div>
 
                 {/* Filters & Search */}
-                <Card className="p-4">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
                     <div className="flex flex-col md:flex-row gap-4">
                         {/* Search */}
                         <div className="relative flex-1">
-                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                             <input
                                 type="text"
                                 placeholder="Search by job # or customer name..."
-                                className="w-full ps-10 pe-4 py-2 bg-bg-base border border-border-default rounded-lg focus:ring-2 focus:ring-interactive-primary focus:border-transparent outline-none transition-all"
+                                className="w-full ps-10 pe-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -172,36 +207,47 @@ export default function Index({ jobCards, statuses, stats }: Props) {
                         <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
                             <button
                                 onClick={() => setFilter("all")}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${filter === "all"
-                                        ? "bg-primary-default text-white"
-                                        : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                                    filter === "all"
+                                        ? "bg-blue-600 text-white shadow-md"
+                                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                                }`}
                             >
                                 All Jobs
-                                <span className={`ms-2 px-2 py-0.5 rounded-full text-xs ${filter === "all" ? "bg-white/20" : "bg-bg-base"
-                                    }`}>
-                                    {jobCards.length}
+                                <span
+                                    className={`ms-2 px-2 py-0.5 rounded-full text-xs ${
+                                        filter === "all"
+                                            ? "bg-white/20"
+                                            : "bg-gray-200 dark:bg-gray-600"
+                                    }`}
+                                >
+                                    {safeJobCards.length}
                                 </span>
                             </button>
-                            {statuses.map((status) => (
+                            {(statuses || []).map((status: string) => (
                                 <button
                                     key={status}
                                     onClick={() => setFilter(status)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap capitalize ${filter === status
-                                            ? "bg-primary-default text-white"
-                                            : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                        }`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${getStatusButtonStyle(
+                                        status,
+                                        filter === status
+                                    )}`}
                                 >
                                     {getStatusLabel(status)}
-                                    <span className={`ms-2 px-2 py-0.5 rounded-full text-xs ${filter === status ? "bg-white/20" : "bg-bg-base"
-                                        }`}>
+                                    <span
+                                        className={`ms-2 px-2 py-0.5 rounded-full text-xs ${
+                                            filter === status
+                                                ? "bg-white/20"
+                                                : "bg-gray-200 dark:bg-gray-600"
+                                        }`}
+                                    >
                                         {getStatusCount(status)}
                                     </span>
                                 </button>
                             ))}
                         </div>
                     </div>
-                </Card>
+                </div>
 
                 {/* Job Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -210,13 +256,20 @@ export default function Index({ jobCards, statuses, stats }: Props) {
                             <JobCardItem key={job.id} job={job} />
                         ))
                     ) : (
-                        <div className="col-span-full py-12 text-center">
-                            <Card className="p-8 border-dashed">
-                                <Package className="w-12 h-12 mx-auto text-text-muted opacity-50" />
-                                <p className="text-text-muted mt-3">
-                                    No job cards found matching your criteria.
+                        <div className="col-span-full py-16 text-center">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-10 border-2 border-dashed border-gray-200 dark:border-gray-700">
+                                <div className="w-16 h-16 mx-auto rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
+                                    <Package className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                                    No Job Cards Found
+                                </h3>
+                                <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
+                                    {search
+                                        ? `No job cards matching "${search}" were found.`
+                                        : "No job cards found matching your criteria. Try adjusting your filters."}
                                 </p>
-                            </Card>
+                            </div>
                         </div>
                     )}
                 </div>

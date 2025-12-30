@@ -2,11 +2,23 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import { Plus, Search, Pencil, Trash2, DollarSign, Tag, AlertTriangle, CircleDot } from "lucide-react";
+import {
+    Plus,
+    Search,
+    Pencil,
+    Trash2,
+    DollarSign,
+    Tag,
+    AlertTriangle,
+    CircleDot,
+    FileText,
+} from "lucide-react";
 import { Button } from "@/Components/UI/Button";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface ContactLens {
     id: number;
@@ -43,11 +55,17 @@ interface Props {
     };
 }
 
-export default function Index({ contactLenses = { data: [], links: [], meta: {} }, filters = {}, stats }: Props) {
+export default function Index({
+    contactLenses = { data: [], links: [], meta: {} },
+    filters = {},
+    stats,
+}: Props) {
     const { t } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
-    const [activeSchedule, setActiveSchedule] = React.useState(filters.schedule || "all");
+    const [activeSchedule, setActiveSchedule] = React.useState(
+        filters.schedule || "all"
+    );
 
     const safeT = (key: string, fallback?: string) => {
         try {
@@ -61,8 +79,11 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            "/business/inventory/contact-lenses",
-            { search, schedule: activeSchedule !== "all" ? activeSchedule : undefined },
+            route("business.inventory.contact-lenses.index"),
+            {
+                search,
+                schedule: activeSchedule !== "all" ? activeSchedule : undefined,
+            },
             { preserveState: true }
         );
     };
@@ -70,16 +91,45 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
     const handleScheduleFilter = (schedule: string) => {
         setActiveSchedule(schedule);
         router.get(
-            "/business/inventory/contact-lenses",
+            route("business.inventory.contact-lenses.index"),
             { search, schedule: schedule !== "all" ? schedule : undefined },
             { preserveState: true }
         );
     };
 
     const deleteCL = (id: number) => {
-        if (confirm(safeT("common.confirm_delete", "Are you sure you want to delete this item?"))) {
-            router.delete(`/business/inventory/contact-lenses/${id}`);
+        if (
+            confirm(
+                safeT(
+                    "common.confirm_delete",
+                    "Are you sure you want to delete this item?"
+                )
+            )
+        ) {
+            router.delete(
+                route("business.inventory.contact-lenses.destroy", id)
+            );
         }
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            safeT("inventory.contact_lenses.fields.name", "Name"),
+            safeT("inventory.contact_lenses.fields.schedule", "Schedule"),
+            safeT("inventory.contact_lenses.fields.power", "Power"),
+            safeT("inventory.contact_lenses.fields.stock", "Stock"),
+            safeT("inventory.contact_lenses.fields.price", "Price"),
+        ];
+
+        const data = contactLenses.data.map((item) => [
+            `${item.brand} ${item.product_line}`,
+            getScheduleLabel(item.replacement_schedule),
+            `SPH: ${item.power}, CYL: ${item.cylinder} x ${item.axis}`,
+            item.boxes_in_stock,
+            item.selling_price_per_box,
+        ]);
+
+        exportToCSV(data, "contact-lenses-inventory", headers);
     };
 
     const formatCurrency = (value: number) => {
@@ -119,9 +169,20 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
     // Calculate stats from data if not provided
     const calculatedStats = {
         total: stats?.total || contactLenses.data.length,
-        lowStock: stats?.lowStock || contactLenses.data.filter(cl => cl.boxes_in_stock <= (cl.low_stock_threshold || 5)).length,
-        totalValue: stats?.totalValue || contactLenses.data.reduce((sum, cl) => sum + (cl.selling_price_per_box * cl.boxes_in_stock), 0),
-        brands: stats?.brands || [...new Set(contactLenses.data.map(cl => cl.brand))].length,
+        lowStock:
+            stats?.lowStock ||
+            contactLenses.data.filter(
+                (cl) => cl.boxes_in_stock <= (cl.low_stock_threshold || 5)
+            ).length,
+        totalValue:
+            stats?.totalValue ||
+            contactLenses.data.reduce(
+                (sum, cl) => sum + cl.selling_price_per_box * cl.boxes_in_stock,
+                0
+            ),
+        brands:
+            stats?.brands ||
+            [...new Set(contactLenses.data.map((cl) => cl.brand))].length,
     };
 
     const columns: any[] = [
@@ -144,7 +205,10 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
             ),
         },
         {
-            header: safeT("inventory.contact_lenses.fields.schedule", "Schedule"),
+            header: safeT(
+                "inventory.contact_lenses.fields.schedule",
+                "Schedule"
+            ),
             accessor: (item: ContactLens) => (
                 <Badge variant="info">
                     {getScheduleLabel(item.replacement_schedule)}
@@ -155,7 +219,10 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
             header: safeT("inventory.contact_lenses.fields.power", "Power"),
             accessor: (item: ContactLens) => (
                 <div className="text-sm">
-                    <div className="text-text-primary">SPH: {item.power > 0 ? '+' : ''}{item.power}</div>
+                    <div className="text-text-primary">
+                        SPH: {item.power > 0 ? "+" : ""}
+                        {item.power}
+                    </div>
                     {item.cylinder !== 0 && (
                         <div className="text-xs text-text-muted">
                             CYL: {item.cylinder} x {item.axis}°
@@ -170,12 +237,15 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
                 <div className="flex flex-col items-start">
                     <Badge
                         variant={
-                            item.boxes_in_stock <= (item.low_stock_threshold || 5)
+                            item.boxes_in_stock <=
+                            (item.low_stock_threshold || 5)
                                 ? "danger"
                                 : "success"
                         }
                     >
-                        {item.boxes_in_stock} boxes {item.boxes_in_stock <= (item.low_stock_threshold || 5) && "⚠"}
+                        {item.boxes_in_stock} boxes{" "}
+                        {item.boxes_in_stock <=
+                            (item.low_stock_threshold || 5) && "⚠"}
                     </Badge>
                     <span className="text-[10px] text-text-muted mt-1">
                         {item.box_quantity} per box
@@ -195,7 +265,12 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
             header: safeT("common.actions.title", "Actions"),
             accessor: (item: ContactLens) => (
                 <div className="flex gap-2">
-                    <Link href={`/business/inventory/contact-lenses/${item.id}/edit`}>
+                    <Link
+                        href={route(
+                            "business.inventory.contact-lenses.edit",
+                            item.id
+                        )}
+                    >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
                         </Button>
@@ -217,77 +292,71 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
-                        {safeT("inventory.contact_lenses.title", "Contact Lenses")}
+                        {safeT(
+                            "inventory.contact_lenses.title",
+                            "Contact Lenses"
+                        )}
                     </h2>
-                    <Link href="/business/inventory/contact-lenses/create">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="w-4 h-4" />
-                            {safeT("inventory.contact_lenses.create_button", "Add Contact Lens")}
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="secondary"
+                            onClick={handleExportCSV}
+                            className="flex items-center gap-2"
+                        >
+                            <FileText className="w-4 h-4" />
+                            {safeT("common.export_csv", "Export CSV")}
                         </Button>
-                    </Link>
+                        <Link
+                            href={route(
+                                "business.inventory.contact-lenses.create"
+                            )}
+                        >
+                            <Button className="flex items-center gap-2">
+                                <Plus className="w-4 h-4" />
+                                {safeT(
+                                    "inventory.contact_lenses.create_button",
+                                    "Add Contact Lens"
+                                )}
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             }
         >
-            <Head title={safeT("inventory.contact_lenses.title", "Contact Lenses")} />
+            <Head
+                title={safeT(
+                    "inventory.contact_lenses.title",
+                    "Contact Lenses"
+                )}
+            />
 
             <div className="space-y-6">
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="p-4 border-l-4 border-l-teal-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Items</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.total}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                                <CircleDot className="w-5 h-5 text-teal-600 dark:text-teal-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Low Stock</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {calculatedStats.lowStock}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-green-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Value</p>
-                                <p className="text-xl font-bold text-text-primary mt-1">
-                                    {formatCurrency(calculatedStats.totalValue)}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-purple-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Brands</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.brands}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                <Tag className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <StatCard
+                        title="Total Items"
+                        value={calculatedStats.total}
+                        icon={CircleDot}
+                        color="primary"
+                    />
+                    <StatCard
+                        title="Low Stock"
+                        value={calculatedStats.lowStock}
+                        icon={AlertTriangle}
+                        color="danger"
+                    />
+                    <StatCard
+                        title="Total Value"
+                        value={formatCurrency(calculatedStats.totalValue)}
+                        icon={DollarSign}
+                        color="success"
+                    />
+                    <StatCard
+                        title="Brands"
+                        value={calculatedStats.brands}
+                        icon={Tag}
+                        color="info"
+                    />
                 </div>
 
                 {/* Schedule Filter Tabs */}
@@ -297,10 +366,11 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
                             <button
                                 key={tab.key}
                                 onClick={() => handleScheduleFilter(tab.key)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeSchedule === tab.key
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    activeSchedule === tab.key
                                         ? "bg-primary-default text-white"
                                         : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                }`}
                             >
                                 {tab.label}
                             </button>
@@ -310,10 +380,7 @@ export default function Index({ contactLenses = { data: [], links: [], meta: {} 
 
                 {/* Search */}
                 <Card className="p-4">
-                    <form
-                        onSubmit={handleSearch}
-                        className="relative max-w-md"
-                    >
+                    <form onSubmit={handleSearch} className="relative max-w-md">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-muted" />
                         <input
                             type="text"

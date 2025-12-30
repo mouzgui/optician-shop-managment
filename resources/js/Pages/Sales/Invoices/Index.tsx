@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import { Search, Plus, Eye, DollarSign, Clock, CheckCircle, Truck } from "lucide-react";
+import {
+    Search,
+    Plus,
+    Eye,
+    DollarSign,
+    Clock,
+    CheckCircle,
+    Truck,
+    FileText,
+} from "lucide-react";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
 import { Button } from "@/Components/UI/Button";
@@ -54,8 +65,11 @@ export default function Index({ invoices, filters, stats }: Props) {
         setSearchValue(value);
         setTimeout(() => {
             router.get(
-                "/business/sales/invoices",
-                { search: value, status: activeStatus !== "all" ? activeStatus : undefined },
+                route("business.sales.invoices.index"),
+                {
+                    search: value,
+                    status: activeStatus !== "all" ? activeStatus : undefined,
+                },
                 { preserveState: true, replace: true }
             );
         }, 300);
@@ -64,10 +78,35 @@ export default function Index({ invoices, filters, stats }: Props) {
     const handleStatusFilter = (status: string) => {
         setActiveStatus(status);
         router.get(
-            "/business/sales/invoices",
-            { search: searchValue, status: status !== "all" ? status : undefined },
+            route("business.sales.invoices.index"),
+            {
+                search: searchValue,
+                status: status !== "all" ? status : undefined,
+            },
             { preserveState: true, replace: true }
         );
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            t("sales.invoices.fields.invoice_number"),
+            t("sales.invoices.fields.customer"),
+            t("sales.invoices.fields.date"),
+            t("sales.invoices.fields.total"),
+            t("sales.invoices.fields.balance"),
+            t("sales.invoices.fields.status"),
+        ];
+
+        const data = invoices.data.map((item) => [
+            item.invoice_number,
+            `${item.customer?.first_name} ${item.customer?.last_name}`,
+            new Date(item.created_at).toLocaleDateString(),
+            item.total,
+            item.balance_due,
+            getStatusLabel(item.status),
+        ]);
+
+        exportToCSV(data, "invoices-list", headers);
     };
 
     const getStatusVariant = (status: string): any => {
@@ -105,9 +144,17 @@ export default function Index({ invoices, filters, stats }: Props) {
 
     const statusTabs = [
         { key: "all", label: "All", count: invoices.meta?.total },
-        { key: "deposit_paid", label: "Deposit Paid", count: stats?.depositPaid },
+        {
+            key: "deposit_paid",
+            label: "Deposit Paid",
+            count: stats?.depositPaid,
+        },
         { key: "in_lab", label: "In Lab", count: stats?.inLab },
-        { key: "ready_pickup", label: "Ready for Pickup", count: stats?.pendingPickup },
+        {
+            key: "ready_pickup",
+            label: "Ready for Pickup",
+            count: stats?.pendingPickup,
+        },
         { key: "completed", label: "Completed", count: stats?.completedToday },
     ];
 
@@ -125,7 +172,8 @@ export default function Index({ invoices, filters, stats }: Props) {
             accessor: (item: Invoice) => (
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-bg-subtle flex items-center justify-center text-sm font-medium text-text-muted">
-                        {item.customer?.first_name?.[0]}{item.customer?.last_name?.[0]}
+                        {item.customer?.first_name?.[0]}
+                        {item.customer?.last_name?.[0]}
                     </div>
                     <span className="text-sm">
                         {item.customer?.first_name} {item.customer?.last_name}
@@ -172,7 +220,7 @@ export default function Index({ invoices, filters, stats }: Props) {
             header: t("common.actions.title"),
             accessor: (item: Invoice) => (
                 <div className="flex justify-end">
-                    <Link href={`/business/sales/invoices/${item.id}`}>
+                    <Link href={route("business.sales.invoices.show", item.id)}>
                         <Button variant="secondary" size="sm">
                             <Eye className="w-4 h-4" />
                         </Button>
@@ -197,12 +245,22 @@ export default function Index({ invoices, filters, stats }: Props) {
                             {t("sales.invoices.subtitle")}
                         </p>
                     </div>
-                    <Link href="/business/sales/pos">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="w-5 h-5" />
-                            {t("sales.invoices.new_sale")}
+                    <div className="flex items-center gap-3">
+                        <Link href={route("business.sales.pos")}>
+                            <Button className="flex items-center gap-2">
+                                <Plus className="w-5 h-5" />
+                                {t("sales.invoices.new_sale")}
+                            </Button>
+                        </Link>
+                        <Button
+                            variant="secondary"
+                            onClick={handleExportCSV}
+                            className="flex items-center gap-2"
+                        >
+                            <FileText className="w-4 h-4" />
+                            {t("common.actions.export")}
                         </Button>
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Stats Cards */}
@@ -210,7 +268,9 @@ export default function Index({ invoices, filters, stats }: Props) {
                     <Card className="p-4 border-l-4 border-l-emerald-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-text-muted">Total Revenue</p>
+                                <p className="text-sm font-medium text-text-muted">
+                                    Total Revenue
+                                </p>
                                 <p className="text-xl font-bold text-text-primary mt-1">
                                     {formatCurrency(stats?.totalRevenue || 0)}
                                 </p>
@@ -224,9 +284,13 @@ export default function Index({ invoices, filters, stats }: Props) {
                     <Card className="p-4 border-l-4 border-l-red-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-text-muted">Outstanding</p>
+                                <p className="text-sm font-medium text-text-muted">
+                                    Outstanding
+                                </p>
                                 <p className="text-xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {formatCurrency(stats?.outstandingBalance || 0)}
+                                    {formatCurrency(
+                                        stats?.outstandingBalance || 0
+                                    )}
                                 </p>
                             </div>
                             <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -238,7 +302,9 @@ export default function Index({ invoices, filters, stats }: Props) {
                     <Card className="p-4 border-l-4 border-l-amber-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-text-muted">Ready for Pickup</p>
+                                <p className="text-sm font-medium text-text-muted">
+                                    Ready for Pickup
+                                </p>
                                 <p className="text-xl font-bold text-text-primary mt-1">
                                     {stats?.pendingPickup || 0}
                                 </p>
@@ -252,7 +318,9 @@ export default function Index({ invoices, filters, stats }: Props) {
                     <Card className="p-4 border-l-4 border-l-green-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-text-muted">Completed Today</p>
+                                <p className="text-sm font-medium text-text-muted">
+                                    Completed Today
+                                </p>
                                 <p className="text-xl font-bold text-text-primary mt-1">
                                     {stats?.completedToday || 0}
                                 </p>
@@ -271,17 +339,21 @@ export default function Index({ invoices, filters, stats }: Props) {
                             <button
                                 key={tab.key}
                                 onClick={() => handleStatusFilter(tab.key)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeStatus === tab.key
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    activeStatus === tab.key
                                         ? "bg-primary-default text-white"
                                         : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                }`}
                             >
                                 {tab.label}
                                 {tab.count !== undefined && (
-                                    <span className={`ms-2 px-2 py-0.5 rounded-full text-xs ${activeStatus === tab.key
-                                            ? "bg-white/20"
-                                            : "bg-bg-base"
-                                        }`}>
+                                    <span
+                                        className={`ms-2 px-2 py-0.5 rounded-full text-xs ${
+                                            activeStatus === tab.key
+                                                ? "bg-white/20"
+                                                : "bg-bg-base"
+                                        }`}
+                                    >
                                         {tab.count}
                                     </span>
                                 )}

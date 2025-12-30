@@ -192,11 +192,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                     <Input
                                         type="number"
                                         value={cashAmount}
-                                        onChange={(e) =>
+                                        max={amountToPay}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
                                             setCashAmount(
-                                                Number(e.target.value)
-                                            )
-                                        }
+                                                val > amountToPay
+                                                    ? amountToPay
+                                                    : val
+                                            );
+                                        }}
                                         className="ps-7"
                                     />
                                 </div>
@@ -212,11 +216,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                                     <Input
                                         type="number"
                                         value={cardAmount}
-                                        onChange={(e) =>
+                                        max={amountToPay}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
                                             setCardAmount(
-                                                Number(e.target.value)
-                                            )
-                                        }
+                                                val > amountToPay
+                                                    ? amountToPay
+                                                    : val
+                                            );
+                                        }}
                                         className="ps-7"
                                     />
                                 </div>

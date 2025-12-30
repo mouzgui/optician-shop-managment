@@ -5,11 +5,21 @@ import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { DataTable } from "@/Components/UI/DataTable";
 import { Button } from "@/Components/UI/Button";
-import { ChevronLeft, Phone, Eye, FileText, Download } from "lucide-react";
+import {
+    ChevronLeft,
+    Phone,
+    Eye,
+    FileText,
+    Download,
+    DollarSign,
+    Receipt,
+    AlertCircle,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
 import { exportToCSV } from "@/Utils/csvExport";
+import { StatCard } from "@/Components/Charts/StatCard";
 
 interface Props {
     invoices: any[];
@@ -58,6 +68,13 @@ export default function OutstandingBalances({
         ]);
 
         exportToCSV(csvData, "outstanding-balances", headers);
+    };
+
+    const handleExportPDF = () => {
+        window.open(
+            route("business.reports.outstanding-balances.download"),
+            "_blank"
+        );
     };
 
     const columns = [
@@ -163,24 +180,37 @@ export default function OutstandingBalances({
                             <FileText className="w-4 h-4 me-2" />
                             {t("common.export_csv")}
                         </Button>
-                        <Button
-                            variant="secondary"
-                            onClick={() => window.print()}
-                        >
+                        <Button variant="secondary" onClick={handleExportPDF}>
                             <Download className="w-4 h-4 me-2" />
                             {t("common.export_pdf")}
                         </Button>
                     </div>
                 </div>
 
-                <Card className="bg-interactive-error/5 border-interactive-error/10 px-6 py-3 w-fit">
-                    <span className="text-xs text-interactive-error block uppercase font-bold tracking-wider opacity-80">
-                        {t("reports.outstanding.total_receivables")}
-                    </span>
-                    <span className="text-2xl font-bold text-interactive-error">
-                        {formatCurrency(total_outstanding)}
-                    </span>
-                </Card>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <StatCard
+                        title={t("reports.outstanding.total_receivables")}
+                        value={formatCurrency(total_outstanding)}
+                        icon={DollarSign}
+                        color="danger"
+                    />
+                    <StatCard
+                        title={t("reports.outstanding.pending_invoices")}
+                        value={invoices.length}
+                        icon={Receipt}
+                        color="warning"
+                    />
+                    <StatCard
+                        title={t("reports.outstanding.avg_balance")}
+                        value={formatCurrency(
+                            invoices.length > 0
+                                ? total_outstanding / invoices.length
+                                : 0
+                        )}
+                        icon={AlertCircle}
+                        color="primary"
+                    />
+                </div>
 
                 <Card className="p-0 overflow-hidden">
                     <DataTable

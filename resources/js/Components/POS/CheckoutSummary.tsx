@@ -100,9 +100,11 @@ const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({
                             className="ps-7"
                             placeholder="0.00"
                             value={depositAmount}
-                            onChange={(e) =>
-                                setDepositAmount(Number(e.target.value))
-                            }
+                            max={total}
+                            onChange={(e) => {
+                                const val = Number(e.target.value);
+                                setDepositAmount(val > total ? total : val);
+                            }}
                         />
                     </div>
                 </div>

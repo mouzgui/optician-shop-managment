@@ -85,10 +85,14 @@ Route::middleware(['auth', 'business'])
             // Clinical - Spectacle Prescriptions
             Route::resource('spectacle-rx', Clinical\SpectacleRxController::class)
                 ->except(['index', 'edit']);
+            Route::get('spectacle-rx/{spectacle_rx}/download', [Clinical\SpectacleRxController::class, 'downloadPdf'])
+                ->name('spectacle-rx.download');
 
             // Clinical - Contact Lens Prescriptions
             Route::resource('contact-lens-rx', Clinical\ContactLensRxController::class)
                 ->except(['index', 'edit']);
+            Route::get('contact-lens-rx/{contact_lens_rx}/download', [Clinical\ContactLensRxController::class, 'downloadPdf'])
+                ->name('contact-lens-rx.download');
 
             // Inventory - Frames
             Route::prefix('inventory')->name('inventory.')->group(function () {
@@ -108,6 +112,10 @@ Route::middleware(['auth', 'business'])
 
                 // Invoices (Resource for management)
                 Route::resource('invoices', Sales\InvoiceController::class);
+                Route::get('invoices/{invoice}/download', [Sales\InvoiceController::class, 'downloadPdf'])
+                    ->name('invoices.download-pdf');
+                Route::post('invoices/{invoice}/payments', [Sales\InvoiceController::class, 'addPayment'])
+                    ->name('invoices.add-payment');
             });
 
             // Lab Management
@@ -115,6 +123,7 @@ Route::middleware(['auth', 'business'])
                 Route::get('job-cards', [Lab\JobCardController::class, 'index'])->name('job-cards.index');
                 Route::get('job-cards/{job_card}', [Lab\JobCardController::class, 'show'])->name('job-cards.show');
                 Route::get('job-cards/{job_card}/print', [Lab\JobCardController::class, 'print'])->name('job-cards.print');
+                Route::get('job-cards/{job_card}/download', [Lab\JobCardController::class, 'downloadPdf'])->name('job-cards.download-pdf');
                 Route::patch('job-cards/{job_card}/status', [Lab\JobCardController::class, 'updateStatus'])->name('job-cards.update-status');
             });
 
@@ -122,11 +131,17 @@ Route::middleware(['auth', 'business'])
             Route::prefix('reports')->name('reports.')->group(function () {
                 Route::get('/', [Reports\ReportController::class, 'dashboard'])->name('index');
                 Route::get('/daily-revenue', [Reports\ReportController::class, 'dailyRevenue'])->name('daily-revenue');
+                Route::get('/daily-revenue/download', [Reports\ReportController::class, 'downloadDailyRevenuePdf'])->name('daily-revenue.download');
                 Route::get('/monthly-revenue', [Reports\ReportController::class, 'monthlyRevenue'])->name('monthly-revenue');
+                Route::get('/monthly-revenue/download', [Reports\ReportController::class, 'downloadMonthlyRevenuePdf'])->name('monthly-revenue.download');
                 Route::get('/outstanding-balances', [Reports\ReportController::class, 'outstandingBalances'])->name('outstanding-balances');
+                Route::get('/outstanding-balances/download', [Reports\ReportController::class, 'downloadOutstandingBalancesPdf'])->name('outstanding-balances.download');
                 Route::get('/inventory', [Reports\ReportController::class, 'inventory'])->name('inventory');
+                Route::get('/inventory/download', [Reports\ReportController::class, 'downloadInventoryPdf'])->name('inventory.download');
                 Route::get('/staff-performance', [Reports\ReportController::class, 'staffPerformance'])->name('staff-performance');
+                Route::get('/staff-performance/download', [Reports\ReportController::class, 'downloadStaffPerformancePdf'])->name('staff-performance.download');
                 Route::get('/rx-expiry', [Reports\ReportController::class, 'rxExpiry'])->name('rx-expiry');
+                Route::get('/rx-expiry/download', [Reports\ReportController::class, 'downloadRxExpiryPdf'])->name('rx-expiry.download');
             });
         });
     });

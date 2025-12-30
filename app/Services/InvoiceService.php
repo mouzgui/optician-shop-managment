@@ -78,6 +78,11 @@ class InvoiceService
     public function addPayment(Invoice $invoice, array $paymentData): Payment
     {
         return DB::transaction(function () use ($invoice, $paymentData) {
+            // Check if payment amount exceeds remaining balance
+            if ($paymentData['amount'] > $invoice->balance_due) {
+                throw new \Exception('Payment amount cannot exceed the remaining balance of ' . number_format($invoice->balance_due, 2));
+            }
+
             $payment = $invoice->payments()->create([
                 'business_id' => $invoice->business_id,
                 'amount' => $paymentData['amount'],

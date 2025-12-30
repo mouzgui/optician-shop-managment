@@ -1,23 +1,93 @@
 {
+    "business": {
+        "dashboard": {
+            "title": "لوحة تحكم المتجر",
+            "welcome": "نظرة عامة على المتجر",
+            "today_sales": "مبيعات اليوم",
+            "pending_pickups": "بانتظار الاستلام",
+            "total_customers": "إجمالي العملاء",
+            "recent_invoices": "آخر الفواتير"
+        },
+        "branches": {
+            "index": {
+                "title": "إدارة الفروع",
+                "subtitle": "إدارة مواقع عملك",
+                "create_btn": "إضافة فرع جديد"
+            },
+            "fields": {
+                "name": "اسم الفرع",
+                "contact": "معلومات الاتصال",
+                "status": "الحالة",
+                "actions": "الإجراءات",
+                "hq": "المركز الرئيسي"
+            }
+        },
+        "staff": {
+            "index": {
+                "title": "إدارة الموظفين",
+                "subtitle": "إدارة أعضاء فريقك وصلاحياتهم",
+                "create_btn": "إضافة موظف جديد"
+            },
+            "fields": {
+                "name": "الاسم",
+                "email": "البريد الإلكتروني",
+                "role": "الدور",
+                "branch": "الفرع",
+                "status": "الحالة"
+            }
+        },
+        "settings": {
+            "title": "إعدادات المتجر",
+            "submit_btn": "حفظ الإعدادات",
+            "sections": {
+                "general": "معلومات عامة",
+                "branding": "العلامة التجارية والهوية"
+            },
+            "fields": {
+                "name": "اسم المتجر",
+                "email": "البريد الإلكتروني للمتجر",
+                "phone": "رقم هاتف المتجر",
+                "address": "العنوان",
+                "tax_number": "الرقم الضريبي",
+                "registration_number": "رقم السجل التجاري",
+                "logo": "شعار المتجر",
+                "favicon": "أيقونة المتصفح (PNG/ICO)",
+                "primary_color": "لون العلامة التجارية الأساسي",
+                "footer_text": "نص التذييل المخصص"
+            },
+            "placeholders": {
+                "footer_text": "مثلاً: © 2024 اسم متجرك. جميع الحقوق محفوظة."
+            }
+        }
+    },
     "common": {
-        "showing_results": "عرض {{from}} إلى {{to}} من أصل {{total}} نتيجة",
-        "export_csv": "تصدير CSV",
-        "export_pdf": "تصدير PDF",
         "status": {
             "active": "نشط",
             "inactive": "غير نشط"
         },
-        "actions": "الإجراءات",
+        "actions": {
+            "title": "الإجراءات",
+            "edit": "تعديل",
+            "delete": "حذف",
+            "save": "حفظ",
+            "create": "إنشاء",
+            "view": "عرض"
+        },
         "edit": "تعديل",
         "delete": "حذف",
         "save": "حفظ",
         "cancel": "إلغاء",
         "create": "إنشاء",
-        "view": "عرض",
-        "search": "بحث...",
+        "select": "اختر...",
+        "remove": "إزالة",
         "loading": "جاري التحميل...",
+        "view": "عرض",
+        "print": "طباعة",
+        "search": "بحث...",
+        "searching": "جاري البحث",
         "noResults": "لم يتم العثور على نتائج",
         "confirm": "تأكيد",
+        "confirm_delete": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
         "back": "رجوع",
         "next": "التالي",
         "close": "إغلاق",
@@ -26,14 +96,53 @@
         "never": "أبداً",
         "active": "نشط",
         "expired": "منتهي",
-        "to": "إلى"
+        "qty": "الكمية",
+        "price": "السعر",
+        "total": "الإجمالي",
+        "no_payments": "لا توجد مدفوعات مسجلة بعد.",
+        "to": "إلى",
+        "gender": {
+            "male": "ذكر",
+            "female": "أنثى",
+            "unisex": "للجنسين",
+            "kids": "أطفال"
+        },
+        "showing_results": "عرض {{from}} إلى {{to}} من أصل {{total}} نتيجة",
+        "export_csv": "تصدير CSV",
+        "export_pdf": "تصدير PDF",
+        "days": "أيام",
+        "upload_image": "رفع صورة"
+    },
+    "sales": {
+        "invoices": {
+            "title": "الفواتير",
+            "subtitle": "إدارة فواتير المبيعات والمدفوعات",
+            "new_sale": "بيعة جديدة",
+            "fields": {
+                "invoice_number": "رقم الفاتورة",
+                "customer": "العميل",
+                "date": "التاريخ",
+                "total": "الإجمالي",
+                "balance": "الرصيد",
+                "status": "الحالة"
+            },
+            "statuses": {
+                "deposit_paid": "تم دفع العربون",
+                "in_lab": "في المختبر",
+                "ready_pickup": "جاهز للاستلام",
+                "completed": "مكتمل",
+                "cancelled": "ملغي"
+            }
+        }
     },
     "customers": {
         "title": "العملاء",
-        "add_new": "إضافة عميل",
+        "add_new": "إضافة عميل جديد",
         "search_placeholder": "بحث بالاسم أو رقم الهاتف...",
         "no_results": "لم يتم العثور على عملاء.",
+        "no_results_found": "لم يتم العثور على عملاء يطابقون بحثك.",
         "profile_details": "تفاصيل الملف الشخصي",
+        "create_button": "إضافة عميل جديد",
         "add_rx": "إضافة وصفة طبية",
         "rx_expired": "منتهية",
         "rx_valid": "صالحة",
@@ -46,6 +155,8 @@
         "create_invoice": "إنشاء فاتورة",
         "no_invoices": "لا توجد فواتير.",
         "select_branch": "اختر الفرع",
+        "search_family_head": "البحث عن رب العائلة...",
+        "selected_head": "رب العائلة المختار",
         "none": "لا يوجد",
         "edit_customer": "تعديل العميل",
         "fields": {
@@ -69,13 +180,57 @@
             "invoices": "الفواتير"
         }
     },
+    "clinical": {
+        "rx": {
+            "sphere": "كروي (SPH)",
+            "cylinder": "أسطواني (CYL)",
+            "axis": "المحور (AXIS)",
+            "add": "إضافة (ADD)",
+            "od": "العين اليمنى (OD)",
+            "os": "العين اليسرى (OS)",
+            "pd_type": "نوع مسافة الحدقتين",
+            "pd_single": "مسافة حدقتين مفردة",
+            "pd_dual": "مسافة حدقتين مزدوجة",
+            "pd_far": "مسافة الحدقتين للبعيد",
+            "pd_near": "مسافة الحدقتين للقريب",
+            "additional_details": "تفاصيل إضافية",
+            "bc": "منحنى القاعدة (BC)",
+            "dia": "القطر (DIA)",
+            "pd": "مسافة الحدقتين (P.D.)",
+            "replacement": "الاستبدال",
+            "replacement_schedule": {
+                "label": "جدول الاستبدال",
+                "daily": "يومي",
+                "weekly": "أسبوعي",
+                "bi_weekly": "كل أسبوعين",
+                "monthly": "شهري",
+                "yearly": "سنوي"
+            },
+            "types": {
+                "spherical": "كروي",
+                "toric": "توريك",
+                "multifocal": "متعدد البؤر",
+                "color": "ملون"
+            },
+            "brand": "العلامة التجارية",
+            "product": "المنتج",
+            "expires": "ينتهي في",
+            "prescribed_by": "وصف بواسطة",
+            "expired": "منتهي",
+            "expiring_soon": "ينتهي قريباً",
+            "copy_od_to_os": "نسخ اليمنى إلى اليسرى",
+            "new_cl_rx": "وصفة عدسات لاصقة جديدة",
+            "new_cl_rx_for": "وصفة عدسات لاصقة جديدة لـ {{name}}",
+            "new_spec_rx": "وصفة نظارات جديدة",
+            "new_spec_rx_for": "وصفة نظارات جديدة لـ {{name}}"
+        }
+    },
     "inventory": {
-        "title": "إدارة المخزون",
         "frames": {
             "title": "مخزون الإطارات",
             "add_new": "إضافة إطار جديد",
             "edit_frame": "تعديل الإطار",
-            "search_placeholder": "البحث حسب العلامة التجارية أو الموديل أو SKU...",
+            "search_placeholder": "البحث حسب العلامة التجارية أو الموديل أو SKU أو الباركود...",
             "no_results": "لم يتم العثور على إطارات في المخزون.",
             "sections": {
                 "basic_info": "المعلومات الأساسية",
@@ -100,7 +255,8 @@
                 "selling_price": "سعر البيع",
                 "quantity": "الكمية",
                 "low_stock_threshold": "تنبيه نقص المخزون",
-                "is_active": "نشط"
+                "is_active": "نشط",
+                "price": "السعر"
             },
             "categories": {
                 "optical": "طبي",
@@ -110,7 +266,9 @@
             },
             "filters": {
                 "low_stock": "نقص المخزون فقط"
-            }
+            },
+            "create_button": "إضافة إطار جديد",
+            "low_stock_filter": "نقص المخزون فقط"
         },
         "lenses": {
             "title": "كتالوج العدسات",
@@ -137,7 +295,8 @@
                 "selling_price": "سعر البيع",
                 "lab_supplier": "مورد المختبر",
                 "lead_time_days": "مدة التوريد (أيام)",
-                "is_active": "نشط"
+                "is_active": "نشط",
+                "price": "السعر"
             },
             "types": {
                 "single_vision": "رؤية واحدة",
@@ -145,7 +304,8 @@
                 "progressive": "متعددة البؤرة",
                 "office": "مكتبي",
                 "sports": "رياضي"
-            }
+            },
+            "create_button": "إضافة عدسة جديدة"
         },
         "contact_lenses": {
             "title": "مخزون العدسات اللاصقة",
@@ -172,8 +332,13 @@
                 "selling_price_per_box": "السعر / الصندوق",
                 "expiry_date": "تاريخ الانتهاء",
                 "expiry": "الانتهاء",
-                "is_active": "نشط"
-            }
+                "is_active": "نشط",
+                "stock": "المخزون",
+                "price": "السعر",
+                "boxes": "صناديق",
+                "per_box": "لكل صندوق"
+            },
+            "create_button": "إضافة عدسة لاصقة جديدة"
         }
     },
     "auth": {
@@ -182,7 +347,13 @@
         "email": "البريد الإلكتروني",
         "password": "كلمة المرور",
         "rememberMe": "تذكرني",
-        "forgotPassword": "هل نسيت كلمة المرور؟"
+        "forgotPassword": "هل نسيت كلمة المرور؟",
+        "login_title": "تسجيل الدخول إلى حسابك",
+        "login_btn": "تسجيل الدخول",
+        "remember_me": "تذكرني",
+        "forgot_password": "نسيت كلمة المرور؟",
+        "no_account": "ليس لديك حساب؟",
+        "register_link": "إنشاء حساب"
     },
     "nav": {
         "dashboard": "لوحة القيادة",
@@ -191,81 +362,24 @@
         "inventory": "المخزون",
         "pos": "نقطة البيع",
         "invoices": "الفواتير",
-        "lab": "المختبر",
+        "lab": "أعمال المختبر",
         "reports": "التقارير",
-        "settings": "الإعدادات"
+        "settings": "الإعدادات",
+        "businesses": "المتاجر",
+        "branches": "الفروع",
+        "staff": "الموظفين",
+        "frames": "الإطارات",
+        "lenses": "العدسات",
+        "contact_lenses": "العدسات اللاصقة"
     },
-    "admin": {
-        "dashboard": {
-            "title": "لوحة تحكم المسؤول العام",
-            "welcome": "مرحباً، المسؤول العام",
-            "total_businesses": "إجمالي الشركات",
-            "active_businesses": "الشركات النشطة",
-            "total_users": "إجمالي المستخدمين"
-        },
-        "businesses": {
-            "index": {
-                "title": "إدارة الشركات",
-                "create_btn": "إضافة شركة جديدة"
-            },
-            "create": {
-                "title": "إنشاء شركة جديدة",
-                "submit_btn": "إنشاء الشركة"
-            },
-            "edit": {
-                "title": "تعديل الشركة",
-                "submit_btn": "تحديث الشركة",
-                "owner_note": "لا يمكن تغيير تفاصيل المالك من هنا لأسباب أمنية."
-            },
-            "sections": {
-                "business_info": "معلومات الشركة",
-                "owner_info": "معلومات المالك الأساسي"
-            },
-            "fields": {
-                "name": "اسم الشركة",
-                "owner": "المالك",
-                "status": "الحالة",
-                "actions": "الإجراءات",
-                "primary_color": "اللون الأساسي للقالب",
-                "default_language": "اللغة الافتراضية",
-                "owner_name": "اسم المالك",
-                "owner_email": "البريد الإلكتروني للمالك",
-                "owner_password": "كلمة مرور المالك",
-                "active_status": "نشط"
-            }
-        }
-    },
-    "business": {
-        "dashboard": {
-            "title": "لوحة تحكم المتجر",
-            "welcome": "نظرة عامة على المتجر",
-            "today_sales": "مبيعات اليوم",
-            "pending_pickups": "بانتظار الاستلام",
-            "total_customers": "إجمالي العملاء",
-            "recent_invoices": "آخر الفواتير"
-        },
-        "branches": {
-            "index": {
-                "title": "إدارة الفروع",
-                "create_btn": "إضافة فرع جديد"
-            },
-            "fields": {
-                "name": "اسم الفرع",
-                "contact": "معلومات الاتصال",
-                "status": "الحالة",
-                "actions": "الإجراءات",
-                "hq": "المركز الرئيسي"
-            }
-        },
-        "staff": {
-            "index": {
-                "title": "إدارة الموظفين",
-                "create_btn": "إضافة موظف جديد"
-            }
-        },
-        "settings": {
-            "title": "إعدادات المتجر"
-        }
+    "roles": {
+        "super_admin": "مسؤول عام",
+        "business_owner": "صاحب المتجر",
+        "branch_manager": "مدير فرع",
+        "optometrist": "فاحص نظر",
+        "sales_staff": "موظف مبيعات",
+        "lab_technician": "فني مختبر",
+        "staff": "موظف"
     },
     "POS": {
         "title": "نقطة البيع",
@@ -302,30 +416,78 @@
         "summary": {
             "subtotal": "المجموع الفرعي",
             "discount": "الخصم",
-            "tax": "الضريبة",
             "total": "الإجمالي",
-            "items": "الأصناف",
-            "deposit_required": "العربون المطلوب",
-            "balance_due": "المبلغ المتبقي"
+            "payment_cash": "نقداً",
+            "payment_card": "بطاقة",
+            "deposit_label": "الدفعة الأولى (عربون)",
+            "checkout_button": "إتمام الدفع",
+            "checkout": "دفع"
         },
-        "payments": {
+        "customer": {
+            "label": "العميل",
+            "change": "تغيير",
+            "placeholder": "اختر عميلاً..."
+        },
+        "payment": {
             "title": "إتمام الدفع",
-            "full_payment": "دفع كامل",
-            "split_payment": "دفع مقسم",
-            "cash": "نقداً",
-            "card": "بطاقة",
-            "amount_to_pay": "المبلغ المطلوب دفعه",
-            "received": "المستلم",
-            "change": "الفكة",
-            "processing": "جاري المعالجة...",
-            "complete": "إتمام العملية",
-            "error_split": "يجب أن يساوي مجموع المبالغ النقدية والبطاقة إجمالي الفاتورة"
+            "amount_due": "المبلغ المطلوب",
+            "initial_deposit": "العربون الأولي",
+            "final_total": "الإجمالي النهائي",
+            "method_label": "طريقة الدفع",
+            "method_cash": "نقداً",
+            "method_card": "بطاقة",
+            "method_split": "مقسم",
+            "cash_amount": "المبلغ النقدي",
+            "card_amount": "مبلغ البطاقة",
+            "split_error": "يجب أن يساوي المجموع المقسم ({{current}}) إجمالي المبلغ المطلوب ({{total}})",
+            "reference_label": "مرجع / ملاحظات",
+            "reference_placeholder": "مثلاً: معرف المعاملة، رمز التفويض...",
+            "confirm_button": "تأكيد وطباعة الفاتورة"
+        }
+    },
+    "admin": {
+        "dashboard": {
+            "title": "لوحة تحكم المسؤول العام",
+            "welcome": "مرحباً، المسؤول العام",
+            "subtitle": "إدارة جميع عمليات المتاجر من هنا",
+            "total_businesses": "إجمالي المتاجر",
+            "active_businesses": "المتاجر النشطة",
+            "total_users": "إجمالي المستخدمين"
         },
-        "success": {
-            "title": "تمت العملية بنجاح",
-            "invoice_created": "تم إنشاء الفاتورة رقم {{number}}",
-            "print_receipt": "طباعة الإيصال",
-            "new_sale": "بيعة جديدة"
+        "businesses": {
+            "index": {
+                "title": "إدارة المتاجر",
+                "create_btn": "إضافة متجر جديد"
+            },
+            "create": {
+                "title": "إنشاء متجر جديد",
+                "submit_btn": "إنشاء المتجر"
+            },
+            "edit": {
+                "title": "تعديل المتجر",
+                "submit_btn": "تحديث المتجر",
+                "owner_note": "لا يمكن تغيير تفاصيل المالك من هنا لأسباب أمنية."
+            },
+            "sections": {
+                "business_info": "معلومات المتجر",
+                "owner_info": "معلومات المالك الأساسي"
+            },
+            "fields": {
+                "name": "اسم المتجر",
+                "name_placeholder": "مثلاً: رؤية المحترفين للبصريات",
+                "owner": "المالك",
+                "status": "الحالة",
+                "actions": "الإجراءات",
+                "primary_color": "اللون الأساسي للقالب",
+                "default_language": "اللغة الافتراضية",
+                "owner_name": "اسم المالك",
+                "owner_name_placeholder": "الاسم الكامل",
+                "owner_email": "البريد الإلكتروني للمالك",
+                "owner_email_placeholder": "email@example.com",
+                "owner_password": "كلمة مرور المالك",
+                "owner_password_placeholder": "8 أحرف على الأقل",
+                "active_status": "نشط"
+            }
         }
     },
     "reports": {
@@ -445,7 +607,7 @@
             "customer": "العميل",
             "total": "الإجمالي",
             "amount_paid": "المدفوع",
-            "balance_due": "المتبقي",
+            "balance_due": "الرصيد",
             "status": "الحالة",
             "date": "التاريخ"
         },
@@ -468,7 +630,8 @@
     "home": {
         "nav": {
             "sign_in": "تسجيل الدخول",
-            "features": "المميزات"
+            "features": "المميزات",
+            "dashboard": "لوحة القيادة"
         },
         "hero": {
             "badge": "نظام إدارة محلات البصريات بمستوى مؤسسي",
@@ -525,7 +688,7 @@
             "responsive": "متوافق مع الجوال",
             "multi_tenant": "جاهز للاستضافة المتعددة",
             "multi_tenant_desc": "كل شركة تحصل على بيانات وعلامة تجارية معزولة",
-            "rtl": "اتجاه من اليمين لليسار",
+            "rtl": "دعم اللغات من اليمين لليسار",
             "rtl_desc": "دعم كامل للعربية والفرنسية والإسبانية"
         },
         "cta": {

@@ -46,6 +46,21 @@ class SpectacleRxController extends Controller
         return response()->json($spectacleRx->load('prescribedBy'));
     }
 
+    public function downloadPdf(SpectaclePrescription $spectacleRx)
+    {
+        $this->authorize('view', $spectacleRx);
+        
+        $business = auth()->user()->business;
+        $spectacleRx->load(['customer', 'prescribedBy']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('prints.spectacle-rx', [
+            'rx' => $spectacleRx,
+            'business' => $business,
+        ]);
+
+        return $pdf->download("spectacle-rx-{$spectacleRx->customer->full_name}.pdf");
+    }
+
     /**
      * Update the specified resource in storage.
      */

@@ -2,11 +2,24 @@ import React from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import { Plus, Search, Pencil, Trash2, AlertTriangle, Package, DollarSign, Tag, Glasses } from "lucide-react";
+import {
+    Plus,
+    Search,
+    Pencil,
+    Trash2,
+    AlertTriangle,
+    Package,
+    DollarSign,
+    Tag,
+    Glasses,
+    FileText,
+} from "lucide-react";
 import { Card } from "@/Components/UI/Card";
 import { Button } from "@/Components/UI/Button";
 import { Badge } from "@/Components/UI/Badge";
 import { DataTable } from "@/Components/UI/DataTable";
+import { StatCard } from "@/Components/Charts/StatCard";
+import { exportToCSV } from "@/Utils/csvExport";
 
 interface Frame {
     id: number;
@@ -44,12 +57,14 @@ interface Props {
 export default function Index({ frames, filters, stats }: Props) {
     const { t } = useTranslation();
     const [search, setSearch] = React.useState(filters.search || "");
-    const [activeCategory, setActiveCategory] = React.useState(filters.category || "all");
+    const [activeCategory, setActiveCategory] = React.useState(
+        filters.category || "all"
+    );
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get(
-            "/business/inventory/frames",
+            route("business.inventory.frames.index"),
             {
                 search,
                 category: activeCategory !== "all" ? activeCategory : undefined,
@@ -62,7 +77,7 @@ export default function Index({ frames, filters, stats }: Props) {
     const handleCategoryFilter = (category: string) => {
         setActiveCategory(category);
         router.get(
-            "/business/inventory/frames",
+            route("business.inventory.frames.index"),
             {
                 search,
                 category: category !== "all" ? category : undefined,
@@ -74,7 +89,7 @@ export default function Index({ frames, filters, stats }: Props) {
 
     const toggleLowStock = () => {
         router.get(
-            "/business/inventory/frames",
+            route("business.inventory.frames.index"),
             {
                 search,
                 category: activeCategory !== "all" ? activeCategory : undefined,
@@ -86,8 +101,28 @@ export default function Index({ frames, filters, stats }: Props) {
 
     const deleteFrame = (id: number) => {
         if (confirm(t("common.confirm_delete"))) {
-            router.delete(`/business/inventory/frames/${id}`);
+            router.delete(route("business.inventory.frames.destroy", id));
         }
+    };
+
+    const handleExportCSV = () => {
+        const headers = [
+            t("inventory.frames.fields.sku"),
+            t("inventory.frames.fields.brand_model"),
+            t("inventory.frames.fields.category"),
+            t("inventory.frames.fields.quantity"),
+            t("inventory.frames.fields.price"),
+        ];
+
+        const data = frames.data.map((item) => [
+            item.sku,
+            `${item.brand} ${item.model}`,
+            t(`inventory.frames.categories.${item.category}`),
+            item.quantity,
+            item.selling_price,
+        ]);
+
+        exportToCSV(data, "frames-inventory", headers);
     };
 
     const formatCurrency = (value: number) => {
@@ -108,9 +143,19 @@ export default function Index({ frames, filters, stats }: Props) {
     // Calculate stats from data if not provided
     const calculatedStats = {
         total: stats?.total || frames.data.length,
-        lowStock: stats?.lowStock || frames.data.filter(f => f.quantity <= f.low_stock_threshold).length,
-        totalValue: stats?.totalValue || frames.data.reduce((sum, f) => sum + (f.selling_price * f.quantity), 0),
-        brands: stats?.brands || [...new Set(frames.data.map(f => f.brand))].length,
+        lowStock:
+            stats?.lowStock ||
+            frames.data.filter((f) => f.quantity <= f.low_stock_threshold)
+                .length,
+        totalValue:
+            stats?.totalValue ||
+            frames.data.reduce(
+                (sum, f) => sum + f.selling_price * f.quantity,
+                0
+            ),
+        brands:
+            stats?.brands ||
+            [...new Set(frames.data.map((f) => f.brand))].length,
     };
 
     const columns = [
@@ -156,7 +201,8 @@ export default function Index({ frames, filters, stats }: Props) {
                             : "success"
                     }
                 >
-                    {item.quantity} {item.quantity <= item.low_stock_threshold && "⚠"}
+                    {item.quantity}{" "}
+                    {item.quantity <= item.low_stock_threshold && "⚠"}
                 </Badge>
             ),
         },
@@ -173,7 +219,7 @@ export default function Index({ frames, filters, stats }: Props) {
             accessor: (item: Frame) => (
                 <div className="flex gap-2">
                     <Link
-                        href={`/business/inventory/frames/${item.id}/edit`}
+                        href={route("business.inventory.frames.edit", item.id)}
                     >
                         <Button variant="secondary" size="sm">
                             <Pencil className="w-4 h-4" />
@@ -198,12 +244,18 @@ export default function Index({ frames, filters, stats }: Props) {
                     <h2 className="text-2xl font-black text-text-primary tracking-tight">
                         {t("inventory.frames.title")}
                     </h2>
-                    <Link href="/business/inventory/frames/create">
-                        <Button className="flex items-center gap-2">
-                            <Plus className="w-4 h-4" />
-                            {t("inventory.frames.create_button")}
+                    <div className="flex gap-2">
+                        <Button variant="secondary" onClick={handleExportCSV}>
+                            <FileText className="w-4 h-4 me-2" />
+                            {t("common.export_csv")}
                         </Button>
-                    </Link>
+                        <Link href={route("business.inventory.frames.create")}>
+                            <Button className="flex items-center gap-2">
+                                <Plus className="w-4 h-4" />
+                                {t("inventory.frames.create_button")}
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
             }
         >
@@ -211,62 +263,31 @@ export default function Index({ frames, filters, stats }: Props) {
 
             <div className="space-y-6">
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="p-4 border-l-4 border-l-blue-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Frames</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.total}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                <Glasses className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-red-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Low Stock</p>
-                                <p className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                    {calculatedStats.lowStock}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-green-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Total Value</p>
-                                <p className="text-xl font-bold text-text-primary mt-1">
-                                    {formatCurrency(calculatedStats.totalValue)}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="p-4 border-l-4 border-l-purple-500">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-medium text-text-muted">Brands</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {calculatedStats.brands}
-                                </p>
-                            </div>
-                            <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                <Tag className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                            </div>
-                        </div>
-                    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <StatCard
+                        title="Total Frames"
+                        value={calculatedStats.total}
+                        icon={Glasses}
+                        color="primary"
+                    />
+                    <StatCard
+                        title="Low Stock"
+                        value={calculatedStats.lowStock}
+                        icon={AlertTriangle}
+                        color="danger"
+                    />
+                    <StatCard
+                        title="Total Value"
+                        value={formatCurrency(calculatedStats.totalValue)}
+                        icon={DollarSign}
+                        color="success"
+                    />
+                    <StatCard
+                        title="Brands"
+                        value={calculatedStats.brands}
+                        icon={Tag}
+                        color="info"
+                    />
                 </div>
 
                 {/* Category Filter Tabs */}
@@ -276,10 +297,11 @@ export default function Index({ frames, filters, stats }: Props) {
                             <button
                                 key={tab.key}
                                 onClick={() => handleCategoryFilter(tab.key)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeCategory === tab.key
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                    activeCategory === tab.key
                                         ? "bg-primary-default text-white"
                                         : "bg-bg-subtle text-text-muted hover:bg-bg-subtle/80 hover:text-text-primary"
-                                    }`}
+                                }`}
                             >
                                 {tab.label}
                             </button>
@@ -310,7 +332,9 @@ export default function Index({ frames, filters, stats }: Props) {
                             className="flex items-center gap-2 whitespace-nowrap"
                         >
                             <AlertTriangle className="w-4 h-4" />
-                            {filters.low_stock ? "Showing Low Stock" : t("inventory.frames.low_stock_filter")}
+                            {filters.low_stock
+                                ? "Showing Low Stock"
+                                : t("inventory.frames.low_stock_filter")}
                         </Button>
                     </div>
                 </Card>

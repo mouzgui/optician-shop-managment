@@ -46,6 +46,21 @@ class ContactLensRxController extends Controller
         return response()->json($contactLensRx->load('prescribedBy'));
     }
 
+    public function downloadPdf(ContactLensPrescription $contactLensRx)
+    {
+        $this->authorize('view', $contactLensRx);
+        
+        $business = auth()->user()->business;
+        $contactLensRx->load(['customer', 'prescribedBy']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('prints.contact-lens-rx', [
+            'rx' => $contactLensRx,
+            'business' => $business,
+        ]);
+
+        return $pdf->download("contact-lens-rx-{$contactLensRx->customer->full_name}.pdf");
+    }
+
     /**
      * Update the specified resource in storage.
      */
