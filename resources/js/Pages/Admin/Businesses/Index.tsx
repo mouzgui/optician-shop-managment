@@ -302,7 +302,7 @@ export default function Index({ businesses, filters = {}, stats }: IndexProps) {
 
                 {/* Table */}
                 <Card className="overflow-hidden">
-                    <DataTable
+                    <DataTable<Business>
                         columns={columns}
                         data={businessList}
                         keyField="id"

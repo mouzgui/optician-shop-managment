@@ -32,13 +32,13 @@
 
         <div class="summary-card">
             <div class="summary-label">Total Revenue</div>
-            <div class="summary-value">${{ number_format($summary['total'], 2) }}</div>
+            <div class="summary-value">{{ $business->formatCurrency($summary['total']) }}</div>
             
             <div style="margin-top: 15px; display: flex; gap: 20px;">
                 @foreach($summary['by_method'] as $method => $amount)
                 <div style="margin-right: 20px;">
                     <div class="summary-label">{{ strtoupper(str_replace('_', ' ', $method)) }}</div>
-                    <div style="font-weight: bold;">${{ number_format($amount, 2) }}</div>
+                    <div style="font-weight: bold;">{{ $business->formatCurrency($amount) }}</div>
                 </div>
                 @endforeach
             </div>
@@ -67,7 +67,7 @@
                     </td>
                     <td>{{ strtoupper(str_replace('_', ' ', $payment->payment_method)) }}</td>
                     <td>{{ $payment->receivedBy->name ?? '-' }}</td>
-                    <td style="text-align: right;">${{ number_format($payment->amount, 2) }}</td>
+                    <td style="text-align: right;">{{ $business->formatCurrency($payment->amount) }}</td>
                 </tr>
                 @endforeach
             </tbody>

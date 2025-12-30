@@ -35,11 +35,11 @@
             <div style="display: flex; gap: 40px;">
                 <div>
                     <div class="summary-label">Total Yearly Revenue</div>
-                    <div class="summary-value">${{ number_format(collect($data)->sum('total'), 2) }}</div>
+                    <div class="summary-value">{{ $business->formatCurrency(collect($data)->sum('total')) }}</div>
                 </div>
                 <div>
                     <div class="summary-label">Monthly Average</div>
-                    <div class="summary-value">${{ number_format(collect($data)->avg('total'), 2) }}</div>
+                    <div class="summary-value">{{ $business->formatCurrency(collect($data)->avg('total')) }}</div>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
                 @foreach($data as $item)
                 <tr>
                     <td><strong>{{ $item['month'] }}</strong></td>
-                    <td class="text-end">${{ number_format($item['total'], 2) }}</td>
+                    <td class="text-end">{{ $business->formatCurrency($item['total']) }}</td>
                     <td class="text-end">
                         {{ $total > 0 ? number_format(($item['total'] / $total) * 100, 1) : 0 }}%
                     </td>
@@ -68,7 +68,7 @@
             <tfoot>
                 <tr style="background: #f8fafc; font-weight: bold;">
                     <td>TOTAL</td>
-                    <td class="text-end">${{ number_format($total, 2) }}</td>
+                    <td class="text-end">{{ $business->formatCurrency($total) }}</td>
                     <td class="text-end">100%</td>
                 </tr>
             </tfoot>

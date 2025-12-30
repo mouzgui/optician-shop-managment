@@ -24,12 +24,18 @@
             letter-spacing: 2px;
         }
         .job-info {
-            display: flex;
-            justify-content: space-between;
+            width: 100%;
             margin-bottom: 20px;
         }
-        .job-info div {
-            flex: 1;
+        .job-info table {
+            width: 100%;
+            border: none;
+        }
+        .job-info td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+            text-align: left;
         }
         .section-title {
             background: #f4f4f4;
@@ -44,25 +50,33 @@
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        table, th, td {
+        table.data-table, table.data-table th, table.data-table td {
             border: 1px solid #ccc;
         }
-        th, td {
+        table.data-table th, table.data-table td {
             padding: 10px;
             text-align: center;
         }
-        th {
+        table.data-table th {
             background-color: #f9f9f9;
         }
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .details-container {
+            width: 100%;
+        }
+        .details-container td {
+            width: 50%;
+            vertical-align: top;
+            padding: 0 10px 0 0;
+            border: none;
+        }
+        .details-container td:last-child {
+            padding: 0 0 0 10px;
         }
         .details-box {
             border: 1px solid #ccc;
             padding: 15px;
             border-radius: 5px;
+            height: 180px;
         }
         .details-box h3 {
             margin-top: 0;
@@ -118,18 +132,22 @@
     </div>
 
     <div class="job-info">
-        <div>
-            <span class="label">JOB NUMBER</span>
-            <span class="value">{{ $jobCard->job_number }}</span>
-        </div>
-        <div style="text-align: center;">
-            <span class="label">DATE CREATED</span>
-            <span class="value">{{ $jobCard->created_at->format('d M Y H:i') }}</span>
-        </div>
-        <div style="text-align: right;">
-            <span class="label">CUSTOMER</span>
-            <span class="value">{{ $jobCard->invoice->customer->full_name }}</span>
-        </div>
+        <table>
+            <tr>
+                <td>
+                    <span class="label">JOB NUMBER</span>
+                    <span class="value">{{ $jobCard->job_number }}</span>
+                </td>
+                <td style="text-align: center;">
+                    <span class="label">DATE CREATED</span>
+                    <span class="value">{{ $jobCard->created_at->format('d M Y H:i') }}</span>
+                </td>
+                <td style="text-align: right;">
+                    <span class="label">CUSTOMER</span>
+                    <span class="value">{{ $jobCard->invoice->customer->full_name }}</span>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class="critical-note">
@@ -138,7 +156,7 @@
 
     <div class="section-title">Prescription Details</div>
     @php $rx = $jobCard->prescription_details; @endphp
-    <table>
+    <table class="data-table">
         <thead>
             <tr>
                 <th>EYE</th>
@@ -169,59 +187,64 @@
         </tbody>
     </table>
 
-    <div class="details-grid">
-        <div class="details-box">
-            <h3>Frame Details</h3>
-            @php $frame = $jobCard->frame_details; @endphp
-            @if($frame)
-                <div style="margin-bottom: 10px;">
-                    <span class="label">BRAND / MODEL</span>
-                    <span class="value">{{ $frame['brand'] }} - {{ $frame['model'] }}</span>
+    <table class="details-container">
+        <tr>
+            <td>
+                <div class="details-box">
+                    <h3>Frame Details</h3>
+                    @php $frame = $jobCard->frame_details; @endphp
+                    @if($frame)
+                        <div style="margin-bottom: 10px;">
+                            <span class="label">BRAND / MODEL</span>
+                            <span class="value">{{ $frame['brand'] }} - {{ $frame['model'] }}</span>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <span class="label">COLOR</span>
+                            <span class="value">{{ $frame['color_name'] ?? 'N/A' }} ({{ $frame['color_code'] ?? '-' }})</span>
+                        </div>
+                        <div>
+                            <span class="label">SIZE</span>
+                            <span class="value">{{ $frame['size_eye'] }}-{{ $frame['size_bridge'] }}-{{ $frame['size_temple'] }}</span>
+                        </div>
+                    @else
+                        <div style="text-align: center; padding: 20px; color: #999;">
+                            CUSTOMER'S OWN FRAME
+                        </div>
+                    @endif
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <span class="label">COLOR</span>
-                    <span class="value">{{ $frame['color_name'] }} ({{ $frame['color_code'] }})</span>
+            </td>
+            <td>
+                <div class="details-box">
+                    <h3>Lens Details</h3>
+                    @php $lens = $jobCard->lens_details; @endphp
+                    @if($lens)
+                        <div style="margin-bottom: 10px;">
+                            <span class="label">LENS TYPE</span>
+                            <span class="value">{{ ucfirst($lens['type'] ?? 'N/A') }}</span>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <span class="label">INDEX</span>
+                            <span class="value">{{ $lens['index'] ?? 'N/A' }}</span>
+                        </div>
+                        <div>
+                            <span class="label">COATINGS</span>
+                            <span class="value">
+                                @if(isset($lens['coatings']))
+                                    {{ is_array($lens['coatings']) ? implode(', ', $lens['coatings']) : $lens['coatings'] }}
+                                @else
+                                    None
+                                @endif
+                            </span>
+                        </div>
+                    @else
+                        <div style="text-align: center; padding: 20px; color: #999;">
+                            NO LENS DATA
+                        </div>
+                    @endif
                 </div>
-                <div>
-                    <span class="label">SIZE</span>
-                    <span class="value">{{ $frame['size_eye'] }}-{{ $frame['size_bridge'] }}-{{ $frame['size_temple'] }}</span>
-                </div>
-            @else
-                <div style="text-align: center; padding: 20px; color: #999;">
-                    CUSTOMER'S OWN FRAME
-                </div>
-            @endif
-        </div>
-
-        <div class="details-box">
-            <h3>Lens Details</h3>
-            @php $lens = $jobCard->lens_details; @endphp
-            @if($lens)
-                <div style="margin-bottom: 10px;">
-                    <span class="label">LENS TYPE</span>
-                    <span class="value">{{ ucfirst($lens['type'] ?? 'N/A') }}</span>
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <span class="label">INDEX</span>
-                    <span class="value">{{ $lens['index'] ?? 'N/A' }}</span>
-                </div>
-                <div>
-                    <span class="label">COATINGS</span>
-                    <span class="value">
-                        @if(isset($lens['coatings']))
-                            {{ is_array($lens['coatings']) ? implode(', ', $lens['coatings']) : $lens['coatings'] }}
-                        @else
-                            None
-                        @endif
-                    </span>
-                </div>
-            @else
-                <div style="text-align: center; padding: 20px; color: #999;">
-                    NO LENS DATA
-                </div>
-            @endif
-        </div>
-    </div>
+            </td>
+        </tr>
+    </table>
 
     @if($jobCard->special_instructions)
         <div class="section-title">Special Instructions</div>

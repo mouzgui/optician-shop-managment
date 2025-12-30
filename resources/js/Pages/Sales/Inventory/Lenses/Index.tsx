@@ -14,7 +14,7 @@ import {
     FileText,
 } from "lucide-react";
 import { Button } from "@/Components/UI/Button";
-import { DataTable } from "@/Components/UI/DataTable";
+import { DataTable, Column } from "@/Components/UI/DataTable";
 import { Card } from "@/Components/UI/Card";
 import { Badge } from "@/Components/UI/Badge";
 import { StatCard } from "@/Components/Charts/StatCard";
@@ -58,7 +58,7 @@ export default function Index({
     filters = {},
     stats,
 }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
     const [activeType, setActiveType] = React.useState(filters.type || "all");
@@ -165,7 +165,7 @@ export default function Index({
             stats?.types || [...new Set(lenses.data.map((l) => l.type))].length,
     };
 
-    const columns: any[] = [
+    const columns: Column<Lens>[] = [
         {
             header: safeT("inventory.lenses.fields.name", "Name"),
             accessor: (item: Lens) => (
@@ -273,25 +273,37 @@ export default function Index({
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <StatCard
-                        title="Total Lenses"
+                        title={safeT(
+                            "inventory.lenses.stats.total",
+                            "Total Lenses"
+                        )}
                         value={calculatedStats.total}
                         icon={Circle}
                         color="primary"
                     />
                     <StatCard
-                        title="Low Stock"
+                        title={safeT(
+                            "inventory.lenses.stats.low_stock",
+                            "Low Stock"
+                        )}
                         value={calculatedStats.lowStock}
                         icon={AlertTriangle}
                         color="danger"
                     />
                     <StatCard
-                        title="Total Value"
+                        title={safeT(
+                            "inventory.lenses.stats.total_value",
+                            "Total Value"
+                        )}
                         value={formatCurrency(calculatedStats.totalValue)}
                         icon={DollarSign}
                         color="success"
                     />
                     <StatCard
-                        title="Lens Types"
+                        title={safeT(
+                            "inventory.lenses.stats.types",
+                            "Lens Types"
+                        )}
                         value={calculatedStats.types}
                         icon={Tag}
                         color="info"
@@ -333,9 +345,10 @@ export default function Index({
 
                 {/* Table */}
                 <Card>
-                    <DataTable
+                    <DataTable<Lens>
                         columns={columns}
                         data={lenses.data}
+                        keyField="id"
                         meta={lenses.meta}
                     />
                 </Card>

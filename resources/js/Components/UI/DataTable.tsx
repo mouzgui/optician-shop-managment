@@ -15,6 +15,20 @@ interface DataTableProps<T> {
     keyField: keyof T;
     isLoading?: boolean;
     emptyMessage?: string;
+    meta?: {
+        current_page: number;
+        from: number;
+        last_page: number;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+        path: string;
+        per_page: number;
+        to: number;
+        total: number;
+    };
 }
 
 export function DataTable<T>({
@@ -23,6 +37,7 @@ export function DataTable<T>({
     keyField,
     isLoading = false,
     emptyMessage = "No data found",
+    meta,
 }: DataTableProps<T>) {
     return (
         <div className="bg-bg-primary rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -33,8 +48,9 @@ export function DataTable<T>({
                             {columns.map((column, index) => (
                                 <th
                                     key={index}
-                                    className={`px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider ${column.className || ""
-                                        }`}
+                                    className={`px-6 py-3 text-start text-xs font-medium text-text-secondary uppercase tracking-wider ${
+                                        column.className || ""
+                                    }`}
                                 >
                                     {column.header}
                                 </th>
@@ -73,15 +89,16 @@ export function DataTable<T>({
                                     {columns.map((column, index) => (
                                         <td
                                             key={index}
-                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${column.className || ""
-                                                }`}
+                                            className={`px-6 py-4 whitespace-nowrap text-sm text-text-primary ${
+                                                column.className || ""
+                                            }`}
                                         >
                                             {typeof column.accessor ===
-                                                "function"
+                                            "function"
                                                 ? column.accessor(item)
                                                 : (item[
-                                                    column.accessor
-                                                ] as React.ReactNode)}
+                                                      column.accessor
+                                                  ] as React.ReactNode)}
                                         </td>
                                     ))}
                                 </tr>
@@ -90,6 +107,87 @@ export function DataTable<T>({
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination */}
+            {meta && meta.links && meta.links.length > 3 && (
+                <div className="px-6 py-4 bg-bg-muted/50 border-t border-border-default flex items-center justify-between">
+                    <div className="flex-1 flex justify-between sm:hidden">
+                        {meta.links[0].url ? (
+                            <Link
+                                href={meta.links[0].url as string}
+                                className="relative inline-flex items-center px-4 py-2 border border-border-default text-sm font-medium rounded-md text-text-primary bg-bg-primary hover:bg-bg-muted"
+                            >
+                                Previous
+                            </Link>
+                        ) : (
+                            <span className="relative inline-flex items-center px-4 py-2 border border-border-default text-sm font-medium rounded-md text-text-muted bg-bg-primary cursor-not-allowed">
+                                Previous
+                            </span>
+                        )}
+                        {meta.links[meta.links.length - 1].url ? (
+                            <Link
+                                href={
+                                    meta.links[meta.links.length - 1]
+                                        .url as string
+                                }
+                                className="ml-3 relative inline-flex items-center px-4 py-2 border border-border-default text-sm font-medium rounded-md text-text-primary bg-bg-primary hover:bg-bg-muted"
+                            >
+                                Next
+                            </Link>
+                        ) : (
+                            <span className="ml-3 relative inline-flex items-center px-4 py-2 border border-border-default text-sm font-medium rounded-md text-text-muted bg-bg-primary cursor-not-allowed">
+                                Next
+                            </span>
+                        )}
+                    </div>
+                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p className="text-sm text-text-secondary">
+                                Showing{" "}
+                                <span className="font-medium">{meta.from}</span>{" "}
+                                to{" "}
+                                <span className="font-medium">{meta.to}</span>{" "}
+                                of{" "}
+                                <span className="font-medium">
+                                    {meta.total}
+                                </span>{" "}
+                                results
+                            </p>
+                        </div>
+                        <div>
+                            <nav
+                                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                                aria-label="Pagination"
+                            >
+                                {meta.links.map((link, index) => (
+                                    <Link
+                                        key={index}
+                                        href={link.url || "#"}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                        className={`relative inline-flex items-center px-4 py-2 border border-border-default text-sm font-medium transition-colors ${
+                                            link.active
+                                                ? "z-10 bg-interactive-primary border-interactive-primary text-white"
+                                                : "bg-bg-primary text-text-primary hover:bg-bg-muted"
+                                        } ${
+                                            index === 0 ? "rounded-l-md" : ""
+                                        } ${
+                                            index === meta.links.length - 1
+                                                ? "rounded-r-md"
+                                                : ""
+                                        } ${
+                                            !link.url
+                                                ? "opacity-50 cursor-not-allowed"
+                                                : ""
+                                        }`}
+                                    />
+                                ))}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

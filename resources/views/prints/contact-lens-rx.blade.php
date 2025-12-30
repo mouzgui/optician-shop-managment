@@ -6,8 +6,9 @@
     <style>
         body { font-family: sans-serif; font-size: 14px; color: #333; line-height: 1.5; }
         .rx-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; }
-        .header { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #0891b2; padding-bottom: 20px; }
-        .business-info { flex: 1; }
+        .header { margin-bottom: 30px; border-bottom: 2px solid #0891b2; padding-bottom: 20px; }
+        .header table { width: 100%; border: none; }
+        .header td { border: none; padding: 0; vertical-align: top; }
         .business-name { font-size: 24px; font-weight: bold; color: #0891b2; }
         .customer-info { background: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 30px; }
         .section-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
@@ -15,23 +16,29 @@
         th { background: #f1f5f9; padding: 10px; border: 1px solid #e2e8f0; text-align: center; }
         td { padding: 12px; border: 1px solid #e2e8f0; text-align: center; }
         .notes { margin-top: 20px; padding: 15px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 4px; }
-        .footer { margin-top: 50px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .signature-box { border-top: 1px solid #333; width: 200px; text-align: center; padding-top: 5px; margin-top: 40px; }
+        .footer { margin-top: 50px; }
+        .footer table { width: 100%; border: none; }
+        .footer td { border: none; padding: 0; vertical-align: bottom; }
+        .signature-box { border-top: 1px solid #333; width: 200px; text-align: center; padding-top: 5px; margin-top: 40px; float: right; }
     </style>
 </head>
 <body>
     <div class="rx-box">
         <div class="header">
-            <div class="business-info">
-                <div class="business-name">{{ $business->name }}</div>
-                <div>{{ $business->address }}</div>
-                <div>Phone: {{ $business->phone }}</div>
-            </div>
-            <div style="text-align: right;">
-                <h1 style="margin: 0; color: #0891b2;">Contact Lens Prescription</h1>
-                <div>Date: {{ \Carbon\Carbon::parse($rx->prescribed_at)->format('d M Y') }}</div>
-                <div style="color: #ef4444; font-weight: bold;">Expires: {{ \Carbon\Carbon::parse($rx->expires_at)->format('d M Y') }}</div>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="business-name">{{ $business->name }}</div>
+                        <div>{{ $business->address }}</div>
+                        <div>Phone: {{ $business->phone }}</div>
+                    </td>
+                    <td style="text-align: right;">
+                        <h1 style="margin: 0; color: #0891b2;">Contact Lens Prescription</h1>
+                        <div>Date: {{ \Carbon\Carbon::parse($rx->prescribed_at)->format('d M Y') }}</div>
+                        <div style="color: #ef4444; font-weight: bold;">Expires: {{ \Carbon\Carbon::parse($rx->expires_at)->format('d M Y') }}</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="customer-info">
@@ -92,13 +99,19 @@
         @endif
 
         <div class="footer">
-            <div>
-                <p>Software by Opticina</p>
-            </div>
-            <div class="signature-box">
-                <strong>{{ $rx->prescribedBy->name ?? 'Optometrist' }}</strong><br>
-                Authorized Signature
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <p>Software by Opticina</p>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="signature-box">
+                            <strong>{{ $rx->prescribedBy->name ?? 'Optometrist' }}</strong><br>
+                            Authorized Signature
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>

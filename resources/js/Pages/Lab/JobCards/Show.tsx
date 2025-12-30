@@ -38,8 +38,13 @@ export default function Show({ jobCard }: Props) {
                 <div className="flex items-center justify-center min-h-96">
                     <div className="text-center">
                         <AlertTriangle className="w-16 h-16 mx-auto text-amber-500 mb-4" />
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Job Card Not Found</h2>
-                        <Link href="/business/lab/job-cards" className="text-blue-600 dark:text-blue-400 mt-2 inline-block">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                            Job Card Not Found
+                        </h2>
+                        <Link
+                            href="/business/lab/job-cards"
+                            className="text-blue-600 dark:text-blue-400 mt-2 inline-block"
+                        >
                             ← Back to Job Cards
                         </Link>
                     </div>
@@ -49,7 +54,9 @@ export default function Show({ jobCard }: Props) {
     }
 
     const updateStatus = (newStatus: string) => {
-        patch(`/business/lab/job-cards/${jobCard.id}/status?status=${newStatus}`);
+        patch(
+            `/business/lab/job-cards/${jobCard.id}/status?status=${newStatus}`
+        );
     };
 
     const getStatusConfig = (status: string | undefined) => {
@@ -59,42 +66,42 @@ export default function Show({ jobCard }: Props) {
                     variant: "warning" as const,
                     label: "Pending",
                     bgColor: "bg-amber-500",
-                    textColor: "text-amber-600 dark:text-amber-400"
+                    textColor: "text-amber-600 dark:text-amber-400",
                 };
             case "in_progress":
                 return {
                     variant: "info" as const,
                     label: "In Progress",
                     bgColor: "bg-blue-500",
-                    textColor: "text-blue-600 dark:text-blue-400"
+                    textColor: "text-blue-600 dark:text-blue-400",
                 };
             case "quality_check":
                 return {
                     variant: "primary" as const,
                     label: "Quality Check",
                     bgColor: "bg-purple-500",
-                    textColor: "text-purple-600 dark:text-purple-400"
+                    textColor: "text-purple-600 dark:text-purple-400",
                 };
             case "completed":
                 return {
                     variant: "success" as const,
                     label: "Completed",
                     bgColor: "bg-green-500",
-                    textColor: "text-green-600 dark:text-green-400"
+                    textColor: "text-green-600 dark:text-green-400",
                 };
             case "cancelled":
                 return {
                     variant: "danger" as const,
                     label: "Cancelled",
                     bgColor: "bg-red-500",
-                    textColor: "text-red-600 dark:text-red-400"
+                    textColor: "text-red-600 dark:text-red-400",
                 };
             default:
                 return {
                     variant: "secondary" as const,
                     label: status?.replace(/_/g, " ") || "Unknown",
                     bgColor: "bg-gray-500",
-                    textColor: "text-gray-600 dark:text-gray-400"
+                    textColor: "text-gray-600 dark:text-gray-400",
                 };
         }
     };
@@ -124,7 +131,7 @@ export default function Show({ jobCard }: Props) {
 
     return (
         <AuthenticatedLayout>
-            <Head title={`Job Card ${jobCard.job_number || ''}`} />
+            <Head title={`Job Card ${jobCard.job_number || ""}`} />
 
             <div className="max-w-5xl mx-auto space-y-6">
                 {/* Header Navigation */}
@@ -142,7 +149,10 @@ export default function Show({ jobCard }: Props) {
                         size="sm"
                         onClick={() =>
                             window.open(
-                                route("business.lab.job-cards.download-pdf", jobCard.id),
+                                route(
+                                    "business.lab.job-cards.download-pdf",
+                                    jobCard.id
+                                ),
                                 "_blank"
                             )
                         }
@@ -167,10 +177,12 @@ export default function Show({ jobCard }: Props) {
                                     </div>
                                     <div>
                                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                            {jobCard.job_number || 'N/A'}
+                                            {jobCard.job_number || "N/A"}
                                         </h1>
                                         <div className="flex items-center gap-2 mt-1">
-                                            <Badge variant={statusConfig.variant}>
+                                            <Badge
+                                                variant={statusConfig.variant}
+                                            >
                                                 {statusConfig.label}
                                             </Badge>
                                         </div>
@@ -189,7 +201,9 @@ export default function Show({ jobCard }: Props) {
                                 {jobCard.status === "pending" && (
                                     <Button
                                         variant="primary"
-                                        onClick={() => updateStatus("in_progress")}
+                                        onClick={() =>
+                                            updateStatus("in_progress")
+                                        }
                                         disabled={processing}
                                         className="bg-blue-600 hover:bg-blue-700"
                                     >
@@ -200,7 +214,9 @@ export default function Show({ jobCard }: Props) {
                                 {jobCard.status === "in_progress" && (
                                     <Button
                                         variant="primary"
-                                        onClick={() => updateStatus("quality_check")}
+                                        onClick={() =>
+                                            updateStatus("quality_check")
+                                        }
                                         disabled={processing}
                                         className="bg-purple-600 hover:bg-purple-700"
                                     >
@@ -211,7 +227,9 @@ export default function Show({ jobCard }: Props) {
                                 {jobCard.status === "quality_check" && (
                                     <Button
                                         variant="primary"
-                                        onClick={() => updateStatus("completed")}
+                                        onClick={() =>
+                                            updateStatus("completed")
+                                        }
                                         disabled={processing}
                                         className="bg-green-600 hover:bg-green-700"
                                     >
@@ -325,23 +343,33 @@ export default function Show({ jobCard }: Props) {
                                 {frame ? (
                                     <>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Brand / Model</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Brand / Model
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white">
-                                                {frame.brand || 'N/A'} - {frame.model || 'N/A'}
+                                                {frame.brand || "N/A"} -{" "}
+                                                {frame.model || "N/A"}
                                             </span>
                                         </div>
                                         <div className="border-t border-gray-200 dark:border-gray-600" />
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Color</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Color
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white">
-                                                {frame.color_name || 'N/A'} ({frame.color_code || 'N/A'})
+                                                {frame.color_name || "N/A"} (
+                                                {frame.color_code || "N/A"})
                                             </span>
                                         </div>
                                         <div className="border-t border-gray-200 dark:border-gray-600" />
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Size</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Size
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white font-mono">
-                                                {frame.size_eye || '?'}-{frame.size_bridge || '?'}-{frame.size_temple || '?'}
+                                                {frame.size_eye || "?"}-
+                                                {frame.size_bridge || "?"}-
+                                                {frame.size_temple || "?"}
                                             </span>
                                         </div>
                                     </>
@@ -370,21 +398,27 @@ export default function Show({ jobCard }: Props) {
                                 {lens ? (
                                     <>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Type</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Type
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white capitalize">
-                                                {lens.type || 'N/A'}
+                                                {lens.type || "N/A"}
                                             </span>
                                         </div>
                                         <div className="border-t border-gray-200 dark:border-gray-600" />
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Index</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Index
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white">
-                                                {lens.index || 'N/A'}
+                                                {lens.index || "N/A"}
                                             </span>
                                         </div>
                                         <div className="border-t border-gray-200 dark:border-gray-600" />
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-500 dark:text-gray-400 text-sm">Coatings</span>
+                                            <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                                Coatings
+                                            </span>
                                             <span className="font-semibold text-gray-900 dark:text-white">
                                                 {Array.isArray(lens.coatings)
                                                     ? lens.coatings.join(", ")
@@ -415,7 +449,8 @@ export default function Show({ jobCard }: Props) {
                             </div>
                             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
                                 <p className="text-amber-800 dark:text-amber-200">
-                                    {jobCard.special_instructions || "No special instructions provided."}
+                                    {jobCard.special_instructions ||
+                                        "No special instructions provided."}
                                 </p>
                             </div>
                         </div>
@@ -428,14 +463,17 @@ export default function Show({ jobCard }: Props) {
                                 <User className="w-4 h-4 text-gray-400" />
                                 <span>Customer:</span>
                                 <strong className="text-gray-900 dark:text-white">
-                                    {jobCard.invoice?.customer?.first_name || ''} {jobCard.invoice?.customer?.last_name || 'Unknown'}
+                                    {jobCard.invoice?.customer?.first_name ||
+                                        ""}{" "}
+                                    {jobCard.invoice?.customer?.last_name ||
+                                        "Unknown"}
                                 </strong>
                             </div>
                             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                                 <FileText className="w-4 h-4 text-gray-400" />
                                 <span>Invoice:</span>
                                 <strong className="text-gray-900 dark:text-white">
-                                    {jobCard.invoice?.invoice_number || 'N/A'}
+                                    {jobCard.invoice?.invoice_number || "N/A"}
                                 </strong>
                             </div>
                             {jobCard.started_at && (
@@ -444,6 +482,15 @@ export default function Show({ jobCard }: Props) {
                                     <span>Started:</span>
                                     <strong className="text-gray-900 dark:text-white">
                                         {formatTime(jobCard.started_at)}
+                                    </strong>
+                                </div>
+                            )}
+                            {jobCard.completed_at && (
+                                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                                    <span>Completed:</span>
+                                    <strong className="text-gray-900 dark:text-white">
+                                        {formatTime(jobCard.completed_at)}
                                     </strong>
                                 </div>
                             )}

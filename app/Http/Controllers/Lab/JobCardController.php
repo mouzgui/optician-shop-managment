@@ -29,7 +29,7 @@ class JobCardController extends Controller
 
     public function show(JobCard $jobCard)
     {
-        $this->authorizeBusiness($jobCard);
+        $this->authorize('view', $jobCard);
 
         $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription']);
 
@@ -40,7 +40,7 @@ class JobCardController extends Controller
 
     public function print(JobCard $jobCard)
     {
-        $this->authorizeBusiness($jobCard);
+        $this->authorize('view', $jobCard);
 
         $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription']);
 
@@ -52,7 +52,7 @@ class JobCardController extends Controller
 
     public function downloadPdf(JobCard $jobCard)
     {
-        $this->authorizeBusiness($jobCard);
+        $this->authorize('view', $jobCard);
 
         $jobCard->load(['invoice.customer', 'invoice.branch', 'invoice.prescription', 'business']);
 
@@ -66,7 +66,7 @@ class JobCardController extends Controller
 
     public function updateStatus(Request $request, JobCard $jobCard)
     {
-        $this->authorizeBusiness($jobCard);
+        $this->authorize('update', $jobCard);
 
         $validated = $request->validate([
             'status' => 'required|string',
@@ -88,12 +88,5 @@ class JobCardController extends Controller
         $jobCard->update($updateData);
 
         return back()->with('success', 'Job status updated successfully.');
-    }
-
-    protected function authorizeBusiness(JobCard $jobCard)
-    {
-        if ($jobCard->business_id !== Auth::user()->business_id) {
-            abort(403);
-        }
     }
 }

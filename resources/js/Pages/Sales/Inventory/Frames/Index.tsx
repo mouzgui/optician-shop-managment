@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import {
     Plus,
@@ -17,7 +17,7 @@ import {
 import { Card } from "@/Components/UI/Card";
 import { Button } from "@/Components/UI/Button";
 import { Badge } from "@/Components/UI/Badge";
-import { DataTable } from "@/Components/UI/DataTable";
+import { DataTable, Column } from "@/Components/UI/DataTable";
 import { StatCard } from "@/Components/Charts/StatCard";
 import { exportToCSV } from "@/Utils/csvExport";
 
@@ -55,7 +55,8 @@ interface Props {
 }
 
 export default function Index({ frames, filters, stats }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { business } = usePage().props as any;
     const [search, setSearch] = React.useState(filters.search || "");
     const [activeCategory, setActiveCategory] = React.useState(
         filters.category || "all"
@@ -126,10 +127,17 @@ export default function Index({ frames, filters, stats }: Props) {
     };
 
     const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat(undefined, {
-            style: "currency",
-            currency: "AED",
-        }).format(value);
+        try {
+            return new Intl.NumberFormat(
+                i18n.language === "ar" ? "ar-SA" : "en-US",
+                {
+                    style: "currency",
+                    currency: business?.currency_code || "USD",
+                }
+            ).format(value || 0);
+        } catch {
+            return `${business?.currency_symbol || "$"}${value || 0}`;
+        }
     };
 
     const categoryTabs = [
@@ -158,7 +166,7 @@ export default function Index({ frames, filters, stats }: Props) {
             [...new Set(frames.data.map((f) => f.brand))].length,
     };
 
-    const columns = [
+    const columns: Column<Frame>[] = [
         {
             header: t("inventory.frames.fields.sku"),
             accessor: (item: Frame) => (
@@ -341,9 +349,10 @@ export default function Index({ frames, filters, stats }: Props) {
 
                 {/* Table */}
                 <Card>
-                    <DataTable
+                    <DataTable<Frame>
                         columns={columns}
                         data={frames.data}
+                        keyField="id"
                         meta={frames.meta}
                     />
                 </Card>

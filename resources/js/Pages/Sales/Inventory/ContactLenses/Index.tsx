@@ -14,7 +14,7 @@ import {
     FileText,
 } from "lucide-react";
 import { Button } from "@/Components/UI/Button";
-import { DataTable } from "@/Components/UI/DataTable";
+import { DataTable, Column } from "@/Components/UI/DataTable";
 import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
 import { StatCard } from "@/Components/Charts/StatCard";
@@ -60,7 +60,7 @@ export default function Index({
     filters = {},
     stats,
 }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { business } = usePage<any>().props;
     const [search, setSearch] = React.useState(filters.search || "");
     const [activeSchedule, setActiveSchedule] = React.useState(
@@ -133,10 +133,17 @@ export default function Index({
     };
 
     const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat(undefined, {
-            style: "currency",
-            currency: "AED",
-        }).format(value);
+        try {
+            return new Intl.NumberFormat(
+                i18n.language === "ar" ? "ar-SA" : "en-US",
+                {
+                    style: "currency",
+                    currency: business?.currency_code || "USD",
+                }
+            ).format(value || 0);
+        } catch {
+            return `${business?.currency_symbol || "$"}${value || 0}`;
+        }
     };
 
     const scheduleTabs = [
@@ -185,7 +192,7 @@ export default function Index({
             [...new Set(contactLenses.data.map((cl) => cl.brand))].length,
     };
 
-    const columns: any[] = [
+    const columns: Column<ContactLens>[] = [
         {
             header: safeT("inventory.contact_lenses.fields.name", "Name"),
             accessor: (item: ContactLens) => (
@@ -394,9 +401,10 @@ export default function Index({
 
                 {/* Table */}
                 <Card>
-                    <DataTable
+                    <DataTable<ContactLens>
                         columns={columns}
                         data={contactLenses.data}
+                        keyField="id"
                         meta={contactLenses.meta}
                     />
                 </Card>

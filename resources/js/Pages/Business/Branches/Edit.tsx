@@ -141,13 +141,11 @@ export default function Edit({ branch }: EditProps) {
                         </div>
 
                         <div className="flex justify-end gap-3 pt-6 border-t border-border-subtle">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                href="/business/branches"
-                            >
-                                {safeT("common.cancel", "Cancel")}
-                            </Button>
+                            <Link href="/business/branches">
+                                <Button type="button" variant="secondary">
+                                    {safeT("common.cancel", "Cancel")}
+                                </Button>
+                            </Link>
                             <Button type="submit" isLoading={processing}>
                                 {safeT("common.save", "Save")}
                             </Button>

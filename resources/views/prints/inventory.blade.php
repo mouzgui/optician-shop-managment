@@ -25,24 +25,32 @@
 <body>
     <div class="report-box">
         <div class="header">
-            <div class="logo">{{ $business->name }}</div>
-            <div style="text-align: right;">
-                <div class="title">Low Stock Inventory Report</div>
-                <div>Generated: {{ now()->format('d M Y H:i') }}</div>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="logo">{{ $business->name }}</div>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="title">Low Stock Inventory Report</div>
+                        <div>Generated: {{ now()->format('d M Y H:i') }}</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="summary-card">
-            <div style="display: flex; gap: 40px;">
-                <div>
-                    <div class="summary-label">Low Stock Frames</div>
-                    <div class="summary-value">{{ count($lowStockFrames) }} items</div>
-                </div>
-                <div>
-                    <div class="summary-label">Low Stock Contact Lenses</div>
-                    <div class="summary-value">{{ count($lowStockCL) }} items</div>
-                </div>
-            </div>
+            <table class="summary-table">
+                <tr>
+                    <td>
+                        <div class="summary-label">Low Stock Frames</div>
+                        <div class="summary-value">{{ count($lowStockFrames) }} items</div>
+                    </td>
+                    <td>
+                        <div class="summary-label">Low Stock Contact Lenses</div>
+                        <div class="summary-value">{{ count($lowStockCL) }} items</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="section-title">Low Stock Frames</div>

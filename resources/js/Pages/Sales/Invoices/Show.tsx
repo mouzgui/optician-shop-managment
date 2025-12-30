@@ -68,10 +68,18 @@ export default function Show({ invoice }: Props) {
     const currentLocale = locales[i18n.language] || enUS;
 
     const formatCurrency = (amount: number | string) => {
-        return new Intl.NumberFormat(undefined, {
-            style: "currency",
-            currency: business?.currency_code || "AED",
-        }).format(typeof amount === "string" ? parseFloat(amount) : amount);
+        const num = typeof amount === "string" ? parseFloat(amount) : amount;
+        try {
+            return new Intl.NumberFormat(
+                i18n.language === "ar" ? "ar-SA" : "en-US",
+                {
+                    style: "currency",
+                    currency: business?.currency_code || "USD",
+                }
+            ).format(num || 0);
+        } catch {
+            return `${business?.currency_symbol || "$"}${num || 0}`;
+        }
     };
 
     const statusMap: Record<string, { label: string; variant: any }> = {

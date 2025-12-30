@@ -32,7 +32,7 @@ export default function CustomerSearch({
     const [loading, setLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const searchTimeout = useRef<NodeJS.Timeout>();
+    const searchTimeout = useRef<any>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/Components/UI/Button";
 import { Badge } from "@/Components/UI/Badge";
 import { Card } from "@/Components/UI/Card";
-import { DataTable } from "@/Components/UI/DataTable";
+import { DataTable, Column } from "@/Components/UI/DataTable";
 import {
     Plus,
     Search,
@@ -36,7 +36,8 @@ interface Staff {
 interface IndexProps {
     staff: {
         data: Staff[];
-        links: any;
+        links: any[];
+        meta: any;
     };
     filters: {
         search?: string;
@@ -121,7 +122,7 @@ export default function Index({ staff, filters, stats }: IndexProps) {
         return labels[role] || role;
     };
 
-    const columns = [
+    const columns: Column<Staff>[] = [
         {
             header: t("business.staff.fields.name"),
             accessor: (member: Staff) => (
@@ -300,10 +301,11 @@ export default function Index({ staff, filters, stats }: IndexProps) {
 
                 {/* Table */}
                 <Card className="overflow-hidden border-none shadow-sm">
-                    <DataTable
+                    <DataTable<Staff>
                         columns={columns}
                         data={staff.data}
-                        meta={staff.links}
+                        keyField="id"
+                        meta={staff.meta}
                     />
                 </Card>
             </div>

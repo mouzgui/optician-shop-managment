@@ -6,7 +6,9 @@
     <style>
         body { font-family: sans-serif; font-size: 12px; color: #333; line-height: 1.5; }
         .report-box { max-width: 800px; margin: auto; padding: 30px; }
-        .header { display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .header { margin-bottom: 40px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .header table { width: 100%; border: none; }
+        .header td { border: none; padding: 0; vertical-align: top; }
         .logo { font-size: 24px; font-weight: bold; color: #2563eb; }
         .title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
@@ -14,6 +16,8 @@
         td { padding: 10px; border-bottom: 1px solid #e2e8f0; }
         .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; color: #1e293b; background: #f1f5f9; padding: 8px; border-radius: 4px; }
         .summary-card { background: #fdf2f8; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #fce7f3; }
+        .summary-table { width: 100%; border: none; margin-bottom: 0; }
+        .summary-table td { border: none; padding: 0; }
         .summary-label { color: #9d174d; font-size: 10px; text-transform: uppercase; font-weight: bold; }
         .summary-value { font-size: 16px; font-weight: bold; color: #831843; }
         .footer { margin-top: 50px; text-align: center; color: #94a3b8; font-size: 10px; }
@@ -24,24 +28,32 @@
 <body>
     <div class="report-box">
         <div class="header">
-            <div class="logo">{{ $business->name }}</div>
-            <div style="text-align: right;">
-                <div class="title">Expiring Prescriptions Report</div>
-                <div>Expiring in the next 3 months</div>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="logo">{{ $business->name }}</div>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="title">Expiring Prescriptions Report</div>
+                        <div>Expiring in the next 3 months</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="summary-card">
-            <div style="display: flex; gap: 40px;">
-                <div>
-                    <div class="summary-label">Spectacle Prescriptions</div>
-                    <div class="summary-value">{{ count($spectacleRx) }} expiring</div>
-                </div>
-                <div>
-                    <div class="summary-label">Contact Lens Prescriptions</div>
-                    <div class="summary-value">{{ count($contactLensRx) }} expiring</div>
-                </div>
-            </div>
+            <table class="summary-table">
+                <tr>
+                    <td>
+                        <div class="summary-label">Spectacle Prescriptions</div>
+                        <div class="summary-value">{{ count($spectacleRx) }} expiring</div>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="summary-label">Contact Lens Prescriptions</div>
+                        <div class="summary-value">{{ count($contactLensRx) }} expiring</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="section-title">Expiring Spectacle Prescriptions</div>

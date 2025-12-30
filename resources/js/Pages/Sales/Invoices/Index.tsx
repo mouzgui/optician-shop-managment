@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import {
     Search,
     Plus,
@@ -57,7 +57,8 @@ interface Props {
 }
 
 export default function Index({ invoices, filters, stats }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { business } = usePage().props as any;
     const [searchValue, setSearchValue] = useState(filters?.search || "");
     const [activeStatus, setActiveStatus] = useState(filters?.status || "all");
 
@@ -378,9 +379,10 @@ export default function Index({ invoices, filters, stats }: Props) {
 
                 {/* Table */}
                 <Card className="overflow-hidden border-none shadow-sm">
-                    <DataTable
+                    <DataTable<Invoice>
                         columns={columns}
                         data={invoices.data}
+                        keyField="id"
                         meta={invoices.meta}
                     />
                 </Card>

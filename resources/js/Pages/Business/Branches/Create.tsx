@@ -115,13 +115,11 @@ export default function Create() {
                         </div>
 
                         <div className="flex justify-end gap-3 pt-6 border-t border-border-subtle">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                href={route("business.branches.index")}
-                            >
-                                {t("common.cancel")}
-                            </Button>
+                            <Link href={route("business.branches.index")}>
+                                <Button type="button" variant="secondary">
+                                    {t("common.cancel")}
+                                </Button>
+                            </Link>
                             <Button type="submit" isLoading={processing}>
                                 {t("common.create")}
                             </Button>

@@ -237,9 +237,10 @@ export default function Index({ customers, filters }: Props) {
                 </Card>
 
                 <Card>
-                    <DataTable
+                    <DataTable<Customer>
                         columns={columns}
                         data={customers.data}
+                        keyField="id"
                         meta={customers.meta}
                     />
                 </Card>

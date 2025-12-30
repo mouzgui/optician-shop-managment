@@ -85,8 +85,8 @@
                         <div style="font-size: 10px; color: #64748b; margin-top: 2px;">{{ strtoupper($item->item_type) }}</div>
                     </td>
                     <td style="text-align: center;">{{ $item->quantity }}</td>
-                    <td style="text-align: right;">${{ number_format($item->unit_price, 2) }}</td>
-                    <td style="text-align: right;">${{ number_format($item->total, 2) }}</td>
+                    <td style="text-align: right;">{{ $invoice->business->formatCurrency($item->unit_price) }}</td>
+                    <td style="text-align: right;">{{ $invoice->business->formatCurrency($item->total) }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -96,25 +96,25 @@
             <table class="totals-table">
                 <tr>
                     <td class="label">Subtotal</td>
-                    <td class="value">${{ number_format($invoice->subtotal, 2) }}</td>
+                    <td class="value">{{ $invoice->business->formatCurrency($invoice->subtotal) }}</td>
                 </tr>
                 @if($invoice->discount_amount > 0)
                 <tr>
                     <td class="label" style="color: #dc2626;">Discount</td>
-                    <td class="value" style="color: #dc2626;">-${{ number_format($invoice->discount_amount, 2) }}</td>
+                    <td class="value" style="color: #dc2626;">-{{ $invoice->business->formatCurrency($invoice->discount_amount) }}</td>
                 </tr>
                 @endif
                 <tr class="grand-total">
                     <td class="label">Total Amount</td>
-                    <td class="value">${{ number_format($invoice->total, 2) }}</td>
+                    <td class="value">{{ $invoice->business->formatCurrency($invoice->total) }}</td>
                 </tr>
                 <tr>
                     <td class="label">Amount Paid</td>
-                    <td class="value">${{ number_format($invoice->amount_paid, 2) }}</td>
+                    <td class="value">{{ $invoice->business->formatCurrency($invoice->amount_paid) }}</td>
                 </tr>
                 <tr>
                     <td class="label" style="font-weight: bold; color: #1e293b;">Balance Due</td>
-                    <td class="value" style="font-weight: bold; color: #dc2626;">${{ number_format($invoice->balance_due, 2) }}</td>
+                    <td class="value" style="font-weight: bold; color: #dc2626;">{{ $invoice->business->formatCurrency($invoice->balance_due) }}</td>
                 </tr>
             </table>
         </div>

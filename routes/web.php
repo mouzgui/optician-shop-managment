@@ -10,12 +10,14 @@ use App\Http\Controllers\Reports;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Inertia\Inertia;
 
+use App\Enums\UserRole;
+
 Route::get('/', function () {
     $user = auth()->user();
     $dashboardUrl = null;
 
     if ($user) {
-        $dashboardUrl = $user->role === 'super_admin'
+        $dashboardUrl = $user->role === UserRole::SUPER_ADMIN
             ? '/admin/dashboard'
             : '/business/dashboard';
     }

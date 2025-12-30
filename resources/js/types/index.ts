@@ -17,6 +17,8 @@ export interface JobCard {
     lens_details?: any;
     special_instructions?: string;
     started_at?: string;
+    completed_at?: string;
+    completed_by?: number;
 }
 
 export interface JobCardItem {

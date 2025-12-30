@@ -44,4 +44,13 @@ class Business extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Format an amount with the business currency.
+     */
+    public function formatCurrency($amount): string
+    {
+        $fmt = new \NumberFormatter($this->default_language === 'ar' ? 'ar_SA' : 'en_US', \NumberFormatter::CURRENCY);
+        return $fmt->formatCurrency($amount, $this->currency_code ?: 'USD');
+    }
 }
