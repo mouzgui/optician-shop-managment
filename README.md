@@ -373,9 +373,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 
-- Portfolio: [yourportfolio.com](https://yourportfolio.com)
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
+- Portfolio: https://oussama-mouzgui.vercel.app/
+- GitHub: https://github.com/mouzgui;
+- LinkedIn: https://www.linkedin.com/in/mouzgui-oussama-9b046123a/
 
 ---
 
